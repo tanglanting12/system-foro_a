@@ -1,5 +1,6 @@
 #!/usr/bin/python
 #coding=utf8
+#import allmodules
 import os
 import os.path as osp
 import sys
@@ -35,3 +36,10 @@ def autodiscover(filename, filter=None):
     sys.path.pop(0)
 
     return all_modules
+
+def autodic(module,id="id",name="name"):
+    dic=dict()
+    for e in module.objects.all():
+        if e.id not in dic:
+           dic[e.id]=e.name
+    return dic

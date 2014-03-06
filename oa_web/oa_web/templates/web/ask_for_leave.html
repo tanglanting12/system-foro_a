@@ -1,0 +1,50 @@
+
+<div>
+    <p>填写信息：  </p>
+ </div>
+<form   role="form" method="post">
+  {% raw xsrf_form_html() %}
+ 请假类型：
+<select id="listleave_style"  name="leave_type">
+
+<option value="0"> 事假 </option>
+　　<option value="1"> 病假 </option>
+
+</select>
+<p>请选择请假类型</p>
+
+<p>开始时间: <input type="text" class="datepicker" name="leave_time_begin"></p>
+<p>结束时间: <input type="text" class="datepicker" name="leave_time_end"></p>
+<p>请假天数：共{{pre_year_holiday}},剩下{{left_year_holiday}}天</p>
+<p>请假事由:</br>
+   <textarea rows="10" cols="40" name="reason_for_leave">
+在w3school，你可以找到你所需要的所有的网站建设教程。
+</textarea>
+</p>
+ <p>    直接上级：
+<select id="superior"  name="superior">
+
+<option value="{{superior_id}}">{{superior_name}} </option>
+
+</select>
+ </p>
+<input type="submit" value="Submit" />
+</form>
+ <div>
+ask for leave*********
+</div>
+
+<div>
+
+</div>
+ <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+ <!--
+ <link rel="stylesheet" href="../../resource/css/jquery-ui-1.10.4.custom.min.css">-->
+ <script type="text/javascript" src="../../resource/js/jquery-1.11.0.js"></script>
+ <script src="../../resource/js/jquery-ui.js"></script>
+<script >
+ $(function() {
+$( ".datepicker" ).datepicker();
+});
+</script>
+

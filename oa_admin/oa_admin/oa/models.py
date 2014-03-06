@@ -64,7 +64,7 @@ class Leave(models.Model):
     reason_for_leave = models.CharField('请假事由', max_length=150)
     leave_time_begin = models.DateTimeField('请假开始时间', auto_now_add=True)
     leave_time_end = models.DateTimeField('请假截址时间', auto_now_add=True)
-    verify_status = models.PositiveSmallIntegerField('确认状态', blank=True, null=True, choices=Verfify.attrs.items())
+    verify_status = models.PositiveSmallIntegerField('确认状态', blank=True, null=True,default=0,choices=Verfify.attrs.items())
 
     #verify_people = models.CharField('审核人', max_length=20, unique=True)
 

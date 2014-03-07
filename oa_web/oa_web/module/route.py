@@ -81,8 +81,10 @@ class Route(object):
         """
         Called when we decorate a class.
         """
+
         name = self.name or handler.__name__
         spec = URLSpec(self.route, handler, self.initialize, name=name)
+       # print "&&&&&&&&&%s&&&" %(spec)
         self._routes.append({'host': self.host, 'spec': spec})
         return handler
 

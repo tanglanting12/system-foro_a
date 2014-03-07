@@ -15,6 +15,7 @@ define("address", type=str, default='127.0.0.1',
 parse_command_line()
 
 add_tornado_log_handler(ConfigCommon.log_path, ConfigCommon.log_level)
+#Route.routes() through __call__ that all the route have be loaded to _routes[] (when function be decorated),then Route.routes()
 urls = Route.routes()
 
 application = tornado.web.Application(urls, **settings)

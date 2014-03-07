@@ -28,6 +28,7 @@ class ProductgroupPage(OaHandler,BaseHandler):
         reason_for_leave=self.get_argument("reason_for_leave")
         leave_time_begin=datetime.strptime(leave_time_begin,"%m/%d/%Y")
         leave_time_end=datetime.strptime(leave_time_end,"%m/%d/%Y")
+        print "begin%s**,end%s**" %(leave_time_begin,leave_time_end)
         user = User.objects.filter(name=self.current_user)
         Leave.objects.create(user=user[0],leave_type=leave_type,leave_time_begin=leave_time_begin,leave_time_end=leave_time_end,reason_for_leave=reason_for_leave)
         self.redirect('/')
@@ -61,6 +62,19 @@ class LogoutHandler(BaseHandler):
         self.redirect('/')
 
 
+@Route('/updatepwd')
+class update(OaHandler):
+    def post(self):
+        name=self.get_argument("name")
+        User.objects.filter(name=name).update(password=self.get_argument("password"))
+        self.render('change_pwd.html',name=name)
+    def get(self):
+        name="abert"
+        #print "***%s***%s***%s" %(position_name.name,role_name.name,department_name.name)
+        self.render('change_pwd.html',name=name)
+
+
+
 @Route('/register')
 class register(OaHandler):
     def get(self):
@@ -75,7 +89,7 @@ class register(OaHandler):
         gender=self.get_argument("gender")
         phone_num=self.get_argument("phone_num")
         pre_year_holiday=self.get_argument("pre_year_holiday")
-        left_year_holiday=self.get_argument("left_year_holiday")
+        remain_year_holiday=self.get_argument("remain_year_holiday")
         position=Position.objects.get(id=self.get_argument("position"))
         role=Role.objects.get(id=self.get_argument("role"))
         department=Department.objects.get(id=self.get_argument("department"))
@@ -83,11 +97,37 @@ class register(OaHandler):
         superior=User.objects.filter(name=superior)
         superior_id=superior[0].id
         User.objects.create(name=name,real_name=real_name,password=password,gender=gender,phone_num=phone_num,
-                            pre_year_holiday=pre_year_holiday,left_year_holiday=left_year_holiday,
+                            pre_year_holiday=pre_year_holiday,remain_year_holiday=remain_year_holiday,
                             position=position,role=role,department=department,superior=superior_id)
         self.redirect('/register')
 
 
+@Route('/leavedetail/([^/]+)',name="test")
+class leavedtail(OaHandler):
+    def get(self,guess):
+        index=self.get_argument("index",default=2)
+        name=self.get_argument("name",default="abert")
+        user=User.objects.get(name=name)
+        leavedetails=Leave.objects.filter(user_id=user.id)[index:10].values()
+        self.render('leave_detail.html',leavedetails=leavedetails,name=name)
+'''
 
-
-
+@Route('/update')
+class update(OaHandler):
+    def get(self):
+        name="abert"
+        user=User.objects.filter(name=name).values()
+        position_name=Position.objects.get(id=user[0]["position_id"])
+        role_name=Role.objects.get(id=user[0]["role_id"])
+        print "****%s***" %(user[0]["department_id"])
+        department_name=Department.objects.get(id=user[0]["department_id"])
+        print "***%s****&&&&" %(position_name.name)
+        #print "***%s***%s***%s" %(position_name.name,role_name.name,department_name.name)
+        positiondic=autodic(Position,"id","name")
+        roledic=autodic(Role,"id","name")
+        departmentdic=autodic(Department,"id","name")
+        #print "***%s***%s***%s" %(position_name.name,role_name.name,department_name.name)
+        self.render('update_user.html',user=user,position_name=position_name.name,role_name=role_name.name,department_name=department_name.name,
+                    positiondic=positiondic,roledic=roledic,departmentdic=departmentdic
+                    )
+'''

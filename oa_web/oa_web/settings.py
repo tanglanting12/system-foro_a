@@ -8,7 +8,7 @@ from oa_web.config import ConfigCommon
 
 init_django_settings()
 
-#import allmoudles which directory under the settings'path
+#import allmoudles which directory under the settings'path   include decorated function
 init_controllers()
 from controller.web.modelshtml import Ask_for_leave,Ask_for_out,Default_child
 

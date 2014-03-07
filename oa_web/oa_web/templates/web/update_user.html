@@ -16,50 +16,54 @@
     <form  role="form" method="post" >
          {% raw xsrf_form_html() %}
 <p>
-   用户名：<input type="text" name="name">
+   用户名：<input type="text" name="name" value="{{user[0]["name"]}}">
 </p>
     <p>
-        真实名字:<input type="text" name="real_name">
+        真实名字:<input type="text" name="real_name" value="{{user[0]["real_name"]}}">
     </p>
 <p>
-    密码：<input type="text" name="password">
+    密码：<input type="text" name="password" value="{{user[0]["password"]}}">
 </p>
     <p>性别:
-        <select id="gender"  name="gender">
+        <select id="gender"  name="gender" >
+       <option value="{{user[0]["gender"]}}" ></option>
 
-<option value="0">男 </option>
+<option value="0" >男 </option>
 <option value="1">女 </option>
 </select>
     </p>
 <p> 电话号码:
-    <input type="text" name="phone_num">
+    <input type="text" name="phone_num" value="{{user[0]["phone_num"]}}">
 </p>
     <p>每年年假：
-    <input type="text" name="pre_year_holiday">
+    <input type="text" name="pre_year_holiday" value="{{user[0]["pre_year_holiday"]}}">
 
 </p>
     <p>剩下年假：
- <input type="text" name="left_year_holiday">
+ <input type="text" name="remain_year_holiday" value="{{user[0]["remain_year_holiday"]}}">
     </p>
     <!-- it's play can be optimized:use uimould to replace-->
     <p>职位选择：
         <select id="position"  name="position">
-            {% for position_id, postion_name in positiondic.iteritems() %}
-            <option value="{{position_id}}">{{postion_name}} </option>
+             <option value="{{user[0]["position_id"]}}">{{position_name}} </option>
+            {% for position_id, postion_name2 in positiondic.iteritems() %}
+            <option value="{{position_id}}">{{postion_name2}} </option>
             {% end %}
 </select>
     </p>
      <p>角色选择：
  <select id="role"  name="role">
-  {% for role_id, role_name in roledic.iteritems() %}
-            <option value="{{role_id}}">{{role_name}} </option>
+     <option value="{{user[0]["role_id"]}}">{{role_name}} </option>
+  {% for role_id, role_name2 in roledic.iteritems() %}
+            <option value="{{role_id}}">{{role_name2}} </option>
             {% end %}
 </select>
     </p>
     <p>部门选择：
  <select id="department"  name="department">
-  {% for department_id, department_name in departmentdic.iteritems() %}
-            <option value="{{department_id}}">{{department_name}} </option>
+     <option value="{{user[0]["department_id"]}}">{{department_name}} </option>
+  {% for department_id, department_name2 in departmentdic.iteritems() %}
+            <option value="{{department_id}}">{{department_name2}} </option>
             {% end %}
 </select>
     </p>
@@ -70,6 +74,16 @@
           <button  type="submit" >注册</button>
       </form>
 </div>
+
+<script language="JavaScript" type="text/JavaScript">
+function toggle(){
+    if(document.getElementById("gender").options[0].value==0)
+      document.getElementById("gender").options[0].innerText="男"
+  if(document.getElementById("gender").options[0].value==1)
+      document.getElementById("gender").options[0].innerText="女"
+}
+toggle()
+</script>
 
 </body>
 </html>

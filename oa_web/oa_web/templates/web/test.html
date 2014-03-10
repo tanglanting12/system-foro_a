@@ -2,24 +2,30 @@
 <head>
 
 <body>
-<input type="button" value="Button 1" id="btn1"  />
-<input type="button" value="Button 2" id="btn2"  />
-<input type="button" value="Button 3" id="btn3"  onclick="buttonClicked();"/>
- <script type="text/javascript" src="../../resource/js/jquery-1.11.0.js"></script>
- <script src="../../resource/js/jquery-ui.js"></script>
-<script type="text/javascript">
-function buttonClicked(){
-    var text = (this === window) ? 'window' : this.id;
-    alert( text );
-}
-var button1 = document.getElementById('btn1');
-var button2 = document.getElementById('btn2');
-
-button1.onclick = buttonClicked;
-button2.onclick = function(){   buttonClicked();   };
-    $('#btn1').click( function() {
-    alert( this.id ); // jQuery ensures 'this' will be the button
-});
-</script>
+<div id="leavedetail">
+</div>
+<ul class="pagination">
+  <li><a id="paging_left" >&laquo;</a></li>
+  <li><a  class="paging" onclick="">1</a></li>
+  <li><a  class="paging" onclick="">2</a></li>
+  <li><a  class="paging" onclick="">3</a></li>
+  <li><a  class="paging" onclick="">4</a></li>
+  <li><a  class="paging" onclick="">5</a></li>
+  <li><a  id="paging_right" >&raquo;</a></li>
+</ul>
 </body>
+
+ <script type="text/javascript">
+
+_TheArray=new Array();
+pagings=document.getElementsByClassName("paging");
+document.write(pagings.length);
+ for(j=0;j<pagings.length;j++){
+   var  k=j;
+    _TheArray[k]="http://localhost:9000/leave_detailajax?index="+pagings[j].innerHTML;
+    // document.write(_TheArray[j]);
+    pagings[j].setAttribute("onclick","_TheArray[k]");
+    alert( pagings[j].getAttribute("onclick"));
+ }
+</script>
 </html>

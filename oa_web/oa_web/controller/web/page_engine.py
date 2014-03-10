@@ -69,7 +69,8 @@ class update(OaHandler):
         User.objects.filter(name=name).update(password=self.get_argument("password"))
         self.render('change_pwd.html',name=name)
     def get(self):
-        name="abert"
+        name=self.get_argument("name",default="abert")
+        print "*****%s***" %(type(name))
         #print "***%s***%s***%s" %(position_name.name,role_name.name,department_name.name)
         self.render('change_pwd.html',name=name)
 
@@ -102,14 +103,27 @@ class register(OaHandler):
         self.redirect('/register')
 
 
-@Route('/leavedetail/([^/]+)',name="test")
+@Route('/leavedetail')
 class leavedtail(OaHandler):
-    def get(self,guess):
-        index=self.get_argument("index",default=2)
+    def get(self):
+        index=self.get_argument("index",default=0)
+        index=int(index)
+        step=3
         name=self.get_argument("name",default="abert")
         user=User.objects.get(name=name)
-        leavedetails=Leave.objects.filter(user_id=user.id)[index:10].values()
+        leavedetails=Leave.objects.order_by("leave_time_begin","leave_time_end").filter(user_id=user.id)[index*step:(index+1)*step].values()
         self.render('leave_detail.html',leavedetails=leavedetails,name=name)
+@Route('/leave_detailajax')
+class leavedtail2(OaHandler):
+    def get(self):
+        index=self.get_argument("index",default=0)
+        index=int(index)
+        print "&&&&&&&&%s&&&&&&&" %(index)
+        step=3
+        name=self.get_argument("name",default="abert")
+        user=User.objects.get(name=name)
+        leavedetails=Leave.objects.order_by("leave_time_begin","leave_time_end").filter(user_id=user.id)[index*step:(index+1)*step].values()
+        self.render('leave_detailajax.html',leavedetails=leavedetails,name=name)
 '''
 
 @Route('/update')

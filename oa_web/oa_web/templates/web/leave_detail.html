@@ -1,44 +1,20 @@
   <meta charset="utf-8">
+<div id="leavedetail">
 
-
-<table border="1">
-  <tr>
-    <th>编号</th>
-    <th>姓名</th>
-      <th>类型</th>
-    <th>日期</th>
-      <th>日期</th>
-      <th>原因</th>
-    <th>天数</th>
-      <th>状态</th>
-    <th>基本操作</th>
-  </tr>
-    {% for index,leavedetail in enumerate(leavedetails) %}
-    <tr>
-    <th>{{index+1}}</th>
-    <th>{{name}}</th>
-      <th name="leave_type" >{{leavedetail["leave_type"]}}</th>
-    <th name="leave_time_begin">{{leavedetail["leave_time_begin"]}}</th>
-        到<th name="leave_time_end">{{leavedetail["leave_time_end"]}}</th>
-      <th>{{leavedetail["reason_for_leave"]}}</th>
-    <th name="day_num"></th>
-      <th name="status">{{leavedetail["verify_status"]}}</th>
-    <th><button>ddd</button> <button>ddd</button></th>
-  </tr>
- {% end %}
-</table>
+</div>
  <button>首页</button>
-      <input type="转至多少页" name="name">
-          <button>转至</button>
+      <input type="转至多少页" name="name" >
+          <button >转至</button>
           <button>尾页</button>
-  <ul class="pagination">
-  <li class="disabled"><a href="#">&laquo;</a></li>
-  <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
-       <li class="disabled"><a href="#">1 <span class="sr-only">(current)</span></a></li>
-       <li class="disabled"><a href="#">1 <span class="sr-only">(current)</span></a></li>
-   <li class="disabled"><a href="#">&raquo;</a></li>
-   </ul>
-
+<ul class="pagination">
+  <li><a id="paging_left" >&laquo;</a></li>
+  <li><a  class="paging" onclick="">1</a></li>
+  <li><a  class="paging" onclick="">2</a></li>
+  <li><a  class="paging" onclick="">3</a></li>
+  <li><a  class="paging" onclick="">4</a></li>
+  <li><a  class="paging" onclick="">5</a></li>
+  <li><a  id="paging_right" >&raquo;</a></li>
+</ul>
  <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
  <!--
  <link rel="stylesheet" href="../../resource/css/jquery-ui-1.10.4.custom.min.css">-->
@@ -81,13 +57,29 @@ function Calculateleaveday(arr_leave_time_begin,arr_leave_time_end,arr_daynum)
 
     for(j=0;j<arr_leave_time_begin.length;j++){
     var leave_begin=arr_leave_time_begin[j].innerHTML.substr(0,19)
-
     var leave_end=arr_leave_time_end[j].innerHTML.substr(0,19)
     arr_leave_time_begin[j].innerHTML=leave_begin
     arr_leave_time_end[j].innerHTML=leave_end
     arr_daynum[j].innerHTML=daysBetween(leave_begin,leave_end)
 }
 }
+  $('#paging_right,#paging_left').click( function (){
+  pagings=document.getElementsByClassName("paging");
+  if(this.id=="paging_left")
+  step=-5;
+  else if(this.id=="paging_right")
+  step=5;
+  for(j=0;j<pagings.length;j++){
+      pagings[j].innerHTML=parseInt(pagings[j].innerHTML)+step;
+      url="http://localhost:9000/leave_detailajax?index="+pagings[j].innerHTML;
+      pagings[j].setAttribute("onclick","loadXMLDoc(url)");
+      if (pagings[j].innerHTML<1) {
+         pagings[j].innerHTML=1;
+          break;
+      }
+  }
+});
+var _TheArray = new Array;
 leave_type_id=["0","1"];
 leave_type_name=["事假","病假"];
 status_id=["0","1"]
@@ -98,5 +90,42 @@ var arr_leave_time_begin=document.getElementsByName("leave_time_begin")
 var arr_leave_time_end=document.getElementsByName("leave_time_end")
 var arr_daynum=document.getElementsByName("day_num")
 Calculateleaveday(arr_leave_time_begin,arr_leave_time_end,arr_daynum)
+pagings=document.getElementsByClassName("paging");
+ for(j=0;j<pagings.length;j++){
+    _TheArray[j]="http://localhost:9000/leave_detailajax?index="+pagings[j].innerHTML;
+    // document.write(_TheArray[j]);
+    pagings[j].setAttribute("onclick","loadXMLDoc(_TheArray[j])");
+    //alert( pagings[j].getAttribute("onclick"));
+ }
+//pagings[0].setAttribute("onclick","loadXMLDoc(_TheArray[0])");
+//pagings[1].setAttribute("onclick","loadXMLDoc(_TheArray[1])");
+//pagings[2].setAttribute("onclick","loadXMLDoc(_TheArray[2])");
+//pagings[3].setAttribute("onclick","loadXMLDoc(_TheArray[3])");
+//pagings[4].setAttribute("onclick","loadXMLDoc(_TheArray[4])");
+</script>
 
+ <script type="text/javascript">
+function loadXMLDoc(url)
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("leavedetail").innerHTML=xmlhttp.responseText;
+    }
+  }
+
+xmlhttp.open("GET",url,true);
+xmlhttp.send();
+}
+loadXMLDoc("http://localhost:9000/leave_detailajax?index=0")
 </script>

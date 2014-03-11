@@ -7,9 +7,12 @@ from datetime import datetime
 import time
 from oa_admin.oa.models import User, Role,Leave,Position,Department
 from oa_web.libs.autodiscover import autodic
+
+
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
         return self.get_secure_cookie("username")
+
 
 @Route('/')
 class ProductgroupPage(OaHandler,BaseHandler):
@@ -20,9 +23,10 @@ class ProductgroupPage(OaHandler,BaseHandler):
         if self.current_user:
            user = User.objects.filter(name=self.current_user)
            roler = Role.objects.filter(user__name__exact=self.current_user)
-           self.render('productgroup.html', username=user[0].name, rolename=roler[0].name, select="default")
+           self.render('productgroup.html', username=user[0].name, rolename=roler[0].name, navigation="default_detail")
+
     def post(self):
-        leave_type=self.get_argument("leave_type")
+        leave_type = self.get_argument("leave_type")
         leave_time_begin=self.get_argument("leave_time_begin")
         leave_time_end=self.get_argument("leave_time_end")
         reason_for_leave=self.get_argument("reason_for_leave")
@@ -64,10 +68,12 @@ class LogoutHandler(BaseHandler):
 
 @Route('/updatepwd')
 class update(OaHandler):
+
     def post(self):
-        name=self.get_argument("name")
+        name = self.get_argument("name")
         User.objects.filter(name=name).update(password=self.get_argument("password"))
         self.render('change_pwd.html',name=name)
+
     def get(self):
         name=self.get_argument("name",default="abert")
         print "*****%s***" %(type(name))
@@ -136,10 +142,18 @@ class leave_delete(OaHandler):
 @Route('/perleave_detail')
 class perleave_detail(OaHandler):
      def get(self):
-         print "ssssssssssssssssssss"
          leave_id=int(self.get_argument("leave_id"))
          leave=Leave.objects.filter(id=leave_id).values()
          self.render('perleave_detail.html',leave=leave)
+
+@Route('/index')
+class MainHandler(OaHandler):
+    def get(self):
+        self.render(
+            "index.html",
+            header_text = "Header goes here",
+            footer_text = "Footer goes here"
+        )
 
 '''
 

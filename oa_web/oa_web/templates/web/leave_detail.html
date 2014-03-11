@@ -43,8 +43,27 @@ $('#last_page').click(function(){
  loadXMLDoc("http://localhost:9000/leave_detailajax?lastpage=1");
  }
 );
+
 navigate_control();
+function navigate_control(step){
+   if(!step) step=0;
+   pagings=document.getElementsByClassName("paging");
+  for(j=0;j<pagings.length;j++){
+      pagings[j].innerHTML=parseInt(pagings[j].innerHTML)+step;
+      if (pagings[j].innerHTML<1) {
+      pagings[j].innerHTML=parseInt(pagings[j].innerHTML)-step;
+       break;
+      }
+      _TheArray[j]="http://localhost:9000/leave_detailajax?index="+parseInt(pagings[j].innerHTML);
+  }
+pagings[0].setAttribute("onclick","loadXMLDoc(_TheArray[0])");
+pagings[1].setAttribute("onclick","loadXMLDoc(_TheArray[1])");
+pagings[2].setAttribute("onclick","loadXMLDoc(_TheArray[2])");
+pagings[3].setAttribute("onclick","loadXMLDoc(_TheArray[3])");
+pagings[4].setAttribute("onclick","loadXMLDoc(_TheArray[4])");
+}
 </script>
+
  <script type="text/javascript">
 function loadXMLDoc(url)
 {

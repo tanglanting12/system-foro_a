@@ -10,7 +10,7 @@ init_django_settings()
 
 #import allmoudles which directory under the settings'path   include decorated function
 init_controllers()
-from controller.web.modelshtml import Ask_for_leave,Ask_for_out,Default_child
+from controller.web.modelshtml import Ask_for_leave,Ask_for_out,Default_child,Default_detail
 
 PYWEB_PATH = os.path.dirname(os.path.abspath(__file__))
 PROJECT_PATH = os.path.dirname(PYWEB_PATH)
@@ -29,6 +29,6 @@ settings = {
     'xsrf_cookies': ConfigCommon.is_xsrf_cookies,
     'cookie_secret': ConfigCommon.cookie_secret,
     'login_url': '/login',
-    'ui_modules': {'Ask_for_leave': Ask_for_leave,'Ask_for_out':Ask_for_out,'Default_child':Default_child},
+    'ui_modules': {'Ask_for_leave': Ask_for_leave,'Ask_for_out':Ask_for_out,'Default_detail':Default_detail,'Default_child':Default_child},
 }
 

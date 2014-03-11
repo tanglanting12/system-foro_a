@@ -103,27 +103,44 @@ class register(OaHandler):
         self.redirect('/register')
 
 
-@Route('/leavedetail')
-class leavedtail(OaHandler):
+@Route('/leave_detail')
+class leavedetail(OaHandler):
     def get(self):
-        index=self.get_argument("index",default=0)
-        index=int(index)
-        step=3
-        name=self.get_argument("name",default="abert")
-        user=User.objects.get(name=name)
-        leavedetails=Leave.objects.order_by("leave_time_begin","leave_time_end").filter(user_id=user.id)[index*step:(index+1)*step].values()
-        self.render('leave_detail.html',leavedetails=leavedetails,name=name)
+        self.render('leave_detail.html')
+
 @Route('/leave_detailajax')
-class leavedtail2(OaHandler):
+class leavedetailajax(OaHandler):
     def get(self):
         index=self.get_argument("index",default=0)
-        index=int(index)
-        print "&&&&&&&&%s&&&&&&&" %(index)
-        step=3
+        lastpage=self.get_argument("lastpage",default=0)
+        if (index!=0):
+            index=int(index)-1
+        step=4
         name=self.get_argument("name",default="abert")
         user=User.objects.get(name=name)
-        leavedetails=Leave.objects.order_by("leave_time_begin","leave_time_end").filter(user_id=user.id)[index*step:(index+1)*step].values()
+        if lastpage:
+            leavedetails=Leave.objects.order_by("leave_time_begin","leave_time_end").filter(user_id=user.id).reverse()[:step].values()
+        else:
+            leavedetails=Leave.objects.order_by("leave_time_begin","leave_time_end").filter(user_id=user.id)[index*step:(index+1)*step].values()
         self.render('leave_detailajax.html',leavedetails=leavedetails,name=name)
+
+
+@Route('/leave_delete')
+class leave_delete(OaHandler):
+     def get(self):
+         leave_id=int(self.get_argument("leave_id"))
+         Leave.objects.get(id=leave_id).delete()
+         print "%s leave Delete success! " %(leave_id)
+         self.render('leave_detail.html')
+
+@Route('/perleave_detail')
+class perleave_detail(OaHandler):
+     def get(self):
+         print "ssssssssssssssssssss"
+         leave_id=int(self.get_argument("leave_id"))
+         leave=Leave.objects.filter(id=leave_id).values()
+         self.render('perleave_detail.html',leave=leave)
+
 '''
 
 @Route('/update')

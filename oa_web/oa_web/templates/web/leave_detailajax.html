@@ -16,20 +16,15 @@
     <th>{{name}}</th>
       <th name="leave_type" >{{leavedetail["leave_type"]}}</th>
     <th name="leave_time_begin">{{leavedetail["leave_time_begin"]}}</th>
-        到<th name="leave_time_end">{{leavedetail["leave_time_end"]}}</th>
+        <th name="leave_time_end">{{leavedetail["leave_time_end"]}}</th>
       <th>{{leavedetail["reason_for_leave"]}}</th>
     <th name="day_num"></th>
       <th name="status">{{leavedetail["verify_status"]}}</th>
-    <th><button>ddd</button> <button>ddd</button></th>
+    <th><button onclick="{location.href='http://localhost:9000/leave_delete?leave_id={{leavedetail["id"]}}'}">销假</button>
+        <button onclick="{location.href='http://localhost:9000/perleave_detail?leave_id={{leavedetail["id"]}}'}"><a>详情</a></button>
+    </th>
   </tr>
  {% end %}
 </table>
- <script type="text/javascript">
-   pagings=document.getElementsByClassName("paging");
- for(j=0;j<pagings.length;j++){
-     url="http://localhost:9000/leave_detailajax?index="+pagings[j].innerHTML;
- document.write(url);
- pagings[j].setAttribute("onclick","loadXMLDoc(url)");
- doucment.write(pagings[j].getAttribute('onclick'))
-</script>
+
 

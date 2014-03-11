@@ -2,10 +2,10 @@
 <div id="leavedetail">
 
 </div>
- <button>首页</button>
-      <input type="转至多少页" name="name" >
-          <button >转至</button>
-          <button>尾页</button>
+ <button id="first_page" onclick="">首页</button>
+      <input type="text"  id="switch_value">
+          <button id="switch">转至</button>
+          <button id="last_page">尾页</button>
 <ul class="pagination">
   <li><a id="paging_left" >&laquo;</a></li>
   <li><a  class="paging" onclick="">1</a></li>
@@ -22,88 +22,29 @@
  <script type="text/javascript" src="../../resource/js/jquery-1.11.0.js"></script>
  <script src="../../resource/js/jquery-ui.js"></script>
 <script language="JavaScript" type="text/JavaScript">
-function daysBetween(DateOne,DateTwo)
-{
-    var OneMonth = DateOne.substring(5,DateOne.lastIndexOf ('-'));
-    var OneDay = DateOne.substring(8,10);
-    var OneYear = DateOne.substring(0,DateOne.indexOf ('-'));
-
-    var TwoMonth = DateTwo.substring(5,DateTwo.lastIndexOf ('-'));
-    var TwoDay = DateTwo.substring(8,10);
-    var TwoYear = DateTwo.substring(0,DateTwo.indexOf ('-'));
-
-    var cha=Math.abs(((Date.parse(OneMonth+'/'+OneDay+'/'+OneYear)- Date.parse(TwoMonth+'/'+TwoDay+'/'+TwoYear))/86400000));
-    var onehour=parseInt(DateOne.substring(11,13));
-    var twohour=parseInt(DateTwo.substring(11,13));
-    hourbetween=twohour-onehour;
-    if(onehour<=12&&twohour>=12)
-       hourbetween=hourbetween-2
-    if (hourbetween<4)
-       cha+=0.5;
-    else
-       cha+=1;
-    return cha;
-}
-function toggle(arr,arr_name,id){
-    var arr_byname=document.getElementsByName(id)
-    for(j=0;j<arr_byname.length;j++){
-    for(i=0;i<arr.length;i++)
-        if(arr_byname[j].innerHTML=arr[i])
-           arr_byname[j].innerHTML=arr_name[i];
-    }
-}
-function Calculateleaveday(arr_leave_time_begin,arr_leave_time_end,arr_daynum)
-{
-
-    for(j=0;j<arr_leave_time_begin.length;j++){
-    var leave_begin=arr_leave_time_begin[j].innerHTML.substr(0,19)
-    var leave_end=arr_leave_time_end[j].innerHTML.substr(0,19)
-    arr_leave_time_begin[j].innerHTML=leave_begin
-    arr_leave_time_end[j].innerHTML=leave_end
-    arr_daynum[j].innerHTML=daysBetween(leave_begin,leave_end)
-}
-}
-  $('#paging_right,#paging_left').click( function (){
-  pagings=document.getElementsByClassName("paging");
+var _TheArray = new Array;
+$('#paging_right,#paging_left').click( function (){
   if(this.id=="paging_left")
   step=-5;
   else if(this.id=="paging_right")
   step=5;
-  for(j=0;j<pagings.length;j++){
-      pagings[j].innerHTML=parseInt(pagings[j].innerHTML)+step;
-      url="http://localhost:9000/leave_detailajax?index="+pagings[j].innerHTML;
-      pagings[j].setAttribute("onclick","loadXMLDoc(url)");
-      if (pagings[j].innerHTML<1) {
-         pagings[j].innerHTML=1;
-          break;
-      }
-  }
+  navigate_control(step);
 });
-var _TheArray = new Array;
-leave_type_id=["0","1"];
-leave_type_name=["事假","病假"];
-status_id=["0","1"]
-status_name=["未确认","确认"]
-toggle(leave_type_id,leave_type_name,"leave_type")
-toggle(status_id,status_name,"status")
-var arr_leave_time_begin=document.getElementsByName("leave_time_begin")
-var arr_leave_time_end=document.getElementsByName("leave_time_end")
-var arr_daynum=document.getElementsByName("day_num")
-Calculateleaveday(arr_leave_time_begin,arr_leave_time_end,arr_daynum)
-pagings=document.getElementsByClassName("paging");
- for(j=0;j<pagings.length;j++){
-    _TheArray[j]="http://localhost:9000/leave_detailajax?index="+pagings[j].innerHTML;
-    // document.write(_TheArray[j]);
-    pagings[j].setAttribute("onclick","loadXMLDoc(_TheArray[j])");
-    //alert( pagings[j].getAttribute("onclick"));
+$('#first_page').click(function(){
+ loadXMLDoc("http://localhost:9000/leave_detailajax?index=1");
  }
-//pagings[0].setAttribute("onclick","loadXMLDoc(_TheArray[0])");
-//pagings[1].setAttribute("onclick","loadXMLDoc(_TheArray[1])");
-//pagings[2].setAttribute("onclick","loadXMLDoc(_TheArray[2])");
-//pagings[3].setAttribute("onclick","loadXMLDoc(_TheArray[3])");
-//pagings[4].setAttribute("onclick","loadXMLDoc(_TheArray[4])");
+);
+$('#switch').click(function(){
+ var switch_value=$('#switch_value').val();
+ loadXMLDoc("http://localhost:9000/leave_detailajax?index="+switch_value);
+ }
+);
+$('#last_page').click(function(){
+ loadXMLDoc("http://localhost:9000/leave_detailajax?lastpage=1");
+ }
+);
+navigate_control();
 </script>
-
  <script type="text/javascript">
 function loadXMLDoc(url)
 {
@@ -121,11 +62,24 @@ xmlhttp.onreadystatechange=function()
   if (xmlhttp.readyState==4 && xmlhttp.status==200)
     {
     document.getElementById("leavedetail").innerHTML=xmlhttp.responseText;
+    leave_type_id=["0","1"];
+    leave_type_name=["事假","病假"];
+    status_id=["0","1"];
+    status_name=["未确认","确认"];
+    toggle(leave_type_id,leave_type_name,"leave_type");
+    toggle(status_id,status_name,"status");
+    var arr_leave_time_begin=document.getElementsByName("leave_time_begin");
+    var arr_leave_time_end=document.getElementsByName("leave_time_end");
+    var arr_daynum=document.getElementsByName("day_num");
+    Calculateleaveday(arr_leave_time_begin,arr_leave_time_end,arr_daynum);
     }
   }
 
 xmlhttp.open("GET",url,true);
 xmlhttp.send();
 }
-loadXMLDoc("http://localhost:9000/leave_detailajax?index=0")
+loadXMLDoc("http://localhost:9000/leave_detailajax?index=1")
+</script>
+
+<script language="JavaScript" type="text/JavaScript" src="../../resource/js/leave.js">
 </script>

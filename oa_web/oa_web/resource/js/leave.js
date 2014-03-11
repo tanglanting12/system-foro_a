@@ -1,0 +1,87 @@
+/**
+ * Created by abert on 14-3-11.
+ */
+function daysBetween(DateOne,DateTwo)
+{
+    var OneMonth = DateOne.substring(5,DateOne.lastIndexOf ('-'));
+    var OneDay = DateOne.substring(8,10);
+    var OneYear = DateOne.substring(0,DateOne.indexOf ('-'));
+
+    var TwoMonth = DateTwo.substring(5,DateTwo.lastIndexOf ('-'));
+    var TwoDay = DateTwo.substring(8,10);
+    var TwoYear = DateTwo.substring(0,DateTwo.indexOf ('-'));
+
+    var cha=Math.abs(((Date.parse(OneMonth+'/'+OneDay+'/'+OneYear)- Date.parse(TwoMonth+'/'+TwoDay+'/'+TwoYear))/86400000));
+    var onehour=parseInt(DateOne.substring(11,13));
+    var twohour=parseInt(DateTwo.substring(11,13));
+    hourbetween=twohour-onehour;
+    if(onehour<=12&&twohour>=12)
+       hourbetween=hourbetween-2
+    if (hourbetween<4)
+       cha+=0.5;
+    else
+       cha+=1;
+    return cha;
+}
+function toggle(arr,arr_name,id){
+
+    var arr_byname=document.getElementsByName(id);
+    for(j=0;j<arr_byname.length;j++){
+    for(i=0;i<arr.length;i++)
+        if(arr_byname[j].innerHTML==arr[i]){
+           arr_byname[j].innerHTML=arr_name[i];
+           break;
+        }
+    }
+}
+function Calculateleaveday(arr_leave_time_begin,arr_leave_time_end,arr_daynum)
+{
+
+    for(j=0;j<arr_leave_time_begin.length;j++){
+    var leave_begin=arr_leave_time_begin[j].innerHTML.substr(0,19)
+    var leave_end=arr_leave_time_end[j].innerHTML.substr(0,19)
+    arr_leave_time_begin[j].innerHTML=leave_begin
+    arr_leave_time_end[j].innerHTML=leave_end
+    arr_daynum[j].innerHTML=daysBetween(leave_begin,leave_end)
+}
+}
+
+//**********************************************
+
+
+
+
+
+
+function loadXMLDoc(url)
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("leavedetail").innerHTML=xmlhttp.responseText;
+    leave_type_id=["0","1"];
+    leave_type_name=["事假","病假"];
+    status_id=["0","1"];
+    status_name=["未确认","确认"];
+    toggle(leave_type_id,leave_type_name,"leave_type");
+    toggle(status_id,status_name,"status");
+    var arr_leave_time_begin=document.getElementsByName("leave_time_begin");
+    var arr_leave_time_end=document.getElementsByName("leave_time_end");
+    var arr_daynum=document.getElementsByName("day_num");
+    Calculateleaveday(arr_leave_time_begin,arr_leave_time_end,arr_daynum);
+    }
+  }
+
+xmlhttp.open("GET",url,true);
+xmlhttp.send();
+}

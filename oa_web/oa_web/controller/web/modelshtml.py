@@ -1,34 +1,57 @@
 import tornado.web
-
 from oa_admin.oa.models import User, Role ,Leave
-class Ask_for_leave(tornado.web.UIModule):
+
+class AskForLeave(tornado.web.UIModule):
     def render(self,username):
-           users = User.objects.filter(name=username)
-           superiors=User.objects.filter(id=users[0].superior)
+        user = User.objects.get(name=username)
+        superior=User.objects.get(id=user.superior)
           #roler = Role.objects.filter(user__name__exact=self.current_user)
-           return self.render_string('ask_for_leave.html',pre_year_holiday=users[0].pre_year_holiday,
-                                     remain_year_holiday=users[0].remain_year_holiday,
-                                      superior_id=superiors[0].id,superior_name=superiors[0].name)
+        return self.render_string('AskForLeave.html',pre_year_holiday=user.pre_year_holiday,
+                                     remain_year_holiday=user.remain_year_holiday,
+                                      superior_id=superior.id,superior_name=superior.name)
+
+class Ask_for_out(tornado.web.UIModule):
+
+    def render(self,username):
+        return self.render_string('ask_for_out.html',username = username)
+
 
 class Default_detail(tornado.web.UIModule):
-    def render(self,username):
-           users = User.objects.filter(name=username)
-           #superiors=User.objects.filter(id=users[0].superior)
-          #roler = Role.objects.filter(user__name__exact=self.current_user)
-           #perleaves=Leave.objects.filter(User__name__exact=username)
-           #perleave_num=perleaves.count
-           #unvertify_num=perleaves.filter(verify_status=0).count
-           #print "&&&%s&&%s&" %(perleave_num,unvertify_num)
 
-           #return self.render_string('default_detail.html',perleave_num=perleave_num)
-class Ask_for_out(tornado.web.UIModule):
+    def render(self,username):
+        users = User.objects.filter(name = username)
+        perleaves = Leave.objects.filter(user__name__exact = username)
+        perleave_num = perleaves.count()
+        unvertify_num = perleaves.filter(verify_status = 0).count()
+        print "&&&%s&&%s&" % (perleave_num,unvertify_num)
+        return self.render_string('default_detail.html',perleave_num = perleave_num,unvertify_num = unvertify_num)
+
+
+
+
+class Wait_for_confirm(tornado.web.UIModule):
+
+    def render(self,username,navigation):
+        return self.render_string('leave_detail.html',name = username,comfirm = 0)
+
+class Confirm(tornado.web.UIModule):
+
+    def render(self,username,navigation):
+        return self.render_string('leave_detail.html',name = username,comfirm = 1)
+
+
+class Changepwd(tornado.web.UIModule):
+    def render(self,username):
+        return self.render_string('change_pwd.html',name=username)
+
+
+class Perdetail(tornado.web.UIModule):
+
     def render(self,username):
         return self.render_string('ask_for_out.html',username=username)
 
-class  Default_child(tornado.web.UIModule):
+
+class Statistic(tornado.web.UIModule):
+
     def render(self,username):
-        return self.render_string('test.html')
-    def html_body(self):
-        return "<script>document.write(\"Hello!\")</script>"
-    def embedded_javascript(self):
-        return "document.write(\"hi!\")"
+        return self.render_string('ask_for_out.html',username=username)

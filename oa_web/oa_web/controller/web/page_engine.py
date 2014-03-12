@@ -16,6 +16,7 @@ class BaseHandler(tornado.web.RequestHandler):
 
 @Route('/')
 class ProductgroupPage(OaHandler,BaseHandler):
+
     @tornado.web.authenticated
     def get(self):
         #user = User.objects.get(id=1)
@@ -23,7 +24,8 @@ class ProductgroupPage(OaHandler,BaseHandler):
         if self.current_user:
            user = User.objects.filter(name=self.current_user)
            roler = Role.objects.filter(user__name__exact=self.current_user)
-           self.render('productgroup.html', username=user[0].name, rolename=roler[0].name, navigation="default_detail")
+           navigation=self.get_argument("navigation",default="default_detail")
+           self.render('productgroup.html', username=user[0].name, rolename=roler[0].name, navigation=navigation)
 
     def post(self):
         leave_type = self.get_argument("leave_type")
@@ -41,6 +43,7 @@ class ProductgroupPage(OaHandler,BaseHandler):
 
 @Route('/login')
 class LoginHandler(OaHandler,BaseHandler):
+
     def get(self):
         self.render('login.html')
 
@@ -60,6 +63,7 @@ class LoginHandler(OaHandler,BaseHandler):
 
 @Route('/logout')
 class LogoutHandler(BaseHandler):
+
     def get(self):
         #if (self.get_argument("logout", None)):
         self.clear_cookie("username")
@@ -72,7 +76,7 @@ class update(OaHandler):
     def post(self):
         name = self.get_argument("name")
         User.objects.filter(name=name).update(password=self.get_argument("password"))
-        self.render('change_pwd.html',name=name)
+        self.redirect('/')
 
     def get(self):
         name=self.get_argument("name",default="abert")
@@ -84,11 +88,13 @@ class update(OaHandler):
 
 @Route('/register')
 class register(OaHandler):
+
     def get(self):
         positiondic=autodic(Position,"id","name")
         roledic=autodic(Role,"id","name")
         departmentdic=autodic(Department,"id","name")
         self.render('register.html',positiondic=positiondic,roledic=roledic,departmentdic=departmentdic)
+
     def post(self):
         name=self.get_argument("name")
         real_name=self.get_argument("real_name")
@@ -106,38 +112,70 @@ class register(OaHandler):
         User.objects.create(name=name,real_name=real_name,password=password,gender=gender,phone_num=phone_num,
                             pre_year_holiday=pre_year_holiday,remain_year_holiday=remain_year_holiday,
                             position=position,role=role,department=department,superior=superior_id)
+
         self.redirect('/register')
 
 
 @Route('/leave_detail')
 class leavedetail(OaHandler):
+
     def get(self):
         self.render('leave_detail.html')
+
 
 @Route('/leave_detailajax')
 class leavedetailajax(OaHandler):
     def get(self):
         index=self.get_argument("index",default=0)
         lastpage=self.get_argument("lastpage",default=0)
+        comfirm=self.get_argument("comfirm",default=0)
         if (index!=0):
             index=int(index)-1
         step=4
         name=self.get_argument("name",default="abert")
-        user=User.objects.get(name=name)
         if lastpage:
-            leavedetails=Leave.objects.order_by("leave_time_begin","leave_time_end").filter(user_id=user.id).reverse()[:step].values()
+            leavedetails=Leave.objects.order_by("leave_time_begin","leave_time_end").filter(user__name__exact=name,verify_status__exact=comfirm).reverse()[:step].values()
         else:
-            leavedetails=Leave.objects.order_by("leave_time_begin","leave_time_end").filter(user_id=user.id)[index*step:(index+1)*step].values()
+            leavedetails=Leave.objects.order_by("leave_time_begin","leave_time_end").filter(user__name__exact=name,verify_status__exact=comfirm)[index*step:(index+1)*step].values()
         self.render('leave_detailajax.html',leavedetails=leavedetails,name=name)
+
+
+############### not finish
+@Route('/updateperleave')
+class updateperleave(OaHandler):
+
+     def get(self):
+        leave_id=int(self.get_argument("leave_id"))
+        name=int(self.get_argument("name"))
+        leave=Leave.objects.get(id=leave_id)
+        user = User.objects.get(name=name)
+        superior=User.objects.get(id=user.superior)
+        return self.render('AskForLeave.html',reason_for_leave=leave.reason_for_leave,
+                              superior_id=superior.id,superior_name=superior.name,pre_year_holiday=user.pre_year_holiday,
+                              remain_year_holiday=user.remain_year_holiday)
+
 
 
 @Route('/leave_delete')
 class leave_delete(OaHandler):
      def get(self):
-         leave_id=int(self.get_argument("leave_id"))
-         Leave.objects.get(id=leave_id).delete()
-         print "%s leave Delete success! " %(leave_id)
-         self.render('leave_detail.html')
+        leave_id=int(self.get_argument("leave_id"))
+        Leave.objects.get(id=leave_id).delete()
+        print "%s leave Delete success! " %(leave_id)
+        self.render('leave_detail.html')
+
+@Route('/leave_comfirm')
+class leave_comfirm(OaHandler):
+     def get(self):
+        step=4
+        leave_id=int(self.get_argument("leave_id"))
+        Leave.objects.filter(id=leave_id).update(verify_status=1)
+        print "&&&%s leave update success! " %(leave_id)
+        name=self.get_argument("name",default="abert")
+        comfirm=self.get_argument("comfirm",default=0)
+        leavedetails=Leave.objects.order_by("leave_time_begin","leave_time_end").filter(user__name__exact=name,verify_status__exact=comfirm).reverse()[:step].values()
+        self.render('leave_detailajax.html',leavedetails=leavedetails,name=name)
+
 
 @Route('/perleave_detail')
 class perleave_detail(OaHandler):
@@ -148,7 +186,7 @@ class perleave_detail(OaHandler):
 
 @Route('/index')
 class MainHandler(OaHandler):
-    def get(self):
+     def get(self):
         self.render(
             "index.html",
             header_text = "Header goes here",

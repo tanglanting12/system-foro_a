@@ -57,25 +57,21 @@ function toggle(targetid){
   </head>
 
   <body>
-
-
     <div class="container">
 
       <div class="row row-offcanvas row-offcanvas-right ">
         <div class="col-xs-6 col-sm-3 sidebar-offcanvas" id="sidebar" role="navigation">
             <ul class="nav nav-pills nav-stacked">
-              <li class="active"><a >考勤管理</a></li>
-              <li><a href="#" onclick="toggle('div1')" >请假条</a></li>
+              <li class="active"><a href="/?navigation=default_detail">考勤管理</a></li>
+              <li><a href="/?navigation=askforleave" >请假条</a></li>
               <li><a href="#">外出申请</a></li>
-              <li><a href="#">外出申请</a></li>
-
             </ul>
              <ul class="nav nav-pills nav-stacked">
               <li class="active"><a >个人管理</a></li>
-              <li><a href="#">等处理</a></li>
-              <li><a href="#">已处理</a></li>
-              <li><a href="#">修改密码</a></li>
-              <li><a href="#">信息查询</a></li>
+              <li><a href="/?navigation=waitforconfirm">等处理</a></li>
+              <li><a href="/?navigation=confirm">已处理</a></li>
+              <li><a href="/?navigation=changepwd">修改密码</a></li>
+              <li><a href="/?navigation=statistic">信息查询</a></li>
             </ul>
            {% block body_left %}  {% end %}
 
@@ -93,31 +89,26 @@ function toggle(targetid){
            <p>当前用户：{{username}}     角色：   {{rolename}}   服务器时间：90：00 <a href="/logout">退出</a></p>
 
           </div>
-               <div id="div1">
-
-                   *********************************************
-                        {% if navigation == "default_detail" %}
-                        {% moudle Default_detail(username)%}
-                        {% if navigation == "askforleave" %}
-                        {% module  Ask_for_leave(username) %}
-                        {% elif  navigation="askforout" %}
-                        {% elif  navigation="waitforconfirm" %}
-                        {% elif  navigation="confirm" %}
-                        {% elif  navigation="changepwd" %}
-                        {% elif  navigation="perdetail" %}
-                        {% elif  navigation="statistic" %}
-
+               <div id="divcontent">
+                   {% if navigation == "askforleave" %}
+                       {% module  AskForLeave(username) %}
+                   {% elif navigation == "default_detail" %}
+                       {% module Default_detail(username)%}
+                   {% elif  navigation == "askforout" %}
+                       {% module  Ask_for_out(username) %}
+                   {% elif  navigation == "waitforconfirm" %}
+                       {% module  Wait_for_confirm(username,navigation) %}
+                   {% elif  navigation == "confirm" %}
+                       {% module  Confirm(username,navigation) %}
+                   {% elif  navigation == "changepwd" %}
+                       {% module  Changepwd(username) %}
+                   {% elif  navigation == "perdetail" %}
+                       {% module  Perdetail(username) %}
+                   {% elif  navigation == "statistic" %}
+                       {% module  Statistic(username) %}
+                   {% end%}
                </div>
-
-          <div class="row_left">
-               <iframe id="iframe_src" src="" width="100%" height="100%" frameborder="0" scrolling="no">
-        梦之都使用了框架技术，但是您的浏览器不支持框架，请升级您的浏览器以便正常访问梦之都。
-               </iframe>
-          </div><!--/row-->
-
-
         </div><!--/span-->
-
 
       </div><!--/row-->
 
@@ -129,8 +120,6 @@ function toggle(targetid){
       </footer>
 
     </div><!--/.container-->
-
-
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

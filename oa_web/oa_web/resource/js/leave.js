@@ -1,8 +1,8 @@
 /**
  * Created by abert on 14-3-11.
  */
-function daysBetween(DateOne,DateTwo)
-{
+function daysBetween(DateOne,DateTwo){
+
     var OneMonth = DateOne.substring(5,DateOne.lastIndexOf ('-'));
     var OneDay = DateOne.substring(8,10);
     var OneYear = DateOne.substring(0,DateOne.indexOf ('-'));
@@ -24,7 +24,6 @@ function daysBetween(DateOne,DateTwo)
     return cha;
 }
 function toggle(arr,arr_name,id){
-
     var arr_byname=document.getElementsByName(id);
     for(j=0;j<arr_byname.length;j++){
     for(i=0;i<arr.length;i++)
@@ -38,11 +37,11 @@ function Calculateleaveday(arr_leave_time_begin,arr_leave_time_end,arr_daynum)
 {
 
     for(j=0;j<arr_leave_time_begin.length;j++){
-    var leave_begin=arr_leave_time_begin[j].innerHTML.substr(0,19)
-    var leave_end=arr_leave_time_end[j].innerHTML.substr(0,19)
-    arr_leave_time_begin[j].innerHTML=leave_begin
-    arr_leave_time_end[j].innerHTML=leave_end
-    arr_daynum[j].innerHTML=daysBetween(leave_begin,leave_end)
+       var leave_begin=arr_leave_time_begin[j].innerHTML.substr(0,19)
+       var leave_end=arr_leave_time_end[j].innerHTML.substr(0,19)
+       arr_leave_time_begin[j].innerHTML=leave_begin
+       arr_leave_time_end[j].innerHTML=leave_end
+       arr_daynum[j].innerHTML=daysBetween(leave_begin,leave_end)
 }
 }
 

@@ -7,7 +7,7 @@ from datetime import datetime
 import time
 from oa_admin.oa.models import User, Role,Leave,Position,Department
 from oa_web.libs.autodiscover import autodic
-
+from oa_web.config import ConfigCommon
 
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
@@ -22,21 +22,38 @@ class ProductgroupPage(OaHandler,BaseHandler):
         #user = User.objects.get(id=1)
         #self.write('''<p> username:  %s</p>''' %(self.current_user) )
         if self.current_user:
-           user = User.objects.filter(name=self.current_user)
-           roler = Role.objects.filter(user__name__exact=self.current_user)
-           navigation=self.get_argument("navigation",default="default_detail")
-           self.render('productgroup.html', username=user[0].name, rolename=roler[0].name, navigation=navigation)
+            user = User.objects.get(name=self.current_user)
+            roler = Role.objects.filter(user__name__exact=self.current_user)
+            navigation=self.get_argument("navigation",default="default_detail")
+            leaves=Leave.objects.filter(verify_status__exact=0)
+            subordinates=User.objects.filter(superior__exact=user.id)
+            uncomfirmNum=leaves.filter(user__in=subordinates).count()
+            if uncomfirmNum == 0:
+                uncomfirmNum=""
+            else:
+                uncomfirmNum="("+str(uncomfirmNum)+")"
+           # uncomfirmNum=Leave.objects.filter(verify_status__exact=0).filter(user__superior__exact=user.id).count()
+
+            if roler[0].name == "管理层":
+                self.render('supervisor.html', username=user.name, rolename=roler[0].name, navigation=navigation,uncomfirmNum=uncomfirmNum)
+            elif roler[0].name == "行政层":
+                self.render('Admin.html', username=user.name, rolename=roler[0].name, navigation=navigation,uncomfirmNum=uncomfirmNum)
+            else:
+                self.render('productgroup.html', username=user.name, rolename=roler[0].name, navigation=navigation)
 
     def post(self):
         leave_type = self.get_argument("leave_type")
         leave_time_begin=self.get_argument("leave_time_begin")
         leave_time_end=self.get_argument("leave_time_end")
         reason_for_leave=self.get_argument("reason_for_leave")
-        leave_time_begin=datetime.strptime(leave_time_begin,"%m/%d/%Y")
-        leave_time_end=datetime.strptime(leave_time_end,"%m/%d/%Y")
+        superior=self.get_argument("superior_name")
+        print "&&&super%s&&&&" %(superior)
+        leave_time_begin=datetime.strptime(leave_time_begin,'%Y-%m-%d %H:%M')
+        leave_time_end=datetime.strptime(leave_time_end,'%Y-%m-%d %H:%M')
         print "begin%s**,end%s**" %(leave_time_begin,leave_time_end)
         user = User.objects.filter(name=self.current_user)
-        Leave.objects.create(user=user[0],leave_type=leave_type,leave_time_begin=leave_time_begin,leave_time_end=leave_time_end,reason_for_leave=reason_for_leave)
+        Leave.objects.create(user=user[0],leave_type=leave_type,leave_time_begin=leave_time_begin,
+                             leave_time_end=leave_time_end,reason_for_leave=reason_for_leave)
         self.redirect('/')
        # print "**%s***%s***%s***%s*******%s***" %(leave_type,leave_time_begin,leave_time_end,reason_for_leave,user[0].name)
 
@@ -57,8 +74,6 @@ class LoginHandler(OaHandler,BaseHandler):
         else:
            error_msg = u"?error=" + tornado.escape.url_escape("Login incorrect.")
            self.redirect(u"/login"+error_msg)
-
-
        # user = User.objects.get(id=1)
 
 @Route('/logout')
@@ -126,18 +141,30 @@ class leavedetail(OaHandler):
 @Route('/leave_detailajax')
 class leavedetailajax(OaHandler):
     def get(self):
-        index=self.get_argument("index",default=0)
-        lastpage=self.get_argument("lastpage",default=0)
-        comfirm=self.get_argument("comfirm",default=0)
+        name=self.get_argument("name",default="abert")
+        user=User.objects.filter(name__exact=name)
+        index = self.get_argument("index",default=0)
+        lastpage = self.get_argument("lastpage",default=0)
+        comfirm = self.get_argument("comfirm",default=0)
+        superiorStyle = self.get_argument("superiorStyle",default=0)
         if (index!=0):
             index=int(index)-1
-        step=4
-        name=self.get_argument("name",default="abert")
+        if superiorStyle == '1':
+            subordinates=User.objects.filter(superior__name__exact=name)
+            if comfirm =='1':
+                leaves=Leave.objects.filter(verify_status__exact=1,user__in=subordinates)
+            else:
+                leaves=Leave.objects.filter(verify_status__exact=0,user__in=subordinates)
+
+        else :
+            leaves=Leave.objects.order_by("leave_time_begin","leave_time_end")\
+            .filter(user__name__exact=name,verify_status__exact=comfirm)
         if lastpage:
-            leavedetails=Leave.objects.order_by("leave_time_begin","leave_time_end").filter(user__name__exact=name,verify_status__exact=comfirm).reverse()[:step].values()
+            leavedetails=leaves.reverse()[:ConfigCommon.pagingnum]
         else:
-            leavedetails=Leave.objects.order_by("leave_time_begin","leave_time_end").filter(user__name__exact=name,verify_status__exact=comfirm)[index*step:(index+1)*step].values()
-        self.render('leave_detailajax.html',leavedetails=leavedetails,name=name)
+            leavedetails=leaves[index*ConfigCommon.pagingnum:(index+1)*ConfigCommon.pagingnum]
+
+        self.render('leave_detailajax.html',leavedetails=leavedetails,name=name,comfirm=comfirm,superiorStyle=superiorStyle)
 
 
 ############### not finish
@@ -162,19 +189,23 @@ class leave_delete(OaHandler):
         leave_id=int(self.get_argument("leave_id"))
         Leave.objects.get(id=leave_id).delete()
         print "%s leave Delete success! " %(leave_id)
-        self.render('leave_detail.html')
+        name=self.get_argument("name",default="abert")
+        comfirm=self.get_argument("comfirm",default=0)
+        leavedetails=Leave.objects.order_by("leave_time_begin","leave_time_end")\
+                     .filter(user__name__exact=name,verify_status__exact=comfirm).reverse()[:ConfigCommon.pagingnum]
+        self.render('leave_detailajax.html',leavedetails=leavedetails,name=name,comfirm=comfirm)
 
 @Route('/leave_comfirm')
 class leave_comfirm(OaHandler):
      def get(self):
-        step=4
         leave_id=int(self.get_argument("leave_id"))
         Leave.objects.filter(id=leave_id).update(verify_status=1)
         print "&&&%s leave update success! " %(leave_id)
         name=self.get_argument("name",default="abert")
         comfirm=self.get_argument("comfirm",default=0)
-        leavedetails=Leave.objects.order_by("leave_time_begin","leave_time_end").filter(user__name__exact=name,verify_status__exact=comfirm).reverse()[:step].values()
-        self.render('leave_detailajax.html',leavedetails=leavedetails,name=name)
+        leavedetails=Leave.objects.order_by("leave_time_begin","leave_time_end")\
+                     .filter(user__name__exact=name,verify_status__exact=comfirm).reverse()[:ConfigCommon.pagingnum]
+        self.render('leave_detailajax.html',leavedetails=leavedetails,name=name,comfirm=comfirm)
 
 
 @Route('/perleave_detail')

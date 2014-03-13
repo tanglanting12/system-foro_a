@@ -29,7 +29,8 @@ settings = {
     'login_url': '/login',
     'ui_modules': {'AskForLeave': AskForLeave,'Ask_for_out':Ask_for_out,'Default_detail':Default_detail,\
                    'Wait_for_confirm':Wait_for_confirm,'Confirm':Confirm,'Changepwd':Changepwd,\
-                   'Perdetail':Perdetail,'Statistic':Statistic},
+                   'Perdetail':Perdetail,'Statistic':Statistic,'ComfirmForOther':ComfirmForOther,\
+                   'UncomfirmForOther':UncomfirmForOther},
 
 }
 

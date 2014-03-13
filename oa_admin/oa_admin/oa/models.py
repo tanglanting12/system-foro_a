@@ -45,7 +45,7 @@ class User(models.Model):
     phone_num = models.CharField('电话号码', max_length=20)
     pre_year_holiday = models.PositiveSmallIntegerField()
     remain_year_holiday = models.PositiveSmallIntegerField()
-    superior=models.IntegerField()
+    superior = models.ForeignKey('self')
     position = models.ForeignKey(Position)
     role = models.ForeignKey(Role)
     department = models.ForeignKey(Department)

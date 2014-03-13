@@ -44,8 +44,8 @@ class Migration(SchemaMigration):
             ('update_time', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
             ('phone_num', self.gf('django.db.models.fields.CharField')(max_length=20)),
             ('pre_year_holiday', self.gf('django.db.models.fields.PositiveSmallIntegerField')()),
-            ('left_year_holiday', self.gf('django.db.models.fields.PositiveSmallIntegerField')()),
-            ('superior', self.gf('django.db.models.fields.CharField')(max_length=20)),
+            ('remain_year_holiday', self.gf('django.db.models.fields.PositiveSmallIntegerField')()),
+            ('superior', self.gf('django.db.models.fields.IntegerField')()),
             ('position', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['oa.Position'])),
             ('role', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['oa.Role'])),
             ('department', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['oa.Department'])),
@@ -58,9 +58,9 @@ class Migration(SchemaMigration):
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['oa.User'])),
             ('leave_type', self.gf('django.db.models.fields.PositiveSmallIntegerField')(null=True, blank=True)),
             ('reason_for_leave', self.gf('django.db.models.fields.CharField')(max_length=150)),
-            ('leave_time_begin', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('leave_time_end', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('verify_status', self.gf('django.db.models.fields.PositiveSmallIntegerField')(null=True, blank=True)),
+            ('leave_time_begin', self.gf('django.db.models.fields.DateTimeField')()),
+            ('leave_time_end', self.gf('django.db.models.fields.DateTimeField')()),
+            ('verify_status', self.gf('django.db.models.fields.PositiveSmallIntegerField')(default=0, null=True, blank=True)),
         ))
         db.send_create_signal(u'oa', ['Leave'])
 
@@ -111,12 +111,12 @@ class Migration(SchemaMigration):
         u'oa.leave': {
             'Meta': {'object_name': 'Leave'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'leave_time_begin': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'leave_time_end': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'leave_time_begin': ('django.db.models.fields.DateTimeField', [], {}),
+            'leave_time_end': ('django.db.models.fields.DateTimeField', [], {}),
             'leave_type': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True', 'blank': 'True'}),
             'reason_for_leave': ('django.db.models.fields.CharField', [], {'max_length': '150'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['oa.User']"}),
-            'verify_status': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True', 'blank': 'True'})
+            'verify_status': ('django.db.models.fields.PositiveSmallIntegerField', [], {'default': '0', 'null': 'True', 'blank': 'True'})
         },
         u'oa.position': {
             'Meta': {'object_name': 'Position'},
@@ -137,15 +137,15 @@ class Migration(SchemaMigration):
             'department': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['oa.Department']"}),
             'gender': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'left_year_holiday': ('django.db.models.fields.PositiveSmallIntegerField', [], {}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '20'}),
             'password': ('django.db.models.fields.CharField', [], {'max_length': '60'}),
             'phone_num': ('django.db.models.fields.CharField', [], {'max_length': '20'}),
             'position': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['oa.Position']"}),
             'pre_year_holiday': ('django.db.models.fields.PositiveSmallIntegerField', [], {}),
             'real_name': ('django.db.models.fields.CharField', [], {'max_length': '20'}),
+            'remain_year_holiday': ('django.db.models.fields.PositiveSmallIntegerField', [], {}),
             'role': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['oa.Role']"}),
-            'superior': ('django.db.models.fields.CharField', [], {'max_length': '20'}),
+            'superior': ('django.db.models.fields.IntegerField', [], {}),
             'update_time': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'})
         }
     }

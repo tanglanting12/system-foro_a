@@ -18,3 +18,4 @@ class ConfigCommon:
     #
     cookie_secret = 'ARFWE56458480023423483$%^%&^*&@fdgdfgfyh;]dev0'
    # select={'AskForLeave':AskForLeave,'Ask_for_out':Ask_for_out,'Default_child':Default_child}
+    pagingnum = 4

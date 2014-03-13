@@ -106,6 +106,10 @@ function toggle(targetid){
                        {% module  Perdetail(username) %}
                    {% elif  navigation == "statistic" %}
                        {% module  Statistic(username) %}
+                   {% elif  navigation == "uncomfirmForOther" %}
+                       {% module  UncomfirmForOther(username) %}
+                   {% elif  navigation == "comfirmForOther" %}
+                       {% module  ComfirmForOther(username) %}
                    {% end%}
                </div>
         </div><!--/span-->

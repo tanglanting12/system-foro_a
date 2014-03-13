@@ -8,16 +8,24 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding field 'User.superior'
-        db.add_column(u'oa_user', 'superior',
-                      self.gf('django.db.models.fields.IntegerField')(default=1),
-                      keep_default=False)
+
+        # Renaming column for 'User.superior' to match new field type.
+        db.rename_column(u'oa_user', 'superior', 'superior_id')
+        # Changing field 'User.superior'
+        db.alter_column(u'oa_user', 'superior_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['oa.User']))
+        # Adding index on 'User', fields ['superior']
+        db.create_index(u'oa_user', ['superior_id'])
 
 
     def backwards(self, orm):
-        # Deleting field 'User.superior'
-        db.delete_column(u'oa_user', 'superior')
+        # Removing index on 'User', fields ['superior']
+        db.delete_index(u'oa_user', ['superior_id'])
 
+
+        # Renaming column for 'User.superior' to match new field type.
+        db.rename_column(u'oa_user', 'superior_id', 'superior')
+        # Changing field 'User.superior'
+        db.alter_column(u'oa_user', 'superior', self.gf('django.db.models.fields.IntegerField')())
 
     models = {
         u'oa.attendance': {
@@ -36,12 +44,12 @@ class Migration(SchemaMigration):
         u'oa.leave': {
             'Meta': {'object_name': 'Leave'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'leave_time_begin': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'leave_time_end': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'leave_time_begin': ('django.db.models.fields.DateTimeField', [], {}),
+            'leave_time_end': ('django.db.models.fields.DateTimeField', [], {}),
             'leave_type': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True', 'blank': 'True'}),
             'reason_for_leave': ('django.db.models.fields.CharField', [], {'max_length': '150'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['oa.User']"}),
-            'verify_status': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True', 'blank': 'True'})
+            'verify_status': ('django.db.models.fields.PositiveSmallIntegerField', [], {'default': '0', 'null': 'True', 'blank': 'True'})
         },
         u'oa.position': {
             'Meta': {'object_name': 'Position'},
@@ -62,15 +70,15 @@ class Migration(SchemaMigration):
             'department': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['oa.Department']"}),
             'gender': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'left_year_holiday': ('django.db.models.fields.PositiveSmallIntegerField', [], {}),
             'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '20'}),
             'password': ('django.db.models.fields.CharField', [], {'max_length': '60'}),
             'phone_num': ('django.db.models.fields.CharField', [], {'max_length': '20'}),
             'position': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['oa.Position']"}),
             'pre_year_holiday': ('django.db.models.fields.PositiveSmallIntegerField', [], {}),
             'real_name': ('django.db.models.fields.CharField', [], {'max_length': '20'}),
+            'remain_year_holiday': ('django.db.models.fields.PositiveSmallIntegerField', [], {}),
             'role': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['oa.Role']"}),
-            'superior': ('django.db.models.fields.IntegerField', [], {}),
+            'superior': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['oa.User']"}),
             'update_time': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'})
         }
     }

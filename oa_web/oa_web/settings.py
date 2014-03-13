@@ -5,7 +5,6 @@ import os, sys
 from oa_admin.init import init_django_settings
 from oa_web.controller import init_controllers
 from oa_web.config import ConfigCommon
-
 init_django_settings()
 
 #import allmoudles which directory under the settings'path   include decorated function

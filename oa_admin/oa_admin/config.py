@@ -4,7 +4,7 @@
 class ConfigMysql:
     host = '127.0.0.1'
     user_name = 'root'
-    password = '8780211'
+    password = '123456'
 
 ''' 数据库名配置，开发机上每个人用自己的库 '''
 class ConfigDBNames:

@@ -11,9 +11,9 @@
       <th>状态</th>
     <th>基本操作</th>
   </tr>
-    {% for index,leavedetail in enumerate(leavedetails) %}
+    {% for num,leavedetail in enumerate(leavedetails) %}
     <tr>
-    <th>{{index+1}}</th>
+    <th>{{num+1}}</th>
 
     <th>{{leavedetail.user}}</th>
       <th name="leave_type" >{{leavedetail.leave_type}}</th>
@@ -22,8 +22,8 @@
       <th>{{leavedetail.reason_for_leave}}</th>
     <th name="day_num"></th>
       <th name="status">{{leavedetail.verify_status}}</th>
-    <th><button name="deleteButton" onclick=loadXMLDoc("/leave_delete?leave_id={{leavedetail.id}}&name={{name}}&comfirm={{comfirm}})>销假</button>
-        <button name="comfirmButton" onclick=loadXMLDoc("/leave_comfirm?leave_id={{leavedetail.id}}&name={{name}}&comfirm={{comfirm}}")><a>受理</a></button>
+    <th><button name="deleteButton" onclick=loadXMLDoc("/leave_delete?leave_id={{leavedetail.id}}&lastpage={{lastpage}}&index={{index}}&name={{name}}&comfirm={{comfirm}}&superiorStyle={{superiorStyle}}")>销假</button>
+        <button name="comfirmButton" onclick=loadXMLDoc("/leave_comfirm?leave_id={{leavedetail.id}}&lastpage={{lastpage}}&index={{index}}&name={{name}}&comfirm={{comfirm}}&superiorStyle={{superiorStyle}}")><a>受理</a></button>
         <button onclick=loadXMLDoc("/perleave_detail?leave_id={{leavedetail.id}}&name={{name}}&comfirm={{comfirm}}")><a>详情</a></button>
     </th>
   </tr>

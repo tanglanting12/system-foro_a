@@ -37,6 +37,7 @@ function Calculateleaveday(arr_leave_time_begin,arr_leave_time_end,arr_daynum)
 {
 
     for(j=0;j<arr_leave_time_begin.length;j++){
+
        var leave_begin=arr_leave_time_begin[j].innerHTML.substr(0,19)
        var leave_end=arr_leave_time_end[j].innerHTML.substr(0,19)
        arr_leave_time_begin[j].innerHTML=leave_begin

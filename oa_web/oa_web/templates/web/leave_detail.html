@@ -37,12 +37,12 @@ $('#paging_right,#paging_left').click( function (){
   navigate_control(step);
 });
 $('#first_page').click(function(){
- loadXMLDoc("http://localhost:9000/leave_detailajax?index=1"+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle);
+ loadXMLDoc("http://localhost:9000/leave_detailajax?lastpage=0&index=1"+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle);
  }
 );
 $('#switch').click(function(){
  var switch_value=$('#switch_value').val();
- loadXMLDoc("http://localhost:9000/leave_detailajax?index="+switch_value+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle);
+ loadXMLDoc("http://localhost:9000/leave_detailajax?lastpage=0&index="+switch_value+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle);
  }
 );
 $('#last_page').click(function(){
@@ -60,7 +60,7 @@ function navigate_control(step){
       pagings[j].innerHTML=parseInt(pagings[j].innerHTML)-step;
        break;
       }
-      _TheArray[j]="http://localhost:9000/leave_detailajax?index="+parseInt(pagings[j].innerHTML)+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle;
+      _TheArray[j]="http://localhost:9000/leave_detailajax?lastpage=0&index="+parseInt(pagings[j].innerHTML)+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle;
   }
 pagings[0].setAttribute("onclick","loadXMLDoc(_TheArray[0])");
 pagings[1].setAttribute("onclick","loadXMLDoc(_TheArray[1])");
@@ -121,7 +121,7 @@ xmlhttp.onreadystatechange=function()
 xmlhttp.open("GET",url,true);
 xmlhttp.send();
 }
-loadXMLDoc("http://localhost:9000/leave_detailajax?index=1"+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle)
+loadXMLDoc("http://localhost:9000/leave_detailajax?lastpage=0&index=1"+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle)
 function disabletags(tags){
     for(i=0;i<tags.length;i++)
         tags[i].style.display="none"

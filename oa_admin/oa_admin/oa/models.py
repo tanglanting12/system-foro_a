@@ -65,7 +65,7 @@ class Leave(models.Model):
     leave_time_begin = models.DateTimeField('请假开始时间')
     leave_time_end = models.DateTimeField('请假截址时间')
     verify_status = models.PositiveSmallIntegerField('确认状态', blank=True, null=True,default=0,choices=Verfify.attrs.items())
-
+    create_time = models.DateTimeField('创建时间', auto_now_add=True)
     #verify_people = models.CharField('审核人', max_length=20, unique=True)
 
     def __unicode__(self):

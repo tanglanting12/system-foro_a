@@ -45,7 +45,7 @@ class User(models.Model):
     phone_num = models.CharField('电话号码', max_length=20)
     pre_year_holiday = models.PositiveSmallIntegerField()
     remain_year_holiday = models.PositiveSmallIntegerField()
-    superior = models.ForeignKey('self')
+    superior = models.ForeignKey('self',default='null',blank=True,null=True)
     position = models.ForeignKey(Position)
     role = models.ForeignKey(Role)
     department = models.ForeignKey(Department)
@@ -76,7 +76,7 @@ class Leave(models.Model):
         verbose_name_plural = verbose_name
 
 
-class attendance(models.Model):
+class Attendance(models.Model):
     user=models.ForeignKey(User)
     punchwork = models.DateTimeField('上班打卡时间',auto_now=True)
     punchworkoff = models.DateTimeField('下班打卡时间',auto_now=True)

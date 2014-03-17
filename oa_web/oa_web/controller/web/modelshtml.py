@@ -12,10 +12,10 @@ class AskForLeave(tornado.web.UIModule):
                                      remain_year_holiday=user.remain_year_holiday,
                                      superior_name=user.superior)
 
-class Ask_for_out(tornado.web.UIModule):
+class Askforout(tornado.web.UIModule):
 
     def render(self,username):
-        return self.render_string('ask_for_out.html',username = username)
+        return self.render_string('askforout.html',username = username)
 
 
 class Default_detail(tornado.web.UIModule):
@@ -50,13 +50,13 @@ class Changepwd(tornado.web.UIModule):
 class Perdetail(tornado.web.UIModule):
 
     def render(self,username):
-        return self.render_string('ask_for_out.html',username=username)
+        return self.render_string('askforout.html',username=username)
 
 
 class Statistic(tornado.web.UIModule):
 
     def render(self,username):
-        return self.render_string('ask_for_out.html',username=username)
+        return self.render_string('askforout.html',username=username)
 
 
 class UncomfirmForOther(tornado.web.UIModule):

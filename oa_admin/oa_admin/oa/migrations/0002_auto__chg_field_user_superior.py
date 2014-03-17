@@ -9,27 +9,17 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
 
-        # Renaming column for 'User.superior' to match new field type.
-        db.rename_column(u'oa_user', 'superior', 'superior_id')
         # Changing field 'User.superior'
-        db.alter_column(u'oa_user', 'superior_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['oa.User']))
-        # Adding index on 'User', fields ['superior']
-        db.create_index(u'oa_user', ['superior_id'])
-
+        db.alter_column(u'oa_user', 'superior_id', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['oa.User'], null=True))
 
     def backwards(self, orm):
-        # Removing index on 'User', fields ['superior']
-        db.delete_index(u'oa_user', ['superior_id'])
 
-
-        # Renaming column for 'User.superior' to match new field type.
-        db.rename_column(u'oa_user', 'superior_id', 'superior')
         # Changing field 'User.superior'
-        db.alter_column(u'oa_user', 'superior', self.gf('django.db.models.fields.IntegerField')())
+        db.alter_column(u'oa_user', 'superior_id', self.gf('django.db.models.fields.related.ForeignKey')(default='', to=orm['oa.User']))
 
     models = {
         u'oa.attendance': {
-            'Meta': {'object_name': 'attendance'},
+            'Meta': {'object_name': 'Attendance'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'punchwork': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
             'punchworkoff': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
@@ -43,6 +33,7 @@ class Migration(SchemaMigration):
         },
         u'oa.leave': {
             'Meta': {'object_name': 'Leave'},
+            'create_time': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'leave_time_begin': ('django.db.models.fields.DateTimeField', [], {}),
             'leave_time_end': ('django.db.models.fields.DateTimeField', [], {}),
@@ -78,7 +69,7 @@ class Migration(SchemaMigration):
             'real_name': ('django.db.models.fields.CharField', [], {'max_length': '20'}),
             'remain_year_holiday': ('django.db.models.fields.PositiveSmallIntegerField', [], {}),
             'role': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['oa.Role']"}),
-            'superior': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['oa.User']"}),
+            'superior': ('django.db.models.fields.related.ForeignKey', [], {'default': "'null'", 'to': u"orm['oa.User']", 'null': 'True', 'blank': 'True'}),
             'update_time': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'})
         }
     }

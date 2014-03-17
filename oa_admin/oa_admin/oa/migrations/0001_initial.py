@@ -45,7 +45,7 @@ class Migration(SchemaMigration):
             ('phone_num', self.gf('django.db.models.fields.CharField')(max_length=20)),
             ('pre_year_holiday', self.gf('django.db.models.fields.PositiveSmallIntegerField')()),
             ('remain_year_holiday', self.gf('django.db.models.fields.PositiveSmallIntegerField')()),
-            ('superior', self.gf('django.db.models.fields.IntegerField')()),
+            ('superior', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['oa.User'])),
             ('position', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['oa.Position'])),
             ('role', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['oa.Role'])),
             ('department', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['oa.Department'])),
@@ -61,17 +61,18 @@ class Migration(SchemaMigration):
             ('leave_time_begin', self.gf('django.db.models.fields.DateTimeField')()),
             ('leave_time_end', self.gf('django.db.models.fields.DateTimeField')()),
             ('verify_status', self.gf('django.db.models.fields.PositiveSmallIntegerField')(default=0, null=True, blank=True)),
+            ('create_time', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
         ))
         db.send_create_signal(u'oa', ['Leave'])
 
-        # Adding model 'attendance'
+        # Adding model 'Attendance'
         db.create_table(u'oa_attendance', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['oa.User'])),
             ('punchwork', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
             ('punchworkoff', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
         ))
-        db.send_create_signal(u'oa', ['attendance'])
+        db.send_create_signal(u'oa', ['Attendance'])
 
 
     def backwards(self, orm):
@@ -90,13 +91,13 @@ class Migration(SchemaMigration):
         # Deleting model 'Leave'
         db.delete_table(u'oa_leave')
 
-        # Deleting model 'attendance'
+        # Deleting model 'Attendance'
         db.delete_table(u'oa_attendance')
 
 
     models = {
         u'oa.attendance': {
-            'Meta': {'object_name': 'attendance'},
+            'Meta': {'object_name': 'Attendance'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'punchwork': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
             'punchworkoff': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
@@ -110,6 +111,7 @@ class Migration(SchemaMigration):
         },
         u'oa.leave': {
             'Meta': {'object_name': 'Leave'},
+            'create_time': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'leave_time_begin': ('django.db.models.fields.DateTimeField', [], {}),
             'leave_time_end': ('django.db.models.fields.DateTimeField', [], {}),
@@ -145,7 +147,7 @@ class Migration(SchemaMigration):
             'real_name': ('django.db.models.fields.CharField', [], {'max_length': '20'}),
             'remain_year_holiday': ('django.db.models.fields.PositiveSmallIntegerField', [], {}),
             'role': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['oa.Role']"}),
-            'superior': ('django.db.models.fields.IntegerField', [], {}),
+            'superior': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['oa.User']"}),
             'update_time': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'})
         }
     }

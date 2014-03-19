@@ -16,6 +16,8 @@ class Verfify(Const):
 class  AskforleaveType(Const):
     business_leave = (0, '事假')
     sick_leave = (1, '病假')
+    forOut=(2,'外出')
+    yearLeave=(3,'年假')
 
 
 

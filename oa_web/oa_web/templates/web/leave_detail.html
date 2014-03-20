@@ -3,11 +3,11 @@
   <meta charset="utf-8">
 <div id="leavedetail">
 
+
 </div>
- <button id="first_page" onclick="">首页</button>
-      <input type="text"  id="switch_value">
-          <button id="switch">转至</button>
-          <button id="last_page">尾页</button>
+<div id="leavedetailajax">
+
+     <div id="paging"  >
 <ul class="pagination">
   <li><a id="paging_left" >&laquo;</a></li>
   <li><a  class="paging" onclick="">1</a></li>
@@ -17,6 +17,16 @@
   <li><a  class="paging" onclick="">5</a></li>
   <li><a  id="paging_right" >&raquo;</a></li>
 </ul>
+    </div>
+
+    <div id="pagingbutton" style="float:left ">
+ <button id="first_page" onclick="">首页</button>
+      <input type="text"  id="switch_value">
+          <button id="switch">转至</button>
+          <button id="last_page">尾页</button>
+    </div>
+
+</div>
  <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
  <!--
  <link rel="stylesheet" href="../../resource/css/jquery-ui-1.10.4.custom.min.css">-->
@@ -97,6 +107,7 @@ xmlhttp.onreadystatechange=function()
     var arr_leave_time_end=document.getElementsByName("leave_time_end");
     var arr_daynum=document.getElementsByName("day_num");
     var comfirmButtons=document.getElementsByName("comfirmButton");
+    var uncomfirmButtons=document.getElementsByName("uncomfirmButton");
     var deleteButtons = document.getElementsByName("deleteButton");
     if(superiorStyle == "0"){
     if(comfirm == "1"){
@@ -110,7 +121,10 @@ xmlhttp.onreadystatechange=function()
     else{
          if(comfirm == "1"){
        disabletags(comfirmButtons);
+       disabletags(deleteButtons);
     }
+        else
+         disabletags(uncomfirmButtons)
 
     }
 

@@ -6,28 +6,37 @@
       <th>类型</th>
     <th>日期</th>
       <th>日期</th>
-      <th>原因</th>
+      <th width="200px">原因</th>
     <th>天数</th>
       <th>状态</th>
     <th>基本操作</th>
   </tr>
     {% for num,leavedetail in enumerate(leavedetails) %}
     <tr>
-    <th>{{num+1}}</th>
+    <th >{{num+1}}</th>
 
     <th>{{leavedetail.user}}</th>
       <th name="leave_type" >{{leavedetail.leave_type}}</th>
-    <th name="leave_time_begin">{{leavedetail.leave_time_begin}}</th>
-        <th name="leave_time_end">{{leavedetail.leave_time_end}}</th>
-      <th>{{leavedetail.reason_for_leave}}</th>
+    <th name="leave_time_begin" style="width: 50px">{{leavedetail.leave_time_begin}}</th>
+        <th name="leave_time_end" style="width: 50px">{{leavedetail.leave_time_end}}</th>
+      <th class="leavereason-th" width="200px" >{{leavedetail.reason_for_leave}}</th>
     <th name="day_num"></th>
       <th name="status">{{leavedetail.verify_status}}</th>
-    <th><button name="deleteButton" onclick=loadXMLDoc("/leave_delete?leave_id={{leavedetail.id}}&lastpage={{lastpage}}&index={{index}}&name={{name}}&comfirm={{comfirm}}&superiorStyle={{superiorStyle}}")>销假</button>
+    <th>
+        <button name="deleteButton" onclick=loadXMLDoc("/leave_delete?leave_id={{leavedetail.id}}&lastpage={{lastpage}}&index={{index}}&name={{name}}&comfirm={{comfirm}}&superiorStyle={{superiorStyle}}")>销假</button>
         <button name="comfirmButton" onclick=loadXMLDoc("/leave_comfirm?leave_id={{leavedetail.id}}&lastpage={{lastpage}}&index={{index}}&name={{name}}&comfirm={{comfirm}}&superiorStyle={{superiorStyle}}")><a>受理</a></button>
+         <button name="uncomfirmButton" onclick=loadXMLDoc("/leaveUncomfirm?leave_id={{leavedetail.id}}&lastpage={{lastpage}}&index={{index}}&name={{name}}&comfirm={{comfirm}}&superiorStyle={{superiorStyle}}")><a>取消受理</a></button>
+
         <button onclick=loadXMLDoc("/perleave_detail?leave_id={{leavedetail.id}}&name={{name}}&comfirm={{comfirm}}")><a>详情</a></button>
     </th>
   </tr>
  {% end %}
 </table>
+<style type="text/css">
+.leavereason-th{
+  position:absolute;
+  overflow:hidden;
+}
+</style>
 
 

@@ -12,22 +12,11 @@
     <title></title>
 </head>
 <body>
-
-
-<div>
-        {% block header2 %}{% end %}
-    <form  role="form" method="post" >
-         {% raw xsrf_form_html() %}
-<p >
-    <input type="text" name="name" value="{{name}}">
-        </p>
-<p>
-    密码：<input type="text" name="password" >
-</p>
-
-          <button  type="submit" >确认</button>
-      </form>
-</div>
+   <form enctype="multipart/form-data" action="/upfile" method="post">
+   {% raw xsrf_form_html() %}
+      <input type="file" name="up_file">
+      <input type="submit" value="upload">
+   </form>
 
 
 </body>

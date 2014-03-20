@@ -13,6 +13,7 @@ def autodiscover(filename, filter=None):
     exec_lines = []
     cur_dir = osp.abspath('.')
     abspath = osp.abspath(osp.dirname(filename))
+    #print "&&&&&&cur_dir:%s&&abspath:%s&&***filename:%s&&&%s" %(cur_dir,abspath,filename,osp.dirname(filename))
     sys.path.insert(0, abspath)
     os.chdir(abspath)
 

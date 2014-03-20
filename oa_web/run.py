@@ -8,10 +8,10 @@ from oa_web.libs.log import add_tornado_log_handler
 from oa_web.config import ConfigCommon
 
 
-define("port", type=int, default=9000,
-       help="the server port")
-define("address", type=str, default='127.0.0.1',
-       help="the server address")
+define("port", type = int, default = 9000,
+       help = "the server port")
+define("address", type = str, default = '127.0.0.1',
+       help = "the server address")
 parse_command_line()
 
 add_tornado_log_handler(ConfigCommon.log_path, ConfigCommon.log_level)

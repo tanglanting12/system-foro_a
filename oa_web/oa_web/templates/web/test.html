@@ -1,31 +1,42 @@
-<html>
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
-
+<meta charset="utf-8">
+<title>Example of Zebra Table with bootstrap</title>
+<meta name="description" content="Creating a Zebra table with Bootstrap. Learn with example of a Zebra Table with Bootstrap.">
+<link href="../../resource/dist/css/bootstrap.css" rel="stylesheet">
+</head>
 <body>
-<div id="leavedetail">
-</div>
-<ul class="pagination">
-  <li><a id="paging_left" >&laquo;</a></li>
-  <li><a  class="paging" onclick="">1</a></li>
-  <li><a  class="paging" onclick="">2</a></li>
-  <li><a  class="paging" onclick="">3</a></li>
-  <li><a  class="paging" onclick="">4</a></li>
-  <li><a  class="paging" onclick="">5</a></li>
-  <li><a  id="paging_right" >&raquo;</a></li>
-</ul>
+<table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Student-ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Grade</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>001</td>
+            <td>Rammohan </td>
+            <td>Reddy</td>
+            <td>A+</td>
+          </tr>
+          <tr>
+            <td>002</td>
+            <td>Smita</td>
+            <td>Pallod</td>
+            <td>A</td>
+          </tr>
+          <tr>
+            <td>003</td>
+            <td>Rabindranath</td>
+            <td>Sen</td>
+            <td>A+</td>
+          </tr>
+        </tbody>
+      </table>
 </body>
-
- <script type="text/javascript">
-
-_TheArray=new Array();
-pagings=document.getElementsByClassName("paging");
-document.write(pagings.length);
- for(j=0;j<pagings.length;j++){
-   var  k=j;
-    _TheArray[k]="http://localhost:9000/leave_detailajax?index="+pagings[j].innerHTML;
-    // document.write(_TheArray[j]);
-    pagings[j].setAttribute("onclick","_TheArray[k]");
-    alert( pagings[j].getAttribute("onclick"));
- }
-</script>
 </html>

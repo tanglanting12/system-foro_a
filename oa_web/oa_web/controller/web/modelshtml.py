@@ -4,12 +4,13 @@ from oa_admin.oa.models import User, Role ,Leave
 class AskForLeave(tornado.web.UIModule):
     def render(self,username):
         user = User.objects.get(name = username)
-
         superior = User.objects.get(id = 1)
+        year_holiday=Leave.objects.filter(verify_status__exact=1,leave_type__exact=3).count()
+        remain_year_holiday=user.pre_year_holiday-year_holiday
         print "*&&&&debug user%s" %(user.superior)
           #roler = Role.objects.filter(user__name__exact=self.current_user)
         return self.render_string('AskForLeave.html',pre_year_holiday = user.pre_year_holiday,
-                                     remain_year_holiday = user.remain_year_holiday,
+                                     remain_year_holiday = remain_year_holiday,
                                      superior_name = user.superior)
 
 class Askforout(tornado.web.UIModule):

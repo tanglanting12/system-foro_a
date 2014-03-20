@@ -20,10 +20,10 @@
     </div>
 
     <div id="pagingbutton" style="float:left ">
- <button id="first_page" onclick="">首页</button>
-      <input type="text"  id="switch_value">
-          <button id="switch">转至</button>
-          <button id="last_page">尾页</button>
+ <button id="first_page" onclick="" class="btn btn-info btn-infopaging">首页</button>
+      <input type="text"  id="switch_value" >
+          <button id="switch" class="btn btn-info btn-infopaging">转至</button>
+          <button id="last_page" class="btn btn-info btn-infopaging">尾页</button>
     </div>
 
 </div>
@@ -109,13 +109,16 @@ xmlhttp.onreadystatechange=function()
     var comfirmButtons=document.getElementsByName("comfirmButton");
     var uncomfirmButtons=document.getElementsByName("uncomfirmButton");
     var deleteButtons = document.getElementsByName("deleteButton");
+    var reaonforleaves=document.getElementsByName("reaonforleave");
     if(superiorStyle == "0"){
     if(comfirm == "1"){
        disabletags(comfirmButtons);
        disabletags(deleteButtons);
+       disabletags(uncomfirmButtons);
     }
     else{
         disabletags(comfirmButtons);
+        disabletags(uncomfirmButtons);
     }
     }
     else{
@@ -127,8 +130,12 @@ xmlhttp.onreadystatechange=function()
          disabletags(uncomfirmButtons)
 
     }
-
     Calculateleaveday(arr_leave_time_begin,arr_leave_time_end,arr_daynum);
+    for(i=0;i<reaonforleaves.length;i++){
+      var lenReasonforLeaves=reaonforleaves[i].innerHTML;
+    if(String(lenReasonforLeaves).length>30)
+    reaonforleaves[i].innerHTML=String(lenReasonforLeaves).substring(0,30);
+    }
     }
   }
 
@@ -138,8 +145,9 @@ xmlhttp.send();
 loadXMLDoc("http://localhost:9000/leave_detailajax?lastpage=0&index=1"+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle)
 function disabletags(tags){
     for(i=0;i<tags.length;i++)
-        tags[i].style.display="none"
+        tags[i].style.display="none";
 }
 </script>
 <script language="JavaScript" type="text/JavaScript" src="../../resource/js/leave.js">
 </script>
+<link href="../../resource/css/signin.css" rel="stylesheet">

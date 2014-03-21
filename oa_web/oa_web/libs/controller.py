@@ -14,11 +14,13 @@ class Leavedetalajax():
         if self.superiorStyle == '1':
             subordinates = User.objects.filter(superior__name__exact = self.name)
             if self.comfirm =='1':
-                self.leaves = Leave.objects.filter(verify_status__exact = 1,user__in = subordinates)
+                self.leaves = Leave.objects.order_by("-create_time","leave_time_begin")\
+                    .filter(verify_status__exact = 1,user__in = subordinates)
             else:
-                self.leaves = Leave.objects.filter(verify_status__exact = 0,user__in = subordinates)
+                self.leaves = Leave.objects.order_by("-create_time","leave_time_begin").filter\
+                    (verify_status__exact = 0,user__in = subordinates)
         else :
-            self.leaves = Leave.objects.order_by("create_time","leave_time_begin")\
+            self.leaves = Leave.objects.order_by("-create_time","leave_time_begin")\
             .filter(user__name__exact = self.name,verify_status__exact = self.comfirm)
         if self.lastpage=='1':
             self.leavedetails = self.leaves.reverse()[:ConfigCommon.pagingnum]

@@ -143,7 +143,6 @@ class Register(OaHandler):
 
 @Route('/leave_detail')
 class Leavedetail(OaHandler):
-
     def get(self):
         self.render('leave_detail.html')
 
@@ -154,10 +153,7 @@ class Leavedetailajax(OaHandler,Leavedetalajax):
    def get(self):
         self.leavedetailajax()
         return  self.render('leave_detailajax.html',leavedetails = self.leavedetails,name = self.name,comfirm = self.comfirm\
-                    ,superiorStyle = self.superiorStyle,index = self.index,lastpage = self.lastpage)
-
-
-
+                    ,superiorStyle = self.superiorStyle,index = self.index,lastpage = self.lastpage,leaves=self.leaves)
 
 ############### not finish
 @Route('/updateperleave')

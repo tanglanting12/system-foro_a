@@ -1,6 +1,4 @@
-
-
-  <meta charset="utf-8">
+<meta charset="utf-8">
 <div id="leavedetail">
 
 
@@ -35,42 +33,44 @@
  <script src="../../resource/js/jquery-ui.js"></script>
 <script language="JavaScript" type="text/JavaScript">
 var _TheArray = new Array;
+var tags = new Array;
+var test = [1,2,3,54];
 comfirm = "{{comfirm}}" ;
 name = "{{name}}";
-superiorStyle="{{superiorStyle}}"
+superiorStyle = "{{superiorStyle}}";
 
 $('#paging_right,#paging_left').click( function (){
-  if(this.id=="paging_left")
-  step=-5;
-  else if(this.id=="paging_right")
+  if(this.id == "paging_left")
+  step = -5;
+  else if(this.id == "paging_right")
   step=5;
   navigate_control(step);
 });
 $('#first_page').click(function(){
- loadXMLDoc("http://localhost:9000/leave_detailajax?lastpage=0&index=1"+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle);
+ loadXMLDoc("/leave_detailajax?lastpage = 0&index = 1"+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle);
  }
 );
 $('#switch').click(function(){
- var switch_value=$('#switch_value').val();
- loadXMLDoc("http://localhost:9000/leave_detailajax?lastpage=0&index="+switch_value+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle);
+ var switch_value = $('#switch_value').val();
+ loadXMLDoc("/leave_detailajax?lastpage=0&index="+switch_value+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle);
  }
 );
 $('#last_page').click(function(){
- loadXMLDoc("http://localhost:9000/leave_detailajax?lastpage=1"+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle);
+ loadXMLDoc("/leave_detailajax?lastpage=1"+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle);
  }
 );
 
 navigate_control();
 function navigate_control(step){
-   if(!step) step=0;
+   if(!step) step = 0;
    pagings=document.getElementsByClassName("paging");
-  for(j=0;j<pagings.length;j++){
-      pagings[j].innerHTML=parseInt(pagings[j].innerHTML)+step;
+  for(j=0; j<pagings.length; j++){
+      pagings[j].innerHTML = parseInt(pagings[j].innerHTML)+step;
       if (pagings[j].innerHTML<1) {
-      pagings[j].innerHTML=parseInt(pagings[j].innerHTML)-step;
+      pagings[j].innerHTML = parseInt(pagings[j].innerHTML)-step;
        break;
       }
-      _TheArray[j]="http://localhost:9000/leave_detailajax?lastpage=0&index="+parseInt(pagings[j].innerHTML)+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle;
+      _TheArray[j] = "/leave_detailajax?lastpage=0&index="+parseInt(pagings[j].innerHTML)+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle;
   }
 pagings[0].setAttribute("onclick","loadXMLDoc(_TheArray[0])");
 pagings[1].setAttribute("onclick","loadXMLDoc(_TheArray[1])");
@@ -86,68 +86,28 @@ function loadXMLDoc(url)
 var xmlhttp;
 if (window.XMLHttpRequest)
   {// code for IE7+, Firefox, Chrome, Opera, Safari
-  xmlhttp=new XMLHttpRequest();
+  xmlhttp = new XMLHttpRequest();
   }
 else
   {// code for IE6, IE5
-  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
   }
-xmlhttp.onreadystatechange=function()
+xmlhttp.onreadystatechange = function()
   {
-  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+  if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
     {
-    document.getElementById("leavedetail").innerHTML=xmlhttp.responseText;
-    leave_type_id=["0","1"];
-    leave_type_name=["事假","病假"];
-    status_id=["0","1"];
-    status_name=["未确认","确认"];
-    toggle(leave_type_id,leave_type_name,"leave_type");
-    toggle(status_id,status_name,"status");
-    var arr_leave_time_begin=document.getElementsByName("leave_time_begin");
-    var arr_leave_time_end=document.getElementsByName("leave_time_end");
-    var arr_daynum=document.getElementsByName("day_num");
-    var comfirmButtons=document.getElementsByName("comfirmButton");
-    var uncomfirmButtons=document.getElementsByName("uncomfirmButton");
-    var deleteButtons = document.getElementsByName("deleteButton");
-    var reaonforleaves=document.getElementsByName("reaonforleave");
-    if(superiorStyle == "0"){
-    if(comfirm == "1"){
-       disabletags(comfirmButtons);
-       disabletags(deleteButtons);
-       disabletags(uncomfirmButtons);
-    }
-    else{
-        disabletags(comfirmButtons);
-        disabletags(uncomfirmButtons);
-    }
-    }
-    else{
-         if(comfirm == "1"){
-       disabletags(comfirmButtons);
-       disabletags(deleteButtons);
-    }
-        else
-         disabletags(uncomfirmButtons)
-
-    }
-    Calculateleaveday(arr_leave_time_begin,arr_leave_time_end,arr_daynum);
-    for(i=0;i<reaonforleaves.length;i++){
-      var lenReasonforLeaves=reaonforleaves[i].innerHTML;
-    if(String(lenReasonforLeaves).length>30)
-    reaonforleaves[i].innerHTML=String(lenReasonforLeaves).substring(0,30);
-    }
+    document.getElementById("leavedetail").innerHTML = xmlhttp.responseText;
+    afterleavedetailajax();
     }
   }
 
 xmlhttp.open("GET",url,true);
 xmlhttp.send();
 }
-loadXMLDoc("http://localhost:9000/leave_detailajax?lastpage=0&index=1"+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle)
-function disabletags(tags){
-    for(i=0;i<tags.length;i++)
-        tags[i].style.display="none";
-}
+loadXMLDoc("/leave_detailajax?lastpage=0&index=1"+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle)
+
 </script>
 <script language="JavaScript" type="text/JavaScript" src="../../resource/js/leave.js">
 </script>
+
 <link href="../../resource/css/signin.css" rel="stylesheet">

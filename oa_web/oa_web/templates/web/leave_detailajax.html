@@ -1,3 +1,10 @@
+
+<label for="autocomplete">Select username: </label>
+<input id="autocomplete">
+ <button  class="btn btn-info btn-sm btn-infopaging pagingbuttonfont" id="searchUser">
+
+  搜索</button>
+        <td id="usernames"> </td>
 <table class="table table-striped">
         <thead>
           <tr>
@@ -13,11 +20,12 @@
           </tr>
         </thead>
         <tbody>
-          {% for num,leavedetail in enumerate(leavedetails) %}
+
+{% for num,leavedetail in enumerate(leavedetails) %}
     <tr>
     <td style="width: 5%">{{num+1}}</td>
 
-    <td style="width: 5%">{{leavedetail.user}}</td>
+    <td style="width: 5%" name="username">{{leavedetail.user}}</td>
       <td style="width: 5%"name="leave_type" >{{leavedetail.leave_type}}</td>
     <td style="width: 15%" name="leave_time_begin" >{{leavedetail.leave_time_begin}}</td>
         <td style="width: 15%" name="leave_time_end" >{{leavedetail.leave_time_end}}</td>
@@ -25,10 +33,21 @@
     <td style="width: 5%" name="day_num"></td>
       <td style="width: 10%" name="status">{{leavedetail.verify_status}}</td>
     <td style="width: 20%" width="90px">
-        <button class="btn btn-info btn-sm btn-infopaging pagingbuttonfont" name="deleteButton" onclick=loadXMLDoc("/leave_delete?leave_id={{leavedetail.id}}&lastpage={{lastpage}}&index={{index}}&name={{name}}&comfirm={{comfirm}}&superiorStyle={{superiorStyle}}")>销假</button>
-        <button class="btn btn-info btn-sm btn-infopaging pagingbuttonfont" name="comfirmButton" onclick=loadXMLDoc("/leave_comfirm?leave_id={{leavedetail.id}}&lastpage={{lastpage}}&index={{index}}&name={{name}}&comfirm={{comfirm}}&superiorStyle={{superiorStyle}}")><a>受理</a></button>
-        <button class="btn btn-info btn-sm btn-infopaging pagingbuttonfont" onclick=loadXMLDoc("/perleave_detail?leave_id={{leavedetail.id}}&name={{name}}&comfirm={{comfirm}}")><a>详情</a></button>
-        <button class="btn btn-info btn-sm btn-infopaging pagingbuttonfont" name="uncomfirmButton" onclick=loadXMLDoc("/leaveUncomfirm?leave_id={{leavedetail.id}}&lastpage={{lastpage}}&index={{index}}&name={{name}}&comfirm={{comfirm}}&superiorStyle={{superiorStyle}}")><a>取消受理</a></button>
+     {% if comfirm == "0" %}
+          <button  class="btn btn-info btn-sm btn-infopaging pagingbuttonfont" onclick = loadXMLDoc("/leave_delete?leave_id={{leavedetail.id}}&lastpage={{lastpage}}&index={{index}}&name={{name}}&comfirm={{comfirm}}&superiorStyle={{superiorStyle}}")>
+          销假</button>
+          {% if superiorStyle == "1"%}
+              <button  class="btn btn-info btn-sm btn-infopaging pagingbuttonfont" onclick=loadXMLDoc("/leave_comfirm?leave_id={{leavedetail.id}}&lastpage={{lastpage}}&index={{index}}&name={{name}}&comfirm={{comfirm}}&superiorStyle={{superiorStyle}}")>
+                 受理</button>
+          {% end %}
+     {% else %}
+          {% if superiorStyle == "1"%}
+              <button  class="btn btn-info btn-sm btn-infopaging pagingbuttonfont" onclick=loadXMLDoc("/leaveUncomfirm?leave_id={{leavedetail.id}}&lastpage={{lastpage}}&index={{index}}&name={{name}}&comfirm={{comfirm}}&superiorStyle={{superiorStyle}}")>
+                取消受理</button>
+          {% end %}
+     {% end %}
+        <button class="btn btn-info btn-sm btn-infopaging pagingbuttonfont" onclick=loadXMLDoc("/perleave_detail?leave_id={{leavedetail.id}}&name={{name}}&comfirm={{comfirm}}")>详情</button>
+
     </td>
   </tr>
  {% end %}
@@ -36,6 +55,11 @@
       </table>
 <style type="text/css">
 </style>
-
+<script type="text/javascript">
+    var tags=new Array;
+     {% for leavedetail in leaves%}
+                tags.push("{{leavedetail.user}}");
+     {% end %}
+ </script>
 
 

@@ -89,6 +89,23 @@ function afterleavedetailajax(){
     }
    );
 }
-
+/*paging function*/
+function navigate_control(step){
+   if(!step) step = 0;
+   pagings=document.getElementsByClassName("paging");
+  for(j=0; j<pagings.length; j++){
+      pagings[j].innerHTML = parseInt(pagings[j].innerHTML)+step;
+      if (pagings[j].innerHTML<1) {
+      pagings[j].innerHTML = parseInt(pagings[j].innerHTML)-step;
+       break;
+      }
+      _TheArray[j] = "/leave_detailajax?lastpage=0&index="+parseInt(pagings[j].innerHTML)+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle;
+  }
+pagings[0].setAttribute("onclick","loadXMLDoc(_TheArray[0])");
+pagings[1].setAttribute("onclick","loadXMLDoc(_TheArray[1])");
+pagings[2].setAttribute("onclick","loadXMLDoc(_TheArray[2])");
+pagings[3].setAttribute("onclick","loadXMLDoc(_TheArray[3])");
+pagings[4].setAttribute("onclick","loadXMLDoc(_TheArray[4])");
+}
 //**********************************************
 

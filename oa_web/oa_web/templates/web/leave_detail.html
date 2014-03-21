@@ -6,24 +6,10 @@
 <div id="leavedetailajax">
 
      <div id="paging"  >
-<ul class="pagination">
-  <li><a id="paging_left" >&laquo;</a></li>
-  <li><a  class="paging" onclick="">1</a></li>
-  <li><a  class="paging" onclick="">2</a></li>
-  <li><a  class="paging" onclick="">3</a></li>
-  <li><a  class="paging" onclick="">4</a></li>
-  <li><a  class="paging" onclick="">5</a></li>
-  <li><a  id="paging_right" >&raquo;</a></li>
-</ul>
+  <button id="beforepage" class="btn btn-info btn-infopaging controlpaging">上页</button>
+  <button id="afterpage" class="btn btn-info btn-infopaging controlpaging">下页</button>
+  当前页数:<label id="nowpage">1</label>
     </div>
-
-    <div id="pagingbutton" style="float:left ">
- <button id="first_page" onclick="" class="btn btn-info btn-infopaging">首页</button>
-      <input type="text"  id="switch_value" >
-          <button id="switch" class="btn btn-info btn-infopaging">转至</button>
-          <button id="last_page" class="btn btn-info btn-infopaging">尾页</button>
-    </div>
-
 </div>
  <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
  <!--
@@ -33,8 +19,7 @@
  <script src="../../resource/js/jquery-ui.js"></script>
 <script language="JavaScript" type="text/JavaScript">
 var _TheArray = new Array;
-var tags = new Array;
-var test = [1,2,3,54];
+var nowpage = 1;
 comfirm = "{{comfirm}}" ;
 name = "{{name}}";
 superiorStyle = "{{superiorStyle}}";
@@ -46,38 +31,24 @@ $('#paging_right,#paging_left').click( function (){
   step=5;
   navigate_control(step);
 });
-$('#first_page').click(function(){
- loadXMLDoc("/leave_detailajax?lastpage = 0&index = 1"+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle);
- }
-);
-$('#switch').click(function(){
- var switch_value = $('#switch_value').val();
- loadXMLDoc("/leave_detailajax?lastpage=0&index="+switch_value+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle);
- }
-);
-$('#last_page').click(function(){
- loadXMLDoc("/leave_detailajax?lastpage=1"+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle);
+
+$('#beforepage').click(function(){
+ if( nowpage > 0)
+      nowpage -= 1;
+  document.getElementById("nowpage").innerHTML = nowpage;
+ loadXMLDoc("/leave_detailajax?index="+nowpage+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle);
  }
 );
 
-navigate_control();
-function navigate_control(step){
-   if(!step) step = 0;
-   pagings=document.getElementsByClassName("paging");
-  for(j=0; j<pagings.length; j++){
-      pagings[j].innerHTML = parseInt(pagings[j].innerHTML)+step;
-      if (pagings[j].innerHTML<1) {
-      pagings[j].innerHTML = parseInt(pagings[j].innerHTML)-step;
-       break;
-      }
-      _TheArray[j] = "/leave_detailajax?lastpage=0&index="+parseInt(pagings[j].innerHTML)+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle;
-  }
-pagings[0].setAttribute("onclick","loadXMLDoc(_TheArray[0])");
-pagings[1].setAttribute("onclick","loadXMLDoc(_TheArray[1])");
-pagings[2].setAttribute("onclick","loadXMLDoc(_TheArray[2])");
-pagings[3].setAttribute("onclick","loadXMLDoc(_TheArray[3])");
-pagings[4].setAttribute("onclick","loadXMLDoc(_TheArray[4])");
-}
+$('#afterpage').click(function(){
+      nowpage += 1;
+  document.getElementById("nowpage").innerHTML = nowpage;
+ loadXMLDoc("/leave_detailajax?index="+nowpage+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle);
+ }
+);
+
+//navigate_control();
+
 </script>
 
  <script type="text/javascript">
@@ -111,3 +82,4 @@ loadXMLDoc("/leave_detailajax?lastpage=0&index=1"+"&comfirm="+comfirm+"&name="+n
 </script>
 
 <link href="../../resource/css/signin.css" rel="stylesheet">
+<link href="../../resource/css/leavedetail.css" rel="stylesheet">

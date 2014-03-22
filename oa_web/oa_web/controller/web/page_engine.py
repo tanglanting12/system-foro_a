@@ -14,7 +14,6 @@ import os.path as osp
 from oa_web.upload import uploadDir
 from xlrd import open_workbook
 import StringIO
-import unicodedata
 '''
   why????
   RequestHandler.__init__(self, *args, **kwargs)
@@ -230,14 +229,14 @@ class UploadHandler(OaHandler):
                 dstname = str(int(time.time()))+'.'+rawname.split('.').pop()
                 dir = uploadDir()
                 upfile = open(dir+"/"+dstname,'wb')
-                print "&&&&&%s&&&" %(dir)
+                #print "&&&&&%s&&&" %(dir)
                 upfile.write(f['body'])
+                upfile=StringIO.StringIO(upfile.name);
                 #ff=osp.abspath(upfile.name)
-                print "******%s*****" %(upfile.name.encode('ascii','ignore'),upfile.name)
+                #print "******%s****%s*" %(type(upfile),upfile.name)
+                wb = open_workbook(upfile.read())
 
-                #wb = open_workbook('/home/abert/www/pinhui_oa/oa_web/oa_web/upload/1395220273.xls')
-
-        self.finish("file" + upfile.name + " is uploaded ok")
+        self.finish("file" + upfile.read() + " is uploaded ok")
 
 '''
 

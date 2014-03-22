@@ -2,5 +2,5 @@ Django==1.5
 django-grappelli==2.4.8
 south
 MySQL-python
-tornado
+tornado==3.1.1
 xlrd

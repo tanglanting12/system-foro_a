@@ -73,19 +73,18 @@ function afterleavedetailajax(){
     }
 //    alert(usernames[2].innerHTML);
 
-
-    $( "#autocomplete" ).autocomplete({
-         source: function( request, response ) {
-                  var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( request.term ), "i" );
-                  response( $.grep( tags, function( item ){
-                  return matcher.test( item );
-                  }) );
-         }
-     });
+//    $( "#autocomplete" ).autocomplete({
+//         source: function( request, response ) {
+//                  var matcher = new RegExp( "^" + $.ui.autocomplete.escapeRegex( request.term ), "i" );
+//                  response( $.grep( tags, function( item ){
+//                  return matcher.test( item );
+//                  }) );
+//         }
+//     });
     $('#searchUser').click(function(){
-    var selectname=$('#autocomplete')[0].value;
+    var selectname=$('#autocomplete')
 // val = $("#id")[0].value;    loadXMLDoc("/leave_detailajax?lastpage = 0&index = 1"+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle);
-    loadXMLDoc("/leave_detailajax?lastpage=0&index=0"+"&name="+selectname+"&comfirm="+comfirm+"&superiorStyle="+superiorStyle);
+    loadXMLDoc("/leave_detailajax?index=1"+"&name="+selectname+"&comfirm="+comfirm+"&superiorStyle="+superiorStyle);
     }
    );
 }
@@ -99,7 +98,7 @@ function navigate_control(step){
       pagings[j].innerHTML = parseInt(pagings[j].innerHTML)-step;
        break;
       }
-      _TheArray[j] = "/leave_detailajax?lastpage=0&index="+parseInt(pagings[j].innerHTML)+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle;
+      _TheArray[j] = "/leave_detailajax?lastpage=0&index="+pagings[j].innerHTML+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle;
   }
 pagings[0].setAttribute("onclick","loadXMLDoc(_TheArray[0])");
 pagings[1].setAttribute("onclick","loadXMLDoc(_TheArray[1])");

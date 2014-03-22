@@ -1,11 +1,9 @@
 
-<label for="autocomplete">Select username: </label>
+<label for="autocomplete">根据名字查询: </label>
 <input id="autocomplete">
  <button  class="btn btn-info btn-sm btn-infopaging pagingbuttonfont" id="searchUser">
-
   搜索</button>
-        <td id="usernames"> </td>
-<table class="table table-striped">
+<table class="table table-striped tableheight ">
         <thead>
           <tr>
              <th>编号</th>
@@ -53,13 +51,5 @@
  {% end %}
         </tbody>
       </table>
-<style type="text/css">
-</style>
-<script type="text/javascript">
-    var tags=new Array;
-     {% for leavedetail in leaves%}
-                tags.push("{{leavedetail.user}}");
-     {% end %}
- </script>
 
 

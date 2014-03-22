@@ -13,7 +13,8 @@ import tempfile
 import os.path as osp
 from oa_web.upload import uploadDir
 from xlrd import open_workbook
-
+import StringIO
+import unicodedata
 '''
   why????
   RequestHandler.__init__(self, *args, **kwargs)
@@ -218,25 +219,25 @@ class MainHandler(OaHandler):
         )
 
 
-@Route('/upfile')
+@Route('/upload')
 class UploadHandler(OaHandler):
     def get(self):
         self.render('test2.html')
-
     def post(self):
         if self.request.files:
             for f in self.request.files['up_file']:
                 rawname = f['filename']
                 dstname = str(int(time.time()))+'.'+rawname.split('.').pop()
                 dir = uploadDir()
-                upfile = open(dir[:dir.index('__init__')]+dstname,'wb')
+                upfile = open(dir+"/"+dstname,'wb')
+                print "&&&&&%s&&&" %(dir)
                 upfile.write(f['body'])
                 #ff=osp.abspath(upfile.name)
-                #print "******%s*****" %(type(ff))
+                print "******%s*****" %(upfile.name.encode('ascii','ignore'),upfile.name)
 
-                wb = open_workbook('/home/abert/www/pinhui_oa/oa_web/oa_web/upload/1395220273.xls')
+                #wb = open_workbook('/home/abert/www/pinhui_oa/oa_web/oa_web/upload/1395220273.xls')
 
-        self.finish("file" + rawname + " is uploaded ok")
+        self.finish("file" + upfile.name + " is uploaded ok")
 
 '''
 

@@ -8,7 +8,7 @@
 .DS_Store
 .svn
 env
-!config.py
-!local_settings.py
+config.py
+local_settings.py
 .idea
 *.xls

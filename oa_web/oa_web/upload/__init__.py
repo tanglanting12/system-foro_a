@@ -1,4 +1,4 @@
-import os.path as ops
+import os.path as osp
 
 def uploadDir():
-    return ops.abspath(__file__)
+    return  osp.abspath(osp.dirname(__file__))

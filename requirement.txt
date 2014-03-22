@@ -3,3 +3,4 @@ django-grappelli==2.4.8
 south
 MySQL-python
 tornado
+xlrd

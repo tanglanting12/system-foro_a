@@ -12,3 +12,4 @@ config.py
 local_settings.py
 .idea
 *.xls
+migrations/

@@ -1,0 +1,90 @@
+<div id="leavedetail" >
+</div>
+
+
+<div id="leavedetailajax">
+<div id="paging"  >
+  <button id="beforepage" class="btn btn-info btn-infopaging controlpaging">上页</button>
+  <button id="afterpage" class="btn btn-info btn-infopaging controlpaging">下页</button>
+  当前页数:<label id="nowpage">1</label>
+    </div>
+</div>
+
+
+ <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+ <!--
+ <link rel="stylesheet" href="../../resource/css/jquery-ui-1.10.4.custom.min.css">-->
+
+ <script type="text/javascript" src="../../resource/js/jquery-1.11.0.js"></script>
+ <script src="../../resource/js/jquery-ui.js"></script>
+<script language="JavaScript" type="text/JavaScript">
+var _TheArray = new Array;
+var nowpage = 1;
+comfirm = "{{comfirm}}" ;
+name = "{{name}}";
+superiorStyle = "{{superiorStyle}}";
+
+$('#paging_right,#paging_left').click( function (){
+  if(this.id == "paging_left")
+  step = -5;
+  else if(this.id == "paging_right")
+  step=5;
+  navigate_control(step);
+});
+if( nowpage == 1 )
+$("#beforepage").attr("disabled","disabled");//设置所有的button不可用  $(":button").removeAttr("disabled");//去掉button的disabled属性，使button可用
+
+
+
+$('#beforepage').click(function(){
+ if  ( nowpage > 1){
+      nowpage -= 1;
+ }
+ else
+   $("#beforepage").attr("disabled","disabled");
+ document.getElementById("nowpage").innerHTML = nowpage;
+ loadXMLDoc("/leave_detailajax?index="+nowpage+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle);
+ }
+);
+
+$('#afterpage').click(function(){
+  nowpage += 1;
+  if(nowpage == 2)
+     $("#beforepage").removeAttr("disabled");
+  document.getElementById("nowpage").innerHTML = nowpage;
+ loadXMLDoc("/leave_detailajax?index="+nowpage+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle);
+ }
+);
+
+
+
+function loadXMLDoc(url)
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp = new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange = function()
+  {
+  if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
+    {
+    document.getElementById("leavedetail").innerHTML = xmlhttp.responseText;
+    afterleavedetailajax();
+    }
+  }
+
+xmlhttp.open("GET",url,true);
+xmlhttp.send();
+}
+loadXMLDoc("/leave_detailajax?index=1"+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle)
+//navigate_control();
+</script>
+<script language="JavaScript" type="text/JavaScript" src="../../resource/js/leave.js">
+</script>
+<link href="../../resource/css/signin.css" rel="stylesheet">
+<link href="../../resource/css/leavedetail.css" rel="stylesheet">

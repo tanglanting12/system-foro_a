@@ -1,0 +1,318 @@
+#coding=utf-8
+
+from oa_web.module.oa_handler import OaHandler
+from oa_web.module.route import Route
+import tornado
+import datetime
+import time
+from oa_admin.oa.models import User, Role,Leave,Position,Department,Attendance
+from oa_web.libs.autodiscover import autodic
+from oa_web.config import ConfigCommon
+from oa_web.libs.controller import Leavedetalajax
+import tempfile
+import os.path as osp
+from oa_web.upload import uploadDir
+from xlrd import open_workbook
+import xlrd
+import StringIO
+'''
+  why????
+  RequestHandler.__init__(self, *args, **kwargs)
+    TypeError: __init__() takes exactly 3 arguments (2 given)
+'''
+class BaseHandler(tornado.web.RequestHandler):
+    def get_current_user(self):
+        return self.get_secure_cookie("username")
+
+
+@Route('/')
+class Index(OaHandler,BaseHandler):
+
+    @tornado.web.authenticated
+    def get(self):
+        #user = User.objects.get(id=1)
+        #self.write('''<p> username:  %s</p>''' %(self.current_user) )
+        if self.current_user:
+            user = User.objects.get(name = self.current_user)
+            roler = Role.objects.filter(user__name__exact = self.current_user)
+            navigation = self.get_argument("navigation",default = "default_detail")
+            leaves=Leave.objects.filter(verify_status__exact = 0)
+            subordinates = User.objects.filter(superior__exact = user.id)
+            uncomfirmNum = leaves.filter(user__in = subordinates).count()
+            if uncomfirmNum == 0:
+                uncomfirmNum = ""
+            else:
+                uncomfirmNum = "("+str(uncomfirmNum)+")"
+           # uncomfirmNum=Leave.objects.filter(verify_status__exact=0).filter(user__superior__exact=user.id).count()
+
+            if roler[0].name == "管理层":
+                self.render('supervisor.html', username = user.name, rolename = roler[0].name, navigation = navigation,uncomfirmNum = uncomfirmNum)
+            elif roler[0].name == "行政层":
+                self.render('Admin.html', username = user.name, rolename = roler[0].name, navigation = navigation,uncomfirmNum = uncomfirmNum)
+            else:
+                self.render('productgroup.html', username = user.name, rolename = roler[0].name, navigation = navigation)
+
+    def post(self):
+        leave_type = self.get_argument("leave_type")
+        leave_time_begin = self.get_argument("leave_time_begin")
+        leave_time_end = self.get_argument("leave_time_end")
+        reason_for_leave = self.get_argument("reason_for_leave")
+        superior = self.get_argument("superior_name")
+        leave_time_begin = datetime.datetime.strptime(leave_time_begin,'%Y-%m-%d %H:%M')
+        print "leave_time_begin:%s&&" %(leave_time_begin)
+        leave_time_end =datetime.datetime.strptime(leave_time_end,'%Y-%m-%d %H:%M')
+        print "begin%s**,end%s**" %(leave_time_begin,leave_time_end)
+        user = User.objects.filter(name = self.current_user)
+        Leave.objects.create(user = user[0],leave_type = leave_type,leave_time_begin = leave_time_begin,
+                             leave_time_end = leave_time_end,reason_for_leave = reason_for_leave)
+        self.redirect('/')
+       # print "**%s***%s***%s***%s*******%s***" %(leave_type,leave_time_begin,leave_time_end,reason_for_leave,user[0].name)
+
+
+@Route('/login')
+class LoginHandler(OaHandler,BaseHandler):
+
+    def get(self):
+        self.render('login.html')
+
+    def post(self):
+        username = self.get_argument("username")
+        passwd = self.get_argument("password")
+        user = User.objects.filter(name = username,password = passwd)
+        if user:
+           self.set_secure_cookie("username",user[0].name)
+           self.redirect("/")
+        else:
+           error_msg = u"?error=" + tornado.escape.url_escape("Login incorrect.")
+           self.redirect(u"/login"+error_msg)
+       # user = User.objects.get(id=1)
+
+@Route('/logout')
+class LogoutHandler(BaseHandler):
+
+    def get(self):
+        #if (self.get_argument("logout", None)):
+        self.clear_cookie("username")
+        self.redirect('/')
+
+
+@Route('/updatepwd')
+class Update(OaHandler):
+
+    def post(self):
+        name = self.get_argument("name")
+        User.objects.filter(name = name).update(password = self.get_argument("password"))
+        self.redirect('/')
+
+    def get(self):
+        name = self.get_argument("name",default = "abert")
+        print "*****%s***" %(type(name))
+        #print "***%s***%s***%s" %(position_name.name,role_name.name,department_name.name)
+        self.render('change_pwd.html',name = name)
+
+
+
+@Route('/register')
+class Register(OaHandler):
+
+    def get(self):
+        positiondic = autodic(Position,"id","name")
+        roledic = autodic(Role,"id","name")
+        departmentdic = autodic(Department,"id","name")
+        self.render('register.html',positiondic = positiondic,roledic = roledic,departmentdic = departmentdic)
+
+    def post(self):
+        name = self.get_argument("name")
+        real_name = self.get_argument("real_name")
+        password = self.get_argument("password")
+        gender = self.get_argument("gender")
+        phone_num = self.get_argument("phone_num")
+        pre_year_holiday = self.get_argument("pre_year_holiday")
+        remain_year_holiday = self.get_argument("remain_year_holiday")
+        position = Position.objects.get(id = self.get_argument("position"))
+        role = Role.objects.get(id = self.get_argument("role"))
+        department = Department.objects.get(id = self.get_argument("department"))
+        superior = self.get_argument("superior")
+        superior = User.objects.filter(name=superior)
+        superior_id = superior[0].id
+        User.objects.create(name = name,real_name = real_name,password = password,gender = gender,phone_num = phone_num,
+                            pre_year_holiday = pre_year_holiday,remain_year_holiday = remain_year_holiday,
+                            position = position,role = role,department = department,superior = superior_id)
+
+        self.redirect('/register')
+
+
+@Route('/leave_detail')
+class Leavedetail(OaHandler):
+    def get(self):
+        self.render('leave_detail.html')
+
+
+@Route('/leave_detailajax')
+class Leavedetailajax(OaHandler,Leavedetalajax):
+
+   def get(self):
+        self.leavedetailajax()
+        return  self.render('leave_detailajax.html',leavedetails = self.leavedetails,name = self.name,comfirm = self.comfirm\
+                    ,superiorStyle = self.superiorStyle,index = self.index,lastpage = self.lastpage,leaves=self.leaves)
+
+############### not finish
+@Route('/updateperleave')
+class Updateperleave(OaHandler):
+
+     def get(self):
+        leave_id = int(self.get_argument("leave_id"))
+        name = int(self.get_argument("name"))
+        leave = Leave.objects.get(id = leave_id)
+        user = User.objects.get(name = name)
+        superior = User.objects.get(id = user.superior)
+        return self.render('AskForLeave.html',reason_for_leave = leave.reason_for_leave,
+                              superior_id = superior.id,superior_name = superior.name,pre_year_holiday = user.pre_year_holiday,
+                              remain_year_holiday = user.remain_year_holiday)
+
+
+
+@Route('/leave_delete')
+class Leavedelete(OaHandler,Leavedetalajax):
+     def get(self):
+        leave_id = int(self.get_argument("leave_id"))
+        Leave.objects.get(id = leave_id).delete()
+        print "%s leave Delete success! " %(leave_id)
+        self.leavedetailajax()
+        return  self.render('leave_detailajax.html',leavedetails = self.leavedetails,name = self.name,comfirm = self.comfirm\
+                    ,superiorStyle = self.superiorStyle,index = self.index,lastpage = self.lastpage)
+
+@Route('/leave_comfirm')
+class Leavecomfirm(OaHandler,Leavedetalajax):
+     def get(self):
+        leave_id = int(self.get_argument("leave_id"))
+        Leave.objects.filter(id = leave_id).update(verify_status=1)
+        print "&&&%s leave comfirm success! " %(leave_id)
+        self.leavedetailajax()
+        return  self.render('leave_detailajax.html',leavedetails = self.leavedetails,name = self.name,comfirm = self.comfirm\
+                    ,superiorStyle = self.superiorStyle,index = self.index,lastpage = self.lastpage)
+
+@Route('/leaveUncomfirm')
+class LeaveUncomfirm(OaHandler,Leavedetalajax):
+     def get(self):
+        leave_id = int(self.get_argument("leave_id"))
+        Leave.objects.filter(id = leave_id).update(verify_status=0)
+        print "&&&%s leave uncomfirm success! " %(leave_id)
+        self.leavedetailajax()
+        return  self.render('leave_detailajax.html',leavedetails = self.leavedetails,name = self.name,comfirm = self.comfirm\
+                    ,superiorStyle = self.superiorStyle,index = self.index,lastpage = self.lastpage)
+
+@Route('/perleave_detail')
+class Perleave_detail(OaHandler):
+     def get(self):
+         leave_id = int(self.get_argument("leave_id"))
+         leave = Leave.objects.filter(id = leave_id).values()
+         self.render('perleave_detail.html',leave = leave)
+
+@Route('/index')
+class MainHandler(OaHandler):
+     def get(self):
+        self.render(
+            "index.html",
+            header_text = "Header goes here",
+            footer_text = "Footer goes here"
+        )
+
+
+@Route('/upload')
+class UploadHandler(OaHandler):
+    def get(self):
+        self.render('test2.html')
+    def post(self):
+        if self.request.files:
+            for f in self.request.files['up_file']:
+                rawname = f['filename']
+                dstname = str(int(time.time()))+'.'+rawname.split('.').pop()
+                dir = uploadDir()
+                upfile = open(dir+"/"+dstname,'wb')
+                #print "&&&&&%s&&&" %(dir)
+                upfile.write(f['body'])
+                upfile=StringIO.StringIO(upfile.name);
+                #ff=osp.abspath(upfile.name)
+                #print "******%s****%s*" %(type(upfile),upfile.name)
+
+
+                wb = open_workbook(upfile.read())
+                for s in wb.sheets():
+                    print 'sheet:',s.name
+                    for row in range(1,s.nrows):
+                        values=[]
+                        for col in range(1,s.ncols):
+                            #if not s.cell(row,col):
+                            values.append(s.cell(row,col).value)
+                        #print ','.join(values)
+                        print "&&&&%s&&" %(values)
+                        users = User.objects.filter(name = values[0])
+                        user =users[0] if users else None
+                        punchwork = values[2].split(':')
+                        punchworkoff = values[3].split(':')
+                        latetime = values[6].split(':')
+                        earlytime = values[7].split(':')
+                        overtime = values[9].split(':')
+                        worktime = values[11].split(':')
+
+                        daytime = datetime.datetime.strptime(values[1],'%Y-%m-%d') if values[1] else None
+                        punchwork = datetime.time(int(punchwork[0]),int(punchwork[1])) if values[2] else None
+                        punchworkoff = datetime.time(int(punchworkoff[0]),int(punchworkoff[1]))  if values[3] else None
+                        musttime = float(values[4]) if values[4] else None
+                        realtime = float(values[5]) if values[5] else None
+                        latetime = datetime.time(int(latetime[0]),int(latetime[1])) if values[6] else None
+                        earlytime = datetime.time(int(earlytime[0]),int(earlytime[1])) if values[7] else None
+                        isabsent = 1 if values[8] == 'True' else 0
+                        overtime = datetime.time(int(overtime[0]),int(overtime[1])) if values[9] else None
+                        apartment = values[10] if values[10] else None
+                        worktime = datetime.time(int(worktime[0]),int(worktime[1])) if values[11] else None
+                        remark = values[12] if values[12] else None
+
+                            #print "date:%s%spunchwork:%s%s" ,(values[1],type(values[1]),values[2],values[2])
+                        att = Attendance(user = user, daytime = daytime,punchwork=punchwork,punchworkoff=punchworkoff,
+                            musttime=musttime,realtime=realtime,latetime=latetime,earlytime=earlytime,isabsent=isabsent,
+                            overtime=overtime,apartment=apartment,worktime=worktime,remark=remark
+                            )
+                        if user is None:
+                           att.name = values[0]
+                        att.save()
+                        print "create attendance success"
+        self.finish("file" + upfile.read() + " is uploaded ok")
+
+     #
+     # user = models.ForeignKey(User)
+     # punchwork = models.TimeField('上班打卡时间',blank = True, null = True)
+     # punchworkoff = models.TimeField('下班打卡时间', blank = True, null = True)
+     # daytime=models.DateField("日期", blank = True, null = True)
+     # musttime=models.PositiveSmallIntegerField('应到', blank = True, null = True)
+     # realtime=models.PositiveSmallIntegerField('实际到', blank = True, null = True)
+     # latetime=models.TimeField('迟到时间',blank=True,null=True)
+     # earlytime=models.TimeField('早到时间',blank=True,null=True)
+     # isabsent=models.PositiveSmallIntegerField('是否旷工',blank=True,null=True,choices = Isabsent.attrs.items())
+     # overtime=models.TimeField('加班',blank=True,null=True)
+     # apartment=models.CharField('部门',max_length=50,blank=True,null=True)
+     # worktime=models.TimeField('出勤时间',blank=True,null=True)
+     # remark=models.CharField('备注',max_length=150,blank=True,null=True)
+
+'''
+
+@Route('/update')
+class update(OaHandler):
+    def get(self):
+        name="abert"
+        user=User.objects.filter(name=name).values()
+        position_name=Position.objects.get(id=user[0]["position_id"])
+        role_name=Role.objects.get(id=user[0]["role_id"])
+        print "****%s***" %(user[0]["department_id"])
+        department_name=Department.objects.get(id=user[0]["department_id"])
+        print "***%s****&&&&" %(position_name.name)
+        #print "***%s***%s***%s" %(position_name.name,role_name.name,department_name.name)
+        positiondic=autodic(Position,"id","name")
+        roledic=autodic(Role,"id","name")
+        departmentdic=autodic(Department,"id","name")
+        #print "***%s***%s***%s" %(position_name.name,role_name.name,department_name.name)
+        self.render('update_user.html',user=user,position_name=position_name.name,role_name=role_name.name,department_name=department_name.name,
+                    positiondic=positiondic,roledic=roledic,departmentdic=departmentdic
+                    )
+'''

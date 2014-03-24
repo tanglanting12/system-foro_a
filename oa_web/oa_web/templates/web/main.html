@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-cn" xmlns="http://www.w3.org/1999/html">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../docs-assets/ico/favicon.png">
+
+    <title>Off Canvas Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+     <link href="../../resource/dist/css/bootstrap.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+<link href="../../resource/css/offcanvas.css" rel="stylesheet">
+ <link href="../../resource/css/main.css" rel="stylesheet">
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.min.js"></script>
+      <script src="http://cdn.bootcss.com/respond.js/1.3.0/respond.min.js"></script>
+
+    <![endif]-->
+
+<script language="JavaScript" type="text/JavaScript">
+<!-- use_switch divs display -->
+function toggle(targetid){
+
+    if (document.getElementById){
+        target=document.getElementById(targetid);
+        target.style.display="none";
+    }
+
+}
+</script>
+
+    <div class="navbar navbar-fixed-top  navbar-head" role="navigation">
+          <h3 class="spread">
+            深圳市品汇科技考勤管理系统
+          </h3>
+      </div><!-- /.container -->
+      {% block header %}  {% end %}
+  </head>
+
+  <body>
+    <div class="container container_my">
+
+      <div class="row row-offcanvas row-offcanvas-right ">
+        <div class="col-xs-6 col-sm-2 sidebar-offcanvas" id="sidebar" role="navigation">
+            <ul class="nav nav-pills nav-stacked">
+              <li class="active"><a href="/?navigation=default_detail">考勤管理</a></li>
+              <li><a href="/?navigation=askforleave" >请假条</a></li>
+            </ul>
+             <ul class="nav nav-pills nav-stacked">
+              <li class="active"><a >个人管理</a></li>
+              <li><a href="/?navigation=waitforconfirm">等处理</a></li>
+              <li><a href="/?navigation=confirm">已处理</a></li>
+              <li><a href="/?navigation=changepwd">修改密码</a></li>
+                 <!-- href="/?navigation=statistic"-->
+              <li><a>信息查询</a></li>
+            </ul>
+           {% block body_left %}  {% end %}
+
+             <ul class="nav nav-pills nav-stacked">
+              <li class="active"><a >考勤统计</a></li>
+              <li><a href="#">月统计</a></li>
+            </ul>
+
+        </div><!--/span-->
+        <div class="col-xs-12 col-sm-9">
+          <p class="pull-right visible-xs">
+            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Toggle nav</button>
+          </p>
+          <div class="jumbotron-per-dtail ">
+           <p>当前用户：{{username}}     角色：   {{rolename}}   <span id="loginouta"> <a href="/logout" >退出</a></span></p>
+
+          </div>
+               <div id="divcontent ">
+                   {% if navigation == "askforleave" %}
+                       {% module  AskForLeave(username) %}
+                   {% elif navigation == "default_detail" %}
+                       {% module Default_detail(username)%}
+                   {% elif  navigation == "askforout" %}
+                       {% module  Askforout(username) %}
+                   {% elif  navigation == "waitforconfirm" %}
+                       {% module  Wait_for_confirm(username,navigation) %}
+                   {% elif  navigation == "confirm" %}
+                       {% module  Confirm(username,navigation) %}
+                   {% elif  navigation == "changepwd" %}
+                       {% module  Changepwd(username) %}
+                   {% elif  navigation == "perdetail" %}
+                       {% module  Perdetail(username) %}
+                   {% elif  navigation == "statistic" %}
+                       {% module  Statistic(username) %}
+                   {% elif  navigation == "uncomfirmForOther" %}
+                       {% module  UncomfirmForOther(username) %}
+                   {% elif  navigation == "comfirmForOther" %}
+                       {% module  ComfirmForOther(username) %}
+                   {% end%}
+               </div>
+        </div><!--/span-->
+
+      </div><!--/row-->
+
+      <hr>
+
+      <footer>
+        <p>&copy; Company 2014</p>
+           {% block footer %}  {% end %}
+      </footer>
+
+    </div><!--/.container-->
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+  </body>
+</html>

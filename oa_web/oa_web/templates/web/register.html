@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title></title>
+</head>
+<body>
+
+
+<div>
+    <form  role="form" method="post" >
+         {% raw xsrf_form_html() %}
+<p>
+   用户名：<input type="text" name="name">
+</p>
+    <p>
+        真实名字:<input type="text" name="real_name">
+    </p>
+<p>
+    密码：<input type="text" name="password">
+</p>
+    <p>性别:
+        <select id="gender"  name="gender">
+
+<option value="0">男 </option>
+<option value="1">女 </option>
+</select>
+    </p>
+<p> 电话号码:
+    <input type="text" name="phone_num">
+</p>
+    <p>每年年假：
+    <input type="text" name="pre_year_holiday">
+
+</p>
+    <p>剩下年假：
+ <input type="text" name="remain_year_holiday">
+    </p>
+    <!-- it's play can be optimized:use uimould to replace-->
+    <p>职位选择：
+        <select id="position"  name="position">
+            {% for position_id, postion_name in positiondic.iteritems() %}
+            <option value="{{position_id}}">{{postion_name}} </option>
+            {% end %}
+</select>
+    </p>
+     <p>角色选择：
+ <select id="role"  name="role">
+  {% for role_id, role_name in roledic.iteritems() %}
+            <option value="{{role_id}}">{{role_name}} </option>
+            {% end %}
+</select>
+    </p>
+    <p>部门选择：
+ <select id="department"  name="department">
+  {% for department_id, department_name in departmentdic.iteritems() %}
+            <option value="{{department_id}}">{{department_name}} </option>
+            {% end %}
+</select>
+    </p>
+
+    <p> 直接上级:
+        <input type="superior" name="superior">
+    </p>
+          <button  type="submit" >注册</button>
+      </form>
+</div>
+
+</body>
+</html>

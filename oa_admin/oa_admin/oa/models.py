@@ -1,7 +1,7 @@
 #coding=utf-8
 
 from django.db import models
-from oa_admin.comm_def import UserGender,Verfify,AskforleaveType
+from oa_admin.comm_def import UserGender,Verfify,AskforleaveType,Isabsent
 #**********************************************************************
 class Department(models.Model):
     name = models.CharField('部门名称', max_length = 20, unique = True)
@@ -77,6 +77,18 @@ class Leave(models.Model):
 
 
 class Attendance(models.Model):
-    user = models.ForeignKey(User)
-    punchwork = models.DateTimeField('上班打卡时间',auto_now = True)
-    punchworkoff = models.DateTimeField('下班打卡时间',auto_now = True)
+     user = models.ForeignKey(User, default=None, null=True)
+     name = models.CharField('名字',max_length=20,blank=True,null=True)
+     punchwork = models.TimeField('上班打卡时间',blank = True, null = True)
+     punchworkoff = models.TimeField('下班打卡时间', blank = True, null = True)
+     daytime=models.DateField("日期", blank = True, null = True)
+     musttime=models.FloatField('应到', blank = True, null = True)
+     realtime=models.FloatField('实际到', blank = True, null = True)
+     latetime=models.TimeField('迟到时间',blank=True,null=True)
+     earlytime=models.TimeField('早到时间',blank=True,null=True, default=None)
+     isabsent=models.PositiveSmallIntegerField('是否旷工',blank=True,null=True,choices = Isabsent.attrs.items())
+     overtime=models.TimeField('加班',blank=True,null=True)
+     apartment=models.CharField('部门',max_length=50,blank=True,null=True)
+     worktime=models.TimeField('出勤时间',blank=True,null=True)
+     remark=models.CharField('备注',max_length=150,blank=True,null=True)
+

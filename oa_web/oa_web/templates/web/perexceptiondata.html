@@ -1,14 +1,18 @@
 <div>
     <p>填写信息：  </p>
-请假类型：<span name="leave_type" >{{leave[0]["leave_type"]}}</span>
-<p>开始时间: <span name="leave_time_begin">{{leave[0]["leave_time_begin"]}}</span></p>
-<p>结束时间:<span name="leave_time_end">{{leave[0]["leave_time_end"]}}</span> </p>
-     <p>请假天数：<span name="day_num"></span></p>
-<p>请假事由:</br>
-   <span > {{leave[0]["reason_for_leave"]}}</span>
-</p>
-        <p>请假状态:<span name="status">{{leave[0]["verify_status"]}}</span></p>
+姓名：<span name="leave_type" >{{exceptiondata.name}}</span>
+<p>上班打卡时间: <span name="punchwork">{{exceptiondata.punchwork}}</span></p>
+<p>下班打卡时间:<span name="punchworkoff">{{exceptiondata.punchworkoff}}</span> </p>
+     <p>日期：<span name="daytime">{{exceptiondata.daytime}}</span></p>
+<p>应到:<span > {{exceptiondata.musttime}}</span></p>
 
+      <p>实际到:<span name="status">{{exceptiondata.realtime}}</span></p>
+      <p>迟到时间:<span name="status">{{exceptiondata.latetime}}</span></p>
+    <p>早到时间:<span name="status">{{exceptiondata.earlytime}}</span></p>
+    <p>加班:<span name="status">{{exceptiondata.overtime}}</span></p>
+      <p>是否旷工:<span name="status">{{exceptiondata.isabsent}}</span></p>
+      <p>出勤时间:<span name="status">{{exceptiondata.worktime}}</span></p>
+      <p>备注:<span name="status">{{exceptiondata.remark}}</span></p>
 
  </div>
 

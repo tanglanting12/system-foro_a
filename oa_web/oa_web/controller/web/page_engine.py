@@ -219,6 +219,13 @@ class Perleave_detail(OaHandler):
          leave = Leave.objects.filter(id = leave_id).values()
          self.render('perleave_detail.html',leave = leave)
 
+@Route('/perexceptiondata')
+class Perexceptiondata(OaHandler):
+     def get(self):
+         exceptiondataid = int(self.get_argument("exceptiondataid"))
+         exceptiondata = Attendance.objects.get(id = exceptiondataid)
+         self.render('perexceptiondata.html',exceptiondata = exceptiondata)
+
 @Route('/index')
 class MainHandler(OaHandler):
      def get(self):

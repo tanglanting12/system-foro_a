@@ -4,6 +4,7 @@ import StringIO
 import time
 from xlrd import open_workbook
 import datetime
+from django.db.models import F;
 class Leavedetalajax():
    def leavedetailajax(self):
         self.name = self.get_argument("name",default = "abert")
@@ -30,6 +31,25 @@ class Leavedetalajax():
         else:
             self.leavedetails = self.leaves[int(self.index)*4:(int(self.index)+1)*4]
 
+
+class exceptiondataajax():
+
+   def exceptiondataajax(self):
+        self.name = self.get_argument("name",default = "abert")
+       # user=User.objects.filter(name__exact=name)
+        self.index = self.get_argument("index",default = 0)
+        self.superiorStyle = self.get_argument("superiorStyle",default = 0)
+        if (int(self.index) > 0):
+            self.index = int(self.index)-1
+        if self.superiorStyle == '1':
+            print "lookup all exceptiondata"
+            self.exceptiondatas = Attendance.objects.order_by("-daytime").exclude(musttime=F('realtime'))
+
+        else :
+            self.exceptiondatas = Attendance.objects.order_by("-daytime").filter(user__name__exact  = self.name)\
+           .exclude(musttime=F('realtime'))
+
+        self.exceptiondatas = self.exceptiondatas[int(self.index)*8:(int(self.index)+1)*8]
 
 class upload():
     def uploadexcel(self):

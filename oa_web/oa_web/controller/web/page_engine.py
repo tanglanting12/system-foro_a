@@ -4,7 +4,7 @@ from oa_web.module.oa_handler import OaHandler
 from oa_web.module.route import Route
 from oa_admin.oa.models import User, Role,Leave,Position,Department,Attendance
 from oa_web.libs.autodiscover import autodic
-from oa_web.libs.controller import Leavedetalajax,upload
+from oa_web.libs.controller import Leavedetalajax,upload,exceptiondataajax
 from oa_web.upload import uploadDir
 from xlrd import open_workbook
 import StringIO
@@ -143,13 +143,28 @@ class Leavedetail(OaHandler):
         self.render('leave_detail.html')
 
 
-@Route('/leave_detailajax')
+@Route('/Leavedetailajax')
 class Leavedetailajax(OaHandler,Leavedetalajax):
 
    def get(self):
         self.leavedetailajax()
         return  self.render('leave_detailajax.html',leavedetails = self.leavedetails,name = self.name,comfirm = self.comfirm\
                     ,superiorStyle = self.superiorStyle,index = self.index,lastpage = self.lastpage,leaves=self.leaves)
+
+@Route('/exceptiondata')
+class exceptiondata(OaHandler):
+    def get(self):
+        self.render('exceptiondata.html')
+
+
+@Route('/exceptiondataajax')
+class exceptiondataajax(OaHandler,exceptiondataajax):
+   def get(self):
+        self.exceptiondataajax()
+        print "&&&&&%s&&&" %(self.exceptiondatas)
+        return  self.render('exceptiondataajax.html',exceptiondatas = self.exceptiondatas)
+
+
 
 ############### not finish
 @Route('/updateperleave')

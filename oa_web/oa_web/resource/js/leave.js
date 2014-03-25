@@ -51,7 +51,9 @@ function Calculateleaveday(arr_leave_time_begin,arr_leave_time_end,arr_daynum)
 }
 }
 
-function loadXMLDoc(url)
+
+
+function loadXMLDoc(url,elementid)
 {
 var xmlhttp;
 if (window.XMLHttpRequest)
@@ -66,7 +68,7 @@ xmlhttp.onreadystatechange = function()
   {
   if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
     {
-    document.getElementById("leavedetail").innerHTML = xmlhttp.responseText;
+    document.getElementById(elementid).innerHTML = xmlhttp.responseText;
     afterleavedetailajax();
     }
   }
@@ -74,7 +76,6 @@ xmlhttp.onreadystatechange = function()
 xmlhttp.open("GET",url,true);
 xmlhttp.send();
 }
-
 
 function afterleavedetailajax(){
     leave_type_id = ["0","1","2","3"];

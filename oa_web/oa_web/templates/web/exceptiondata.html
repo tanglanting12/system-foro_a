@@ -1,8 +1,9 @@
-<div id="leavedetail" >
+<div id="exceptiondata" >
+
 </div>
 
 
-<div id="leavedetailajax">
+<div id="exceptiondataajax">
 <div id="paging"  >
   <button id="beforepage" class="btn btn-info btn-infopaging controlpaging">上页</button>
   <button id="afterpage" class="btn btn-info btn-infopaging controlpaging">下页</button>
@@ -14,16 +15,13 @@
  <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
  <!--
  <link rel="stylesheet" href="../../resource/css/jquery-ui-1.10.4.custom.min.css">-->
-
+<script type="text/javascript" src="../../resource/js/leave.js"></script>
  <script type="text/javascript" src="../../resource/js/jquery-1.11.0.js"></script>
  <script src="../../resource/js/jquery-ui.js"></script>
 <script language="JavaScript" type="text/JavaScript">
-var _TheArray = new Array;
 var nowpage = 1;
-comfirm = "{{comfirm}}" ;
 name = "{{name}}";
-superiorStyle = "{{superiorStyle}}";
-
+superiorStyle = "{{superiorStyle}}"
 $('#paging_right,#paging_left').click( function (){
   if(this.id == "paging_left")
   step = -5;
@@ -43,7 +41,7 @@ $('#beforepage').click(function(){
  else
    $("#beforepage").attr("disabled","disabled");
  document.getElementById("nowpage").innerHTML = nowpage;
- loadXMLDoc("/leave_detailajax?index="+nowpage+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle);
+ loadXMLDoc("/exceptiondataajax?index="+nowpage+"&name="+name+"&superiorStyle="+superiorStyle,"exceptiondata");
  }
 );
 
@@ -52,11 +50,11 @@ $('#afterpage').click(function(){
   if(nowpage == 2)
      $("#beforepage").removeAttr("disabled");
   document.getElementById("nowpage").innerHTML = nowpage;
- loadXMLDoc("/leave_detailajax?index="+nowpage+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle);
+ loadXMLDoc("/exceptiondataajax?index="+nowpage+"&name="+name+"&superiorStyle="+superiorStyle,"exceptiondata");
  }
 );
 
-loadXMLDoc("/leave_detailajax?index=1"+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle)
+ loadXMLDoc("/exceptiondataajax?index="+nowpage+"&name="+name+"&superiorStyle="+superiorStyle,"exceptiondata");
 //navigate_control();
 </script>
 <script language="JavaScript" type="text/JavaScript" src="../../resource/js/leave.js">

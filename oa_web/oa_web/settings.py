@@ -30,7 +30,8 @@ settings = {
     'ui_modules': {'AskForLeave': AskForLeave,'Askforout':Askforout,'Default_detail':Default_detail,\
                    'Wait_for_confirm':Wait_for_confirm,'Confirm':Confirm,'Changepwd':Changepwd,\
                    'Perdetail':Perdetail,'Statistic':Statistic,'ComfirmForOther':ComfirmForOther,\
-                   'UncomfirmForOther':UncomfirmForOther},
+                   'UncomfirmForOther':UncomfirmForOther,'Attendanceexceptiondata':Attendanceexceptiondata,\
+                   'Attendanceexceptionalldata':Attendanceexceptionalldata},
 
 }
 

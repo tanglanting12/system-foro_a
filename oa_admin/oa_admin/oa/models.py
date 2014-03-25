@@ -91,4 +91,3 @@ class Attendance(models.Model):
      apartment=models.CharField('部门',max_length=50,blank=True,null=True)
      worktime=models.TimeField('出勤时间',blank=True,null=True)
      remark=models.CharField('备注',max_length=150,blank=True,null=True)
-

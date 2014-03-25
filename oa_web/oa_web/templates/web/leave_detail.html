@@ -11,10 +11,10 @@
 </div>
 
 
- <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
- <!--
- <link rel="stylesheet" href="../../resource/css/jquery-ui-1.10.4.custom.min.css">-->
+ <!--<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">-->
 
+ <link rel="stylesheet" href="../../resource/css/jquery-ui-1.10.4.custom.min.css">
+<script type="text/javascript" src="../../resource/js/leave.js"></script>
  <script type="text/javascript" src="../../resource/js/jquery-1.11.0.js"></script>
  <script src="../../resource/js/jquery-ui.js"></script>
 <script language="JavaScript" type="text/JavaScript">
@@ -43,7 +43,7 @@ $('#beforepage').click(function(){
  else
    $("#beforepage").attr("disabled","disabled");
  document.getElementById("nowpage").innerHTML = nowpage;
- loadXMLDoc("/leave_detailajax?index="+nowpage+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle,"leavedetail");
+ loadXMLDoc("/Leavedetailajax?index="+nowpage+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle,"leavedetail");
  }
 );
 
@@ -52,36 +52,11 @@ $('#afterpage').click(function(){
   if(nowpage == 2)
      $("#beforepage").removeAttr("disabled");
   document.getElementById("nowpage").innerHTML = nowpage;
- loadXMLDoc("/leave_detailajax?index="+nowpage+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle,"leavedetail");
+ loadXMLDoc("/Leavedetailajax?index="+nowpage+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle,"leavedetail");
  }
 );
 
-
-
-function loadXMLDoc(url,elementid)
-{
-var xmlhttp;
-if (window.XMLHttpRequest)
-  {// code for IE7+, Firefox, Chrome, Opera, Safari
-  xmlhttp = new XMLHttpRequest();
-  }
-else
-  {// code for IE6, IE5
-  xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-  }
-xmlhttp.onreadystatechange = function()
-  {
-  if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
-    {
-    document.getElementById(elementid).innerHTML = xmlhttp.responseText;
-    afterleavedetailajax();
-    }
-  }
-
-xmlhttp.open("GET",url,true);
-xmlhttp.send();
-}
-loadXMLDoc("/leave_detailajax?index=1"+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle,"leavedetail")
+loadXMLDoc("/Leavedetailajax?index=1"+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle,"leavedetail")
 //navigate_control();
 </script>
 <script language="JavaScript" type="text/JavaScript" src="../../resource/js/leave.js">

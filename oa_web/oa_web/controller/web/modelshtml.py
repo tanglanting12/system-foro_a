@@ -71,3 +71,13 @@ class ComfirmForOther(tornado.web.UIModule):
     def render(self,username):
          return self.render_string('leave_detail.html',name = username,comfirm = 1,superiorStyle = 1)
 
+
+class Attendanceexceptiondata(tornado.web.UIModule):
+
+      def render(self,username):
+          return self.render_string('exceptiondata.html',name = username,superiorStyle = 0)
+
+class Attendanceexceptionalldata(tornado.web.UIModule):
+
+      def render(self,username):
+          return self.render_string('exceptiondata.html',name = username,superiorStyle = 1)

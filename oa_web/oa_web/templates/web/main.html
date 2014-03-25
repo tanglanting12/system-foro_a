@@ -60,7 +60,7 @@ function toggle(targetid){
               <li><a href="/?navigation=confirm">已处理</a></li>
               <li><a href="/?navigation=changepwd">修改密码</a></li>
                  <!-- href="/?navigation=statistic"-->
-              <li><a>信息查询</a></li>
+              <li><a href="/?navigation=exceptiondata">信息查询</a></li>
             </ul>
            {% block body_left %}  {% end %}
 
@@ -99,6 +99,10 @@ function toggle(targetid){
                        {% module  UncomfirmForOther(username) %}
                    {% elif  navigation == "comfirmForOther" %}
                        {% module  ComfirmForOther(username) %}
+                    {% elif  navigation == "exceptiondata" %}
+                       {% module  Attendanceexceptiondata(username) %}
+                    {% elif  navigation == "exceptdataall" %}
+                       {% module  Attendanceexceptionalldata(username) %}
                    {% end%}
                </div>
         </div><!--/span-->

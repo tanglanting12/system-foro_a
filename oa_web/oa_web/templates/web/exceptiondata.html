@@ -43,7 +43,7 @@ $('#beforepage').click(function(){
  else
    $("#beforepage").attr("disabled","disabled");
  document.getElementById("nowpage").innerHTML = nowpage;
- loadXMLDoc("/leave_detailajax?index="+nowpage+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle,"leavedetail");
+ loadXMLDoc("/leave_detailajax?index="+nowpage+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle);
  }
 );
 
@@ -52,36 +52,11 @@ $('#afterpage').click(function(){
   if(nowpage == 2)
      $("#beforepage").removeAttr("disabled");
   document.getElementById("nowpage").innerHTML = nowpage;
- loadXMLDoc("/leave_detailajax?index="+nowpage+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle,"leavedetail");
+ loadXMLDoc("/leave_detailajax?index="+nowpage+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle);
  }
 );
 
-
-
-function loadXMLDoc(url,elementid)
-{
-var xmlhttp;
-if (window.XMLHttpRequest)
-  {// code for IE7+, Firefox, Chrome, Opera, Safari
-  xmlhttp = new XMLHttpRequest();
-  }
-else
-  {// code for IE6, IE5
-  xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-  }
-xmlhttp.onreadystatechange = function()
-  {
-  if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
-    {
-    document.getElementById(elementid).innerHTML = xmlhttp.responseText;
-    afterleavedetailajax();
-    }
-  }
-
-xmlhttp.open("GET",url,true);
-xmlhttp.send();
-}
-loadXMLDoc("/leave_detailajax?index=1"+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle,"leavedetail")
+loadXMLDoc("/leave_detailajax?index=1"+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle)
 //navigate_control();
 </script>
 <script language="JavaScript" type="text/JavaScript" src="../../resource/js/leave.js">

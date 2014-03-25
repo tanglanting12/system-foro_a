@@ -2,19 +2,16 @@
 
 from oa_web.module.oa_handler import OaHandler
 from oa_web.module.route import Route
+from oa_admin.oa.models import User, Role,Leave,Position,Department,Attendance
+from oa_web.libs.autodiscover import autodic
+from oa_web.libs.controller import Leavedetalajax,upload
+from oa_web.upload import uploadDir
+from xlrd import open_workbook
+import StringIO
 import tornado
 import datetime
 import time
-from oa_admin.oa.models import User, Role,Leave,Position,Department,Attendance
-from oa_web.libs.autodiscover import autodic
-from oa_web.config import ConfigCommon
-from oa_web.libs.controller import Leavedetalajax
-import tempfile
 import os.path as osp
-from oa_web.upload import uploadDir
-from xlrd import open_workbook
-import xlrd
-import StringIO
 '''
   why????
   RequestHandler.__init__(self, *args, **kwargs)
@@ -106,8 +103,6 @@ class Update(OaHandler):
 
     def get(self):
         name = self.get_argument("name",default = "abert")
-        print "*****%s***" %(type(name))
-        #print "***%s***%s***%s" %(position_name.name,role_name.name,department_name.name)
         self.render('change_pwd.html',name = name)
 
 
@@ -220,80 +215,11 @@ class MainHandler(OaHandler):
 
 
 @Route('/upload')
-class UploadHandler(OaHandler):
+class UploadHandler(OaHandler,upload):
     def get(self):
         self.render('test2.html')
     def post(self):
-        if self.request.files:
-            for f in self.request.files['up_file']:
-                rawname = f['filename']
-                dstname = str(int(time.time()))+'.'+rawname.split('.').pop()
-                dir = uploadDir()
-                upfile = open(dir+"/"+dstname,'wb')
-                #print "&&&&&%s&&&" %(dir)
-                upfile.write(f['body'])
-                upfile=StringIO.StringIO(upfile.name);
-                #ff=osp.abspath(upfile.name)
-                #print "******%s****%s*" %(type(upfile),upfile.name)
-
-
-                wb = open_workbook(upfile.read())
-                for s in wb.sheets():
-                    print 'sheet:',s.name
-                    for row in range(1,s.nrows):
-                        values=[]
-                        for col in range(1,s.ncols):
-                            #if not s.cell(row,col):
-                            values.append(s.cell(row,col).value)
-                        #print ','.join(values)
-                        print "&&&&%s&&" %(values)
-                        users = User.objects.filter(name = values[0])
-                        user =users[0] if users else None
-                        punchwork = values[2].split(':')
-                        punchworkoff = values[3].split(':')
-                        latetime = values[6].split(':')
-                        earlytime = values[7].split(':')
-                        overtime = values[9].split(':')
-                        worktime = values[11].split(':')
-
-                        daytime = datetime.datetime.strptime(values[1],'%Y-%m-%d') if values[1] else None
-                        punchwork = datetime.time(int(punchwork[0]),int(punchwork[1])) if values[2] else None
-                        punchworkoff = datetime.time(int(punchworkoff[0]),int(punchworkoff[1]))  if values[3] else None
-                        musttime = float(values[4]) if values[4] else None
-                        realtime = float(values[5]) if values[5] else None
-                        latetime = datetime.time(int(latetime[0]),int(latetime[1])) if values[6] else None
-                        earlytime = datetime.time(int(earlytime[0]),int(earlytime[1])) if values[7] else None
-                        isabsent = 1 if values[8] == 'True' else 0
-                        overtime = datetime.time(int(overtime[0]),int(overtime[1])) if values[9] else None
-                        apartment = values[10] if values[10] else None
-                        worktime = datetime.time(int(worktime[0]),int(worktime[1])) if values[11] else None
-                        remark = values[12] if values[12] else None
-
-                            #print "date:%s%spunchwork:%s%s" ,(values[1],type(values[1]),values[2],values[2])
-                        att = Attendance(user = user, daytime = daytime,punchwork=punchwork,punchworkoff=punchworkoff,
-                            musttime=musttime,realtime=realtime,latetime=latetime,earlytime=earlytime,isabsent=isabsent,
-                            overtime=overtime,apartment=apartment,worktime=worktime,remark=remark
-                            )
-                        if user is None:
-                           att.name = values[0]
-                        att.save()
-                        print "create attendance success"
-        self.finish("file" + upfile.read() + " is uploaded ok")
-
-     #
-     # user = models.ForeignKey(User)
-     # punchwork = models.TimeField('上班打卡时间',blank = True, null = True)
-     # punchworkoff = models.TimeField('下班打卡时间', blank = True, null = True)
-     # daytime=models.DateField("日期", blank = True, null = True)
-     # musttime=models.PositiveSmallIntegerField('应到', blank = True, null = True)
-     # realtime=models.PositiveSmallIntegerField('实际到', blank = True, null = True)
-     # latetime=models.TimeField('迟到时间',blank=True,null=True)
-     # earlytime=models.TimeField('早到时间',blank=True,null=True)
-     # isabsent=models.PositiveSmallIntegerField('是否旷工',blank=True,null=True,choices = Isabsent.attrs.items())
-     # overtime=models.TimeField('加班',blank=True,null=True)
-     # apartment=models.CharField('部门',max_length=50,blank=True,null=True)
-     # worktime=models.TimeField('出勤时间',blank=True,null=True)
-     # remark=models.CharField('备注',max_length=150,blank=True,null=True)
+        self.uploadexcel()
 
 '''
 

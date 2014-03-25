@@ -32,19 +32,23 @@
       <td style="width: 10%" name="status">{{leavedetail.verify_status}}</td>
     <td style="width: 20%" width="90px">
      {% if comfirm == "0" %}
-          <button  class="btn btn-info btn-sm btn-infopaging pagingbuttonfont" onclick = loadXMLDoc("/leave_delete?leave_id={{leavedetail.id}}&lastpage={{lastpage}}&index={{index}}&name={{name}}&comfirm={{comfirm}}&superiorStyle={{superiorStyle}}")>
+          <button  class="btn btn-info btn-sm btn-infopaging pagingbuttonfont"
+                   onclick = loadXMLDoc("/leave_delete?leave_id={{leavedetail.id}}&lastpage={{lastpage}}&index={{index}}&name={{name}}&comfirm={{comfirm}}&superiorStyle={{superiorStyle}}","leavedetail")>
           销假</button>
           {% if superiorStyle == "1"%}
-              <button  class="btn btn-info btn-sm btn-infopaging pagingbuttonfont" onclick=loadXMLDoc("/leave_comfirm?leave_id={{leavedetail.id}}&lastpage={{lastpage}}&index={{index}}&name={{name}}&comfirm={{comfirm}}&superiorStyle={{superiorStyle}}")>
+              <button  class="btn btn-info btn-sm btn-infopaging pagingbuttonfont"
+                       onclick=loadXMLDoc("/leave_comfirm?leave_id={{leavedetail.id}}&lastpage={{lastpage}}&index={{index}}&name={{name}}&comfirm={{comfirm}}&superiorStyle={{superiorStyle}}","leavedetail")>
                  受理</button>
           {% end %}
      {% else %}
           {% if superiorStyle == "1"%}
-              <button  class="btn btn-info btn-sm btn-infopaging pagingbuttonfont" onclick=loadXMLDoc("/leaveUncomfirm?leave_id={{leavedetail.id}}&lastpage={{lastpage}}&index={{index}}&name={{name}}&comfirm={{comfirm}}&superiorStyle={{superiorStyle}}")>
+              <button  class="btn btn-info btn-sm btn-infopaging pagingbuttonfont"
+                       onclick=loadXMLDoc("/leaveUncomfirm?leave_id={{leavedetail.id}}&lastpage={{lastpage}}&index={{index}}&name={{name}}&comfirm={{comfirm}}&superiorStyle={{superiorStyle}}","leavedetail")>
                 取消受理</button>
           {% end %}
      {% end %}
-        <button class="btn btn-info btn-sm btn-infopaging pagingbuttonfont" onclick=loadXMLDoc("/perleave_detail?leave_id={{leavedetail.id}}&name={{name}}&comfirm={{comfirm}}")>详情</button>
+        <button class="btn btn-info btn-sm btn-infopaging pagingbuttonfont"
+                onclick=loadXMLDoc("/perleave_detail?leave_id={{leavedetail.id}}&name={{name}}&comfirm={{comfirm}}","leavedetail")>详情</button>
 
     </td>
   </tr>

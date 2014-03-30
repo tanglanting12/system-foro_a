@@ -37,6 +37,7 @@ function toggle(targetid){
 }
 </script>
 
+
     <div class="navbar navbar-fixed-top  navbar-head" role="navigation">
           <h3 class="spread">
             深圳市品汇科技考勤管理系统
@@ -103,7 +104,10 @@ function toggle(targetid){
                        {% module  Attendanceexceptiondata(username) %}
                     {% elif  navigation == "exceptdataall" %}
                        {% module  Attendanceexceptionalldata(username) %}
+                    {% elif  navigation == "uploadAbsenceFile" %}
+                       {% module  UploadAbsenceFile() %}
                    {% end%}
+
                </div>
         </div><!--/span-->
 

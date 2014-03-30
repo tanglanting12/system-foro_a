@@ -239,7 +239,7 @@ class MainHandler(OaHandler):
 @Route('/upload')
 class UploadHandler(OaHandler,upload):
     def get(self):
-        self.render('test2.html')
+        self.render('UploadAbsenceFile.html')
     def post(self):
         self.uploadexcel()
 

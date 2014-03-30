@@ -31,7 +31,7 @@ settings = {
                    'Wait_for_confirm':Wait_for_confirm,'Confirm':Confirm,'Changepwd':Changepwd,\
                    'Perdetail':Perdetail,'Statistic':Statistic,'ComfirmForOther':ComfirmForOther,\
                    'UncomfirmForOther':UncomfirmForOther,'Attendanceexceptiondata':Attendanceexceptiondata,\
-                   'Attendanceexceptionalldata':Attendanceexceptionalldata},
+                   'Attendanceexceptionalldata':Attendanceexceptionalldata,'UploadAbsenceFile':UploadAbsenceFile},
 
 }
 

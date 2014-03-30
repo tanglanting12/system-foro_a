@@ -18,6 +18,7 @@ class  AskforleaveType(Const):
     sick_leave = (1, '病假')
     forOut=(2,'外出')
     yearLeave=(3,'年假')
+
 class Isabsent(Const):
       unabsent=(0,'正常')
       absent=(1,'旷工')

@@ -81,3 +81,7 @@ class Attendanceexceptionalldata(tornado.web.UIModule):
 
       def render(self,username):
           return self.render_string('exceptiondata.html',name = username,superiorStyle = 1)
+class UploadAbsenceFile(tornado.web.UIModule):
+
+      def render(self):
+          return self.render_string('UploadAbsenceFile.html')

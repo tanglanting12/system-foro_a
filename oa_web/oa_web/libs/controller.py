@@ -98,4 +98,5 @@ class upload():
                            att.name = values[0]
                         att.save()
                         print "create attendance success"
+         # self.write("file" + upfile.read() + " is uploaded ok")
          self.finish("file" + upfile.read() + " is uploaded ok")

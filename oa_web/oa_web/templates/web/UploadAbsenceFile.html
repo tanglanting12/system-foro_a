@@ -23,8 +23,24 @@
 
 			});
 		});
+    function check(form)
+    {
+        var temp;
+        temp=true;
+
+        if(window.confirm("确定删除选中的数据？"))
+        {
+            temp=true;
+        }
+        else
+        {
+            return false;
+        }
+        return temp;
+    }
+
 	</script>
-   <form enctype="multipart/form-data" action="/upload" method="post">
+   <form enctype="multipart/form-data" action="/upload" method="post" onsubmit="return check(this)" id="sub">
 
    {% raw xsrf_form_html() %}
 

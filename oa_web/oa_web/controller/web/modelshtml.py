@@ -26,8 +26,9 @@ class Default_detail(tornado.web.UIModule):
         perleaves = Leave.objects.filter(user__name__exact = username)
         perleave_num = perleaves.count()
         unvertify_num = perleaves.filter(verify_status = 0).count()
+        vertify_num = perleaves.filter(verify_status = 1).count()
         #print "&&&%s&&%s&" % (perleave_num,unvertify_num)
-        return self.render_string('default_detail.html',perleave_num = perleave_num,unvertify_num = unvertify_num)
+        return self.render_string('default_detail.html',perleave_num = perleave_num,vertify_num=vertify_num,unvertify_num = unvertify_num)
 
 
 

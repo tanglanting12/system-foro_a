@@ -92,10 +92,10 @@ class upload():
 
                         att = Attendance(user = user, daytime = daytime,punchwork=punchwork,punchworkoff=punchworkoff,
                             musttime=musttime,realtime=realtime,latetime=latetime,earlytime=earlytime,isabsent=isabsent,
-                            overtime=overtime,apartment=apartment,worktime=worktime,remark=remark
+                            overtime=overtime,apartment=apartment,worktime=worktime,remark=remark,name = values[0]
                             )
-                        if user is None:
-                           att.name = values[0]
+                       # if user is None:
+                        #   att.name = values[0]
                         att.save()
                         print "create attendance success"
          self.redirect('/?navigation=uploadAbsenceFile')

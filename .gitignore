@@ -13,4 +13,4 @@ local_settings.py
 .idea
 *.xls
 migrations/
-bug
+

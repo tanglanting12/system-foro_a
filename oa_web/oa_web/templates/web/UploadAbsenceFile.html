@@ -31,6 +31,7 @@
         if(window.confirm("确定删除选中的数据？"))
         {
             temp=true;
+            $("#btnAjaxForm").attr("disabled","disabled");
         }
         else
         {
@@ -39,8 +40,35 @@
         return temp;
     }
 
+//
+//        $(document).ready(function () {
+//        var options = {
+//             dataType: 'text',
+//             data: $("#form1").serialize(),
+//            success: function (data) {
+//                $("#btnAjaxForm").removeAttr ("disabled");
+//                $("#uploadfilediv").text(data);
+//            }
+//        };
+//            // ajaxForm
+//            $("#form1").ajaxForm(options);
+//        });
+            $(function () {
+            var options = {
+                success: function (data) {
+                    $("#responseText").text(data);
+                }
+            };
+
+            $("#form1").ajaxForm(options);
+        });
+
+
 	</script>
-   <form enctype="multipart/form-data" action="/upload" method="post" onsubmit="return check(this)" id="sub">
+           <label id="responseText"></label>
+         提交代码：
+         <div id="uploadfilediv">
+   <form id="form1" enctype="multipart/form-data" action="/upload" method="post" onsubmit="return check(this)" id="sub">
 
    {% raw xsrf_form_html() %}
 
@@ -56,12 +84,10 @@
 				</div>
                  <div class="form-group">
 
-                    <input type="submit"  class="btn" value="上传">
+                    <input type="submit"  id="btnAjaxForm" class="btn" value="上传">
                  </div>
 		</div>
 
-
-
-
    </form>
+         </div>
 

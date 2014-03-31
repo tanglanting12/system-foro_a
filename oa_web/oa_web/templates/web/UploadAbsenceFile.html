@@ -65,15 +65,14 @@
 
 
 	</script>
-           <label id="responseText"></label>
-         提交代码：
+
          <div id="uploadfilediv">
    <form id="form1" enctype="multipart/form-data" action="/upload" method="post" onsubmit="return check(this)" id="sub">
 
    {% raw xsrf_form_html() %}
 
        	<div class="col-lg-6 col-sm-6 col-12">
-				<h4>上传文件:</h4>
+				<h4>上传文件(支持多文件一块上传):</h4>
 				<div class="input-group">
 					<span class="input-group-btn">
 						<span class="btn btn-primary btn-file">

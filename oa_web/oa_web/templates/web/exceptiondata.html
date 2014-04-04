@@ -40,6 +40,7 @@ $('#beforepage').click(function(){
  }
  else
    $("#beforepage").attr("disabled","disabled");
+ $("#afterpage").removeAttr("disabled");
  document.getElementById("nowpage").innerHTML = nowpage;
  loadXMLDoc("/exceptiondataajax?index="+nowpage+"&name="+name+"&superiorStyle="+superiorStyle,"exceptiondata");
  }

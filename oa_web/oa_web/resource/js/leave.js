@@ -53,8 +53,10 @@ function Calculateleaveday(arr_leave_time_begin,arr_leave_time_end,arr_daynum)
 
 
 
-function loadXMLDoc(url,elementid)
+function loadXMLDoc(url,elementid,buttonvirtual,otherdiv)
 {
+buttonvirtual = arguments[2] ? arguments[2] : "1";
+otherdiv = arguments[3] ? arguments[3] : "leavedetailajax";
 var xmlhttp;
 if (window.XMLHttpRequest)
   {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -69,7 +71,10 @@ xmlhttp.onreadystatechange = function()
   if (xmlhttp.readyState == 4 && xmlhttp.status == 200)
     {
     document.getElementById(elementid).innerHTML = xmlhttp.responseText;
-    afterleavedetailajax();
+    if(buttonvirtual !='1')
+       document.getElementById(otherdiv).innerHTML = '';
+    else
+       afterleavedetailajax();
     }
   }
 
@@ -77,7 +82,8 @@ xmlhttp.open("GET",url,true);
 xmlhttp.send();
 }
 
-function afterleavedetailajax(){
+function afterleavedetailajax(rows){
+    rows = arguments[0] ? arguments[0]:8;
     leave_type_id = ["0","1","2","3"];
     leave_type_name = ["事假","病假","外出","年假"];
     status_id = ["0","1"];
@@ -96,6 +102,9 @@ function afterleavedetailajax(){
     if( String(lenReasonforLeaves).length > 30)
     reaonforleaves[i].innerHTML = String(lenReasonforLeaves).substring(0,30);
     }
+    var nums=document.getElementsByName("num");
+    if (nums.length < rows)
+        $("#afterpage").attr("disabled","disabled");
 //    alert(usernames[2].innerHTML);
 
 //    $( "#autocomplete" ).autocomplete({

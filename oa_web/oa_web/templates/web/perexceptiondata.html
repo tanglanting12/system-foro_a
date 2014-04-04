@@ -1,5 +1,10 @@
 <div>
     <p>填写信息：  </p>
+    {% for member in exceptiondata.__dict__ %}
+          {% if exceptiondata.__dict__[member] == None %}
+             {{exceptiondata.__dict__[member] = ''}}
+          {% end %}
+    {% end %}
 姓名：<span name="leave_type" >{{exceptiondata.name}}</span>
 <p>上班打卡时间: <span name="punchwork">{{exceptiondata.punchwork}}</span></p>
 <p>下班打卡时间:<span name="punchworkoff">{{exceptiondata.punchworkoff}}</span> </p>

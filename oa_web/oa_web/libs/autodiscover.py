@@ -44,3 +44,8 @@ def autodic(module,id="id",name="name"):
         if e.id not in dic:
            dic[e.id]=e.name
     return dic
+
+def NoneAsblank(member):
+    if member == None:
+        member = ''
+

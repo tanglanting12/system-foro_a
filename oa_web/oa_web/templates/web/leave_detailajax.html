@@ -22,7 +22,11 @@
 {% for num,leavedetail in enumerate(leavedetails) %}
     <tr>
     <td style="width: 5%">{{num+1}}</td>
-
+         {% for member in leavedetail.__dict__ %}
+           {% if leavedetail.__dict__[member] == None %}
+              {{leavedetail.__dict__[member] = ''}}
+           {% end %}
+         {% end %}
     <td style="width: 5%" name="username">{{leavedetail.user}}</td>
       <td style="width: 5%"name="leave_type" >{{leavedetail.leave_type}}</td>
     <td style="width: 15%" name="leave_time_begin" >{{leavedetail.leave_time_begin}}</td>
@@ -48,7 +52,7 @@
           {% end %}
      {% end %}
         <button class="btn btn-info btn-sm btn-infopaging pagingbuttonfont"
-                onclick=loadXMLDoc("/perleave_detail?leave_id={{leavedetail.id}}&name={{name}}&comfirm={{comfirm}}","leavedetail")>详情</button>
+                onclick=loadXMLDoc("/perleave_detail?leave_id={{leavedetail.id}}&name={{name}}&comfirm={{comfirm}}","leavedetail",'0')>详情</button>
 
     </td>
   </tr>

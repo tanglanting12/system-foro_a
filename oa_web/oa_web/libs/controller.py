@@ -27,9 +27,9 @@ class Leavedetalajax():
             self.leaves = Leave.objects.order_by("-create_time","leave_time_begin")\
             .filter(user__name__exact = self.name,verify_status__exact = self.comfirm)
         if self.lastpage=='1':
-            self.leavedetails = self.leaves.reverse()[:4]
+            self.leavedetails = self.leaves.reverse()[:8]
         else:
-            self.leavedetails = self.leaves[int(self.index)*4:(int(self.index)+1)*4]
+            self.leavedetails = self.leaves[int(self.index)*8:(int(self.index)+1)*8]
 
 
 class exceptiondataajax():

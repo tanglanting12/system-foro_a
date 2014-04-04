@@ -32,6 +32,7 @@ settings = {
                    'Perdetail':Perdetail,'Statistic':Statistic,'ComfirmForOther':ComfirmForOther,\
                    'UncomfirmForOther':UncomfirmForOther,'Attendanceexceptiondata':Attendanceexceptiondata,\
                    'Attendanceexceptionalldata':Attendanceexceptionalldata,'UploadAbsenceFile':UploadAbsenceFile},
+    
 
 }
 

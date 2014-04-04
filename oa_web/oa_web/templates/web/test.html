@@ -1,32 +1,25 @@
-   <form id="form1" action="https:localhost:9000/upload" method="post" enctype="multipart/form-data">
-        <table>
-            <tr>
-                <td>附件名字:</td>
-                <td>
-                    <input type="text" name="fileName" /></td>
-            </tr>
-            <tr>
-                <td>附件:</td>
-                <td>
-                    <input type="file" name="document" /></td>
-            </tr>
-            <tr>
-                <td colspan="2" style="align-content: center">
-                    <input type="submit" value="模拟iframe提交表单" />
-                </td>
-            </tr>
-        </table>
-    </form>
-    <label id="responseText"></label>
-         提交代码：
-    <script type="text/javascript">
-        $(function () {
-            var options = {
-                success: function (data) {
-                    $("#responseText").text(data);
-                }
-            };
+ <meta charset="utf-8">
+ <script type="text/javascript" src="../../resource/js/jquery-1.11.0.js"></script>
+<!-- 3.0 -->
+ <link href=" ../../resource/dist/css/bootstrap3.0.0.css" rel="stylesheet">
+<script type="text/javascript" src="../../resource/js/bootstrap-select.js"></script>
+<link rel="stylesheet" type="text/css" href="../../resource/js/bootstrap-select.css">
+<script type="text/javascript" src="../../resource/dist/js/bootstrap.min.js"></script>
 
-            $("#form1").ajaxForm(options);
-        });
+<select id="listleave_style" class="selectpicker" name="leave_type">
+   <option value="0"> 事假 </option>
+　　<option value="1"> 病假 </option>
+   <script type="text/javascript">
+           $(window).on('load', function () {
+				   
+				               $('.selectpicker').selectpicker({
+								                   'selectedText': 'cat'
+												               });
+							   
+							               // $('.selectpicker').selectpicker('hide');
+							           });
     </script>
+	<option value="2"> 外出 </option>
+　　<option value="3"> 年假 </option>
+</select>
+ 

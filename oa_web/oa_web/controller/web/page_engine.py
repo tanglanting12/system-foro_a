@@ -35,7 +35,7 @@ class Index(OaHandler,BaseHandler):
             navigation = self.get_argument("navigation",default = "default_detail")
             leaves=Leave.objects.filter(verify_status__exact = 0)
             subordinates = User.objects.filter(superior__exact = user.id)
-            uncomfirmNum = leaves.filter(user__in = subordinates).count()
+            uncomfirmNum = leaves.filter(user__in = subordinates,deleteleavetag = 0).count()
             if uncomfirmNum == 0:
                 uncomfirmNum = ""
             else:
@@ -149,7 +149,7 @@ class Leavedetailajax(OaHandler,Leavedetalajax):
    def get(self):
         self.leavedetailajax()
         return  self.render('leave_detailajax.html',leavedetails = self.leavedetails,name = self.name,comfirm = self.comfirm\
-                    ,superiorStyle = self.superiorStyle,index = self.index,lastpage = self.lastpage,leaves=self.leaves)
+                    ,superiorStyle = self.superiorStyle,index = self.index,leaves=self.leaves)
 
 @Route('/exceptiondata')
 class exceptiondata(OaHandler):
@@ -186,11 +186,11 @@ class Updateperleave(OaHandler):
 class Leavedelete(OaHandler,Leavedetalajax):
      def get(self):
         leave_id = int(self.get_argument("leave_id"))
-        Leave.objects.get(id = leave_id).delete()
+        Leave.objects.filter(id = leave_id).update(deleteleavetag=1)
         print "%s leave Delete success! " %(leave_id)
         self.leavedetailajax()
         return  self.render('leave_detailajax.html',leavedetails = self.leavedetails,name = self.name,comfirm = self.comfirm\
-                    ,superiorStyle = self.superiorStyle,index = self.index,lastpage = self.lastpage)
+                    ,superiorStyle = self.superiorStyle,index = self.index)
 
 @Route('/leave_comfirm')
 class Leavecomfirm(OaHandler,Leavedetalajax):
@@ -200,7 +200,7 @@ class Leavecomfirm(OaHandler,Leavedetalajax):
         print "&&&%s leave comfirm success! " %(leave_id)
         self.leavedetailajax()
         return  self.render('leave_detailajax.html',leavedetails = self.leavedetails,name = self.name,comfirm = self.comfirm\
-                    ,superiorStyle = self.superiorStyle,index = self.index,lastpage = self.lastpage)
+                    ,superiorStyle = self.superiorStyle,index = self.index)
 
 @Route('/leaveUncomfirm')
 class LeaveUncomfirm(OaHandler,Leavedetalajax):
@@ -210,7 +210,7 @@ class LeaveUncomfirm(OaHandler,Leavedetalajax):
         print "&&&%s leave uncomfirm success! " %(leave_id)
         self.leavedetailajax()
         return  self.render('leave_detailajax.html',leavedetails = self.leavedetails,name = self.name,comfirm = self.comfirm\
-                    ,superiorStyle = self.superiorStyle,index = self.index,lastpage = self.lastpage)
+                    ,superiorStyle = self.superiorStyle,index = self.index)
 
 @Route('/perleave_detail')
 class Perleave_detail(OaHandler):

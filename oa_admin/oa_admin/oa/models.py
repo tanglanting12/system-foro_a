@@ -1,7 +1,7 @@
 #coding=utf-8
 
 from django.db import models
-from oa_admin.comm_def import UserGender,Verfify,AskforleaveType,Isabsent
+from oa_admin.comm_def import UserGender,Verfify,AskforleaveType,Isabsent,Deleteleavetag
 #**********************************************************************
 class Department(models.Model):
     name = models.CharField('部门名称', max_length = 20, unique = True)
@@ -67,7 +67,7 @@ class Leave(models.Model):
     verify_status = models.PositiveSmallIntegerField('确认状态', blank = True, null = True,default = 0,choices = Verfify.attrs.items())
     create_time = models.DateTimeField('创建时间', auto_now_add = True)
     #verify_people = models.CharField('审核人', max_length=20, unique=True)
-
+    deleteleavetag = models.PositiveSmallIntegerField('标记请假是否有效', blank = True, null = True,default = 0,choices = Deleteleavetag.attrs.items())
     def __unicode__(self):
         return self.reason_for_leave
 

@@ -105,6 +105,12 @@ function afterleavedetailajax(rows){
     var nums=document.getElementsByName("num");
     if (nums.length < rows)
         $("#afterpage").attr("disabled","disabled");
+
+    $('.deleteleave').click(function(){
+                  check( $(this).attr('id'));
+              }
+      );
+
 //    alert(usernames[2].innerHTML);
 
 //    $( "#autocomplete" ).autocomplete({
@@ -141,4 +147,10 @@ pagings[3].setAttribute("onclick","loadXMLDoc(_TheArray[3])");
 pagings[4].setAttribute("onclick","loadXMLDoc(_TheArray[4])");
 }
 //**********************************************
-
+    function check(url)
+    {
+        if(window.confirm("确定删除选中的数据？"))
+        {
+         loadXMLDoc(url,"leavedetail");
+        }
+    }

@@ -21,7 +21,7 @@ class Default_detail(tornado.web.UIModule):
 
     def render(self,username):
         users = User.objects.filter(name = username)
-        perleaves = Leave.objects.filter(user__name__exact = username)
+        perleaves = Leave.objects.filter(user__name__exact = username,deleteleavetag=0)
         perleave_num = perleaves.count()
         unvertify_num = perleaves.filter(verify_status = 0).count()
         vertify_num = perleaves.filter(verify_status = 1).count()

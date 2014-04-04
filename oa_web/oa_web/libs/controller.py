@@ -10,7 +10,6 @@ class Leavedetalajax():
         self.name = self.get_argument("name",default = "abert")
        # user=User.objects.filter(name__exact=name)
         self.index = self.get_argument("index",default = 0)
-        self.lastpage = self.get_argument("lastpage",default = 0)
         self.comfirm = self.get_argument("comfirm",default=0)
         self.superiorStyle = self.get_argument("superiorStyle",default = 0)
         if (int(self.index) > 0):
@@ -19,17 +18,14 @@ class Leavedetalajax():
             subordinates = User.objects.filter(superior__name__exact = self.name)
             if self.comfirm =='1':
                 self.leaves = Leave.objects.order_by("-create_time","leave_time_begin")\
-                    .filter(verify_status__exact = 1,user__in = subordinates)
+                    .filter(deleteleavetag = 0,verify_status__exact = 1,user__in = subordinates)
             else:
                 self.leaves = Leave.objects.order_by("-create_time","leave_time_begin").filter\
-                    (verify_status__exact = 0,user__in = subordinates)
+                    (deleteleavetag = 0,verify_status__exact = 0,user__in = subordinates)
         else :
             self.leaves = Leave.objects.order_by("-create_time","leave_time_begin")\
-            .filter(user__name__exact = self.name,verify_status__exact = self.comfirm)
-        if self.lastpage=='1':
-            self.leavedetails = self.leaves.reverse()[:8]
-        else:
-            self.leavedetails = self.leaves[int(self.index)*8:(int(self.index)+1)*8]
+            .filter(deleteleavetag = 0,user__name__exact = self.name,verify_status__exact = self.comfirm)
+        self.leavedetails = self.leaves[int(self.index)*8:(int(self.index)+1)*8]
 
 
 class exceptiondataajax():

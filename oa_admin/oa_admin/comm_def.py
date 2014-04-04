@@ -23,6 +23,9 @@ class Isabsent(Const):
       unabsent=(0,'正常')
       absent=(1,'旷工')
 
+class Deleteleavetag(Const):
+      valid = (0,'有效')
+      unvalid = (1,'无效')
 
 
 

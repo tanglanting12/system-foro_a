@@ -77,7 +77,6 @@ class Leave(models.Model):
 
 
 class Attendance(models.Model):
-     user = models.ForeignKey(User, default=None, null=True)
      name = models.CharField('名字',max_length=20,blank=True,null=True)
      punchwork = models.TimeField('上班打卡时间',blank = True, null = True)
      punchworkoff = models.TimeField('下班打卡时间', blank = True, null = True)
@@ -91,3 +90,10 @@ class Attendance(models.Model):
      apartment=models.CharField('部门',max_length=50,blank=True,null=True)
      worktime=models.TimeField('出勤时间',blank=True,null=True)
      remark=models.CharField('备注',max_length=150,blank=True,null=True)
+
+     def __unicode__(self):
+         return self.name
+
+     class Meta:
+         verbose_name = '考勤数据'
+         verbose_name_plural = verbose_name

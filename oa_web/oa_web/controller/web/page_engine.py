@@ -158,12 +158,22 @@ class exceptiondata(OaHandler):
 
 
 @Route('/exceptiondataajax')
-class exceptiondataajax(OaHandler,exceptiondataajax):
+class exceptiondataajaxClass(OaHandler,exceptiondataajax):
    def get(self):
         self.exceptiondataajax()
         return  self.render('exceptiondataajax.html',exceptiondatas = self.exceptiondatas)
 
 
+
+
+@Route('/turntonormaldata')
+class turntonormaldata(OaHandler,exceptiondataajax):
+
+   def get(self):
+        exceptiondataid = int(self.get_argument("exceptiondataid"))
+        Attendance.objects.filter(id = exceptiondataid).update(isnormal=1)
+        self.exceptiondataajax()
+        return  self.render('exceptiondataajax.html',exceptiondatas = self.exceptiondatas)
 
 ############### not finish
 @Route('/updateperleave')
@@ -210,6 +220,10 @@ class LeaveUncomfirm(OaHandler,Leavedetalajax):
         self.leavedetailajax()
         return  self.render('leave_detailajax.html',leavedetails = self.leavedetails,name = self.name,comfirm = self.comfirm\
                     ,superiorStyle = self.superiorStyle,index = self.index)
+
+
+
+
 
 @Route('/perleave_detail')
 class Perleave_detail(OaHandler):

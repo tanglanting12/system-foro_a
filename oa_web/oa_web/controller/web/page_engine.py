@@ -161,7 +161,6 @@ class exceptiondata(OaHandler):
 class exceptiondataajax(OaHandler,exceptiondataajax):
    def get(self):
         self.exceptiondataajax()
-        print "&&&&&%s&&&" %(self.exceptiondatas)
         return  self.render('exceptiondataajax.html',exceptiondatas = self.exceptiondatas)
 
 

@@ -31,19 +31,22 @@ class Leavedetalajax():
 class exceptiondataajax():
 
    def exceptiondataajax(self):
+        now = datetime.date.today()
+
         self.name = self.get_argument("name",default = "abert")
+        self.checkvalue=self.get_argument("checkvalue",default = "all")
+        deadline = now.replace(month=now.month-int(self.checkvalue))  if not self.checkvalue == 'all'  else datetime.date.min
        # user=User.objects.filter(name__exact=name)
         self.index = self.get_argument("index",default = 0)
         self.superiorStyle = self.get_argument("superiorStyle",default = 0)
         if (int(self.index) > 0):
             self.index = int(self.index)-1
         if self.superiorStyle == '1':
-            print "lookup all exceptiondata"
-            self.exceptiondatas = Attendance.objects.order_by("-daytime").exclude(musttime=F('realtime'))
+            self.exceptiondatas = Attendance.objects.order_by("-daytime").exclude(musttime=F('realtime')).filter(daytime__gte=deadline).exclude(daytime__gte=datetime.date.today())
 
         else :
             self.exceptiondatas = Attendance.objects.order_by("-daytime").filter(user__name__exact  = self.name)\
-           .exclude(musttime=F('realtime'))
+           .exclude(musttime=F('realtime')).filter(daytime__gte=deadline).exclude(daytime__gte=datetime.date.today())
 
         self.exceptiondatas = self.exceptiondatas[int(self.index)*8:(int(self.index)+1)*8]
 

@@ -1,3 +1,14 @@
+
+ <div id="timesearch">
+<select  class="selectpicker timesearch"  name="timesearch">
+   <option value="0"> 当前月份 </option>
+　　<option value="1"> 前两月 </option>
+    <option value="2"> 前三月 </option>
+　　<option value="3"> 全部 </option>
+</select>
+</div>
+
+
 <div id="exceptiondata" >
 
 </div>
@@ -22,6 +33,12 @@
 var nowpage = 1;
 name = "{{name}}";
 superiorStyle = "{{superiorStyle}}"
+var checkValue=0
+ $(".timesearch").change(function(){
+    checkValue=$(".timesearch").val();
+    loadXMLDoc("/exceptiondataajax?index="+nowpage+"&name="+name+"&superiorStyle="+superiorStyle+"&checkvalue="+checkValue,"exceptiondata");
+});
+
 $('#paging_right,#paging_left').click( function (){
   if(this.id == "paging_left")
   step = -5;
@@ -62,3 +79,10 @@ $('#afterpage').click(function(){
 </script>
 <link href="../../resource/css/signin.css" rel="stylesheet">
 <link href="../../resource/css/leavedetail.css" rel="stylesheet">
+
+<!--add selectbutton css-->
+<!-- 3.0 -->
+ <link href=" ../../resource/dist/css/bootstrap3.0.0.css" rel="stylesheet">
+<script type="text/javascript" src="../../resource/js/bootstrap-select.js"></script>
+<link rel="stylesheet" type="text/css" href="../../resource/js/bootstrap-select.css">
+<script type="text/javascript" src="../../resource/dist/js/bootstrap.min.js"></script>

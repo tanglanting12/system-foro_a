@@ -43,12 +43,11 @@ class User(models.Model):
     create_time = models.DateTimeField('创建时间', auto_now_add = True)
     update_time = models.DateTimeField('更新时间', auto_now = True)
     phone_num = models.CharField('电话号码', max_length = 20)
-    pre_year_holiday = models.PositiveSmallIntegerField()
-    remain_year_holiday = models.PositiveSmallIntegerField()
-    superior = models.ForeignKey('self',default = 'null',blank = True,null = True)
-    position = models.ForeignKey(Position)
-    role = models.ForeignKey(Role)
-    department = models.ForeignKey(Department)
+    pre_year_holiday = models.PositiveSmallIntegerField(verbose_name = '每年年假')
+    superior = models.ForeignKey('self',default = 'null',blank = True,null = True,verbose_name = '上级')
+    position = models.ForeignKey(Position,verbose_name = '职位')
+    role = models.ForeignKey(Role,verbose_name = '角色')
+    department = models.ForeignKey(Department,verbose_name = '部门')
 
     def __unicode__(self):
         return self.name
@@ -59,7 +58,7 @@ class User(models.Model):
 
 
 class Leave(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User,verbose_name = '用户名')
     leave_type = models.PositiveSmallIntegerField('请假类型', blank = True, null = True, choices=AskforleaveType.attrs.items())
     reason_for_leave = models.CharField('请假事由', max_length=150)
     leave_time_begin = models.DateTimeField('请假开始时间')

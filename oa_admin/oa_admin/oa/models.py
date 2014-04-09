@@ -1,7 +1,7 @@
 #coding=utf-8
 
 from django.db import models
-from oa_admin.comm_def import UserGender,Verfify,AskforleaveType,Isabsent,Deleteleavetag
+from oa_admin.comm_def import UserGender,Verfify,AskforleaveType,Isabsent,Deleteleavetag,Isnormal
 #**********************************************************************
 class Department(models.Model):
     name = models.CharField('部门名称', max_length = 20, unique = True)
@@ -89,6 +89,8 @@ class Attendance(models.Model):
      apartment=models.CharField('部门',max_length=50,blank=True,null=True)
      worktime=models.TimeField('出勤时间',blank=True,null=True)
      remark=models.CharField('备注',max_length=150,blank=True,null=True)
+     isnormal=models.PositiveSmallIntegerField('是否异常',blank=True,null=True,default = 0,choices = Isnormal.attrs.items())
+
 
      def __unicode__(self):
          return self.name

@@ -27,6 +27,9 @@ class Deleteleavetag(Const):
       valid = (0,'有效')
       unvalid = (1,'无效')
 
+class Isnormal(Const):
+      unnormal=(0,'异常')
+      normal=(1,'正常')
 
 
 

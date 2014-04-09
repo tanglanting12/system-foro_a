@@ -55,5 +55,5 @@ $(function () {
        }
    };
 
-       $("#form1").ajaxForm(options);
+   $("#form1").ajaxForm(options);
    });

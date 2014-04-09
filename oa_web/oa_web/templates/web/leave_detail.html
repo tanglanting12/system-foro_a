@@ -1,10 +1,5 @@
-
-
-
 <div id="leavedetail" >
 </div>
-
-
 <div id="leavedetailajax">
 <div id="paging"  >
   <button id="beforepage" class="btn btn-info btn-infopaging controlpaging">上页</button>
@@ -15,57 +10,15 @@
 
 
  <!--<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">-->
-
- <link rel="stylesheet" href="../../resource/css/jquery-ui-1.10.4.custom.min.css">
+<link rel="stylesheet" href="../../resource/css/jquery-ui-1.10.4.custom.min.css">
 <script type="text/javascript" src="../../resource/js/leave.js"></script>
- <script type="text/javascript" src="../../resource/js/jquery-1.11.0.js"></script>
- <script src="../../resource/js/jquery-ui.js"></script>
-
-
-
-<script language="JavaScript" type="text/JavaScript" src="../../resource/js/leave.js"></script>
+<script type="text/javascript" src="../../resource/js/jquery-1.11.0.js"></script>
+<script src="../../resource/js/jquery-ui.js"></script>
 <link href="../../resource/css/signin.css" rel="stylesheet">
 <link href="../../resource/css/leavedetail.css" rel="stylesheet">
-
-<script language="JavaScript" type="text/JavaScript">
-var _TheArray = new Array;
-var nowpage = 1;
-comfirm = "{{comfirm}}" ;
+<script type="application/javascript">
+ comfirm = "{{comfirm}}" ;
 name = "{{name}}";
 superiorStyle = "{{superiorStyle}}";
-
-$('#paging_right,#paging_left').click( function (){
-  if(this.id == "paging_left")
-  step = -5;
-  else if(this.id == "paging_right")
-  step=5;
-  navigate_control(step);
-});
-if( nowpage == 1 )
-$("#beforepage").attr("disabled","disabled");//设置所有的button不可用  $(":button").removeAttr("disabled");//去掉button的disabled属性，使button可用
-
-
-
-$('#beforepage').click(function(){
- if  ( nowpage > 1){
-      nowpage -= 1;
- }
- else
-   $("#beforepage").attr("disabled","disabled");
- document.getElementById("nowpage").innerHTML = nowpage;
- loadXMLDoc("/Leavedetailajax?index="+nowpage+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle,"leavedetail");
- }
-);
-
-$('#afterpage').click(function(){
-  nowpage += 1;
-  if(nowpage == 2)
-     $("#beforepage").removeAttr("disabled");
-  document.getElementById("nowpage").innerHTML = nowpage;
- loadXMLDoc("/Leavedetailajax?index="+nowpage+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle,"leavedetail");
- }
-);
-
-loadXMLDoc("/Leavedetailajax?index=1"+"&comfirm="+comfirm+"&name="+name+"&superiorStyle="+superiorStyle,"leavedetail")
-//navigate_control();
 </script>
+<script  type="text/JavaScript" src="../../resource/js/leavedetail.js"></script>

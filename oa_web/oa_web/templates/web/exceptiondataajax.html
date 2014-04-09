@@ -4,49 +4,48 @@
  <!--<button  class="btn btn-info btn-sm btn-infopaging pagingbuttonfont" id="searchUser">-->
   <!--搜索</button>-->
 <table class="table table-striped tableheight ">
-        <thead>
+    <thead>
           <tr>
              <th>编号</th>
-    <th>姓名</th>
-      <th>日期</th>
-    <th>签到时间</th>
-      <th>签退时间</th>
-      <th >实到</th>
-    <th>迟到时间</th>
-      <th>早退时间</th>
-     <th>出勤时长</th>
-     <th>备注</th>
-     <th>详情</th>
+             <th>姓名</th>
+             <th>日期</th>
+             <th>签到时间</th>
+             <th>签退时间</th>
+             <th >实到</th>
+             <th>迟到时间</th>
+             <th>早退时间</th>
+             <th>出勤时长</th>
+             <th>备注</th>
+             <th>详情</th>
           </tr>
-        </thead>
-        <tbody>
-
-{% for num,exceptiondata in enumerate(exceptiondatas) %}
-    <tr>
-    <td style="width: 5%" name="num">{{num+1}}</td>
+    </thead>
+  <tbody>
+    {% for num,exceptiondata in enumerate(exceptiondatas) %}
+           <tr>
+               <td style="width: 5%" name="num">{{num+1}}</td>
         <!--if member is None ,turn to ''-->
-     {% for member in exceptiondata.__dict__ %}
-          {% if exceptiondata.__dict__[member] == None %}
-             {{exceptiondata.__dict__[member] = ''}}
-          {% end %}
-    {% end %}
-    <td style="width: 5%" name="username">{{exceptiondata.name}}</td>
-      <td style="width: 5%"name="daytime" >{{exceptiondata.daytime}}</td>
-    <td style="width: 15%" name="punchwork" >{{exceptiondata.punchwork}}</td>
-        <td style="width: 15%" name="punchworkoff" >{{exceptiondata.punchworkoff}}</td>
-      <td  name="realtime">{{exceptiondata.realtime}}</td>
-    <td style="width: 5%" name="latetime">{{exceptiondata.latetime}}</td>
-
-      <td style="width: 10%" name="earlytime">{{exceptiondata.earlytime}}</td>
-      <td style="width: 10%" name="worktime">{{exceptiondata.worktime}}</td>
-      <td style="width: 10%" name="remark">{{exceptiondata.remark}}</td>
-    <td style="width: 20%" width="90px">
-        <button class="btn btn-info btn-sm btn-infopaging pagingbuttonfont"
-     onclick=loadXMLDoc("/perexceptiondata?exceptiondataid={{exceptiondata.id}}","exceptiondata",'0','exceptiondataajax')>详情</button>
-    </td>
-  </tr>
+               {% for member in exceptiondata.__dict__ %}
+                    {% if exceptiondata.__dict__[member] == None %}
+                        {{exceptiondata.__dict__[member] = ''}}
+                    {% end %}
+                {% end %}
+               <td style="width: 5%" name="username">{{exceptiondata.name}}</td>
+               <td style="width: 5%"name="daytime" >{{exceptiondata.daytime}}</td>
+               <td style="width: 15%" name="punchwork" >{{exceptiondata.punchwork}}</td>
+               <td style="width: 15%" name="punchworkoff" >{{exceptiondata.punchworkoff}}</td>
+               <td  name="realtime">{{exceptiondata.realtime}}</td>
+               <td style="width: 5%" name="latetime">{{exceptiondata.latetime}}</td>
+               <td style="width: 10%" name="earlytime">{{exceptiondata.earlytime}}</td>
+               <td style="width: 10%" name="worktime">{{exceptiondata.worktime}}</td>
+               <td style="width: 10%" name="remark">{{exceptiondata.remark}}</td>
+               <td style="width: 20%" width="90px">
+                    <button class="btn btn-info btn-sm btn-infopaging pagingbuttonfont"
+                            onclick=loadXMLDoc("/perexceptiondata?exceptiondataid={{exceptiondata.id}}","exceptiondata",'0','exceptiondataajax')>
+                     详情</button>
+                </td>
+             </tr>
  {% end %}
-        </tbody>
-      </table>
+  </tbody>
+</table>
 
 

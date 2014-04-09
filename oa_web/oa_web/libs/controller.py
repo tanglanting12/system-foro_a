@@ -8,7 +8,6 @@ from django.db.models import F;
 class Leavedetalajax():
    def leavedetailajax(self):
         self.name = self.get_argument("name",default = "abert")
-       # user=User.objects.filter(name__exact=name)
         self.index = self.get_argument("index",default = 0)
         self.comfirm = self.get_argument("comfirm",default=0)
         self.superiorStyle = self.get_argument("superiorStyle",default = 0)
@@ -36,7 +35,6 @@ class exceptiondataajax():
         self.name = self.get_argument("name",default = "abert")
         self.checkvalue=self.get_argument("checkvalue",default = "all")
         deadline = now.replace(month=now.month-int(self.checkvalue))  if not self.checkvalue == 'all'  else datetime.date.min
-       # user=User.objects.filter(name__exact=name)
         self.index = self.get_argument("index",default = 0)
         self.superiorStyle = self.get_argument("superiorStyle",default = 0)
         if (int(self.index) > 0):
@@ -96,6 +94,4 @@ class upload():
                        # if user is None:
                         #   att.name = values[0]
                         att.save()
-                        print "create attendance success"
          self.redirect('/?navigation=uploadAbsenceFile')
-         #self.render('UploadAbsenceFile.html')

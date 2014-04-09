@@ -1,76 +1,12 @@
 
  <link href="../../resource/css/uploadAbsenceFile.css" rel="stylesheet">
  <script type="text/javascript" src="../../resource/js/jquery-1.11.0.js"></script>
-    	<script>
-		$(document).on('change', '.btn-file :file',function() {
-				var input = $(this),
-				numFiles = input.get(0).files ? input.get(0).files.length : 1,
-				label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-				input.trigger('fileselect', [numFiles, label]);
-		});
-
-		$(document).ready( function() {
-			$('.btn-file :file').on('fileselect', function(event, numFiles, label) {
-
-				var input = $(this).parents('.input-group').find(':text'),
-					log = numFiles > 1 ? numFiles + ' files selected' : label;
-
-				if( input.length ) {
-					input.val(log);
-				} else {
-					if( log ) alert(log);
-				}
-
-			});
-		});
-    function check(form)
-    {
-        var temp;
-        temp=true;
-
-        if(window.confirm("确定删除选中的数据？"))
-        {
-            temp=true;
-            $("#btnAjaxForm").attr("disabled","disabled");
-        }
-        else
-        {
-            return false;
-        }
-        return temp;
-    }
-
-//
-//        $(document).ready(function () {
-//        var options = {
-//             dataType: 'text',
-//             data: $("#form1").serialize(),
-//            success: function (data) {
-//                $("#btnAjaxForm").removeAttr ("disabled");
-//                $("#uploadfilediv").text(data);
-//            }
-//        };
-//            // ajaxForm
-//            $("#form1").ajaxForm(options);
-//        });
-            $(function () {
-            var options = {
-                success: function (data) {
-                    $("#responseText").text(data);
-                }
-            };
-
-            $("#form1").ajaxForm(options);
-        });
+ <script type="text/javascript" src="../../resource/js/uploadabsencefile.js"></script>
 
 
-	</script>
-
-         <div id="uploadfilediv">
+ <div id="uploadfilediv">
    <form id="form1" enctype="multipart/form-data" action="/upload" method="post" onsubmit="return check(this)" id="sub">
-
    {% raw xsrf_form_html() %}
-
        	<div class="col-lg-6 col-sm-6 col-12">
 				<h4>上传文件(支持多文件一块上传):</h4>
 				<div class="input-group">
@@ -86,7 +22,6 @@
                     <input type="submit"  id="btnAjaxForm" class="btn " value="上传">
                  </div>
 		</div>
-
    </form>
          </div>
 

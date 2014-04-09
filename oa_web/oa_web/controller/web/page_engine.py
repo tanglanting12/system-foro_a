@@ -12,11 +12,7 @@ import tornado
 import datetime
 import time
 import os.path as osp
-'''
-  why????
-  RequestHandler.__init__(self, *args, **kwargs)
-    TypeError: __init__() takes exactly 3 arguments (2 given)
-'''
+
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
         return self.get_secure_cookie("username")
@@ -27,8 +23,6 @@ class Index(OaHandler,BaseHandler):
 
     @tornado.web.authenticated
     def get(self):
-        #user = User.objects.get(id=1)
-        #self.write('''<p> username:  %s</p>''' %(self.current_user) )
         if self.current_user:
             user = User.objects.get(name = self.current_user)
             roler = Role.objects.filter(user__name__exact = self.current_user)
@@ -40,8 +34,6 @@ class Index(OaHandler,BaseHandler):
                 uncomfirmNum = ""
             else:
                 uncomfirmNum = "("+str(uncomfirmNum)+")"
-           # uncomfirmNum=Leave.objects.filter(verify_status__exact=0).filter(user__superior__exact=user.id).count()
-
             if roler[0].name == "管理层":
                 self.render('supervisor.html', username = user.name, rolename = roler[0].name, navigation = navigation,uncomfirmNum = uncomfirmNum)
             elif roler[0].name == "行政层":
@@ -63,7 +55,6 @@ class Index(OaHandler,BaseHandler):
         Leave.objects.create(user = user[0],leave_type = leave_type,leave_time_begin = leave_time_begin,
                              leave_time_end = leave_time_end,reason_for_leave = reason_for_leave)
         self.redirect('/')
-       # print "**%s***%s***%s***%s*******%s***" %(leave_type,leave_time_begin,leave_time_end,reason_for_leave,user[0].name)
 
 
 @Route('/login')
@@ -165,22 +156,6 @@ class exceptiondataajax(OaHandler,exceptiondataajax):
 
 
 
-############### not finish
-@Route('/updateperleave')
-class Updateperleave(OaHandler):
-
-     def get(self):
-        leave_id = int(self.get_argument("leave_id"))
-        name = int(self.get_argument("name"))
-        leave = Leave.objects.get(id = leave_id)
-        user = User.objects.get(name = name)
-        superior = User.objects.get(id = user.superior)
-        return self.render('AskForLeave.html',reason_for_leave = leave.reason_for_leave,
-                              superior_id = superior.id,superior_name = superior.name,pre_year_holiday = user.pre_year_holiday,
-                              remain_year_holiday = user.remain_year_holiday)
-
-
-
 @Route('/leave_delete')
 class Leavedelete(OaHandler,Leavedetalajax):
      def get(self):
@@ -242,24 +217,4 @@ class UploadHandler(OaHandler,upload):
     def post(self):
         self.uploadexcel()
 
-'''
 
-@Route('/update')
-class update(OaHandler):
-    def get(self):
-        name="abert"
-        user=User.objects.filter(name=name).values()
-        position_name=Position.objects.get(id=user[0]["position_id"])
-        role_name=Role.objects.get(id=user[0]["role_id"])
-        print "****%s***" %(user[0]["department_id"])
-        department_name=Department.objects.get(id=user[0]["department_id"])
-        print "***%s****&&&&" %(position_name.name)
-        #print "***%s***%s***%s" %(position_name.name,role_name.name,department_name.name)
-        positiondic=autodic(Position,"id","name")
-        roledic=autodic(Role,"id","name")
-        departmentdic=autodic(Department,"id","name")
-        #print "***%s***%s***%s" %(position_name.name,role_name.name,department_name.name)
-        self.render('update_user.html',user=user,position_name=position_name.name,role_name=role_name.name,department_name=department_name.name,
-                    positiondic=positiondic,roledic=roledic,departmentdic=departmentdic
-                    )
-'''

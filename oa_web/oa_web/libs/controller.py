@@ -5,6 +5,9 @@ import time
 from xlrd import open_workbook
 import datetime
 from django.db.models import F;
+'''
+retrun leavedtailajax datas
+'''
 class Leavedetalajax():
    def leavedetailajax(self):
         self.name = self.get_argument("name",default = "abert")
@@ -26,7 +29,9 @@ class Leavedetalajax():
             .filter(deleteleavetag = 0,user__name__exact = self.name,verify_status__exact = self.comfirm)
         self.leavedetails = self.leaves[int(self.index)*8:(int(self.index)+1)*8]
 
-
+'''
+return exceptiondataajax datas
+'''
 class exceptiondataajax():
 
    def exceptiondataajax(self):
@@ -48,7 +53,9 @@ class exceptiondataajax():
             .filter(isnormal=0)
 
         self.exceptiondatas = self.exceptiondatas[int(self.index)*8:(int(self.index)+1)*8]
-
+'''
+use to save file in sever and insert into mysql
+'''
 class upload():
     def uploadexcel(self):
          if self.request.files:

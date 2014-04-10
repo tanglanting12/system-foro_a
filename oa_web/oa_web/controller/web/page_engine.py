@@ -1,5 +1,8 @@
 #coding=utf-8
+'''
+use to Route for web location :how to solve in server(such as get post)
 
+'''
 from oa_web.module.oa_handler import OaHandler
 from oa_web.module.route import Route
 from oa_admin.oa.models import User, Role,Leave,Position,Department,Attendance

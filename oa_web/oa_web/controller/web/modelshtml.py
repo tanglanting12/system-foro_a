@@ -1,6 +1,8 @@
 import tornado.web
 from oa_admin.oa.models import User, Role ,Leave
-
+'''
+use for UImoule:   default in settings
+'''
 
 class AskForLeave(tornado.web.UIModule):
     def render(self,username):

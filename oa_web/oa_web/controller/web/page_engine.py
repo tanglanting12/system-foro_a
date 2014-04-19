@@ -99,38 +99,6 @@ class Update(OaHandler):
         name = self.get_argument("name",default = "abert")
         self.render('change_pwd.html',name = name)
 
-
-
-@Route('/register')
-class Register(OaHandler):
-
-    def get(self):
-        positiondic = autodic(Position,"id","name")
-        roledic = autodic(Role,"id","name")
-        departmentdic = autodic(Department,"id","name")
-        self.render('register.html',positiondic = positiondic,roledic = roledic,departmentdic = departmentdic)
-
-    def post(self):
-        name = self.get_argument("name")
-        real_name = self.get_argument("real_name")
-        password = self.get_argument("password")
-        gender = self.get_argument("gender")
-        phone_num = self.get_argument("phone_num")
-        pre_year_holiday = self.get_argument("pre_year_holiday")
-        remain_year_holiday = self.get_argument("remain_year_holiday")
-        position = Position.objects.get(id = self.get_argument("position"))
-        role = Role.objects.get(id = self.get_argument("role"))
-        department = Department.objects.get(id = self.get_argument("department"))
-        superior = self.get_argument("superior")
-        superior = User.objects.filter(name=superior)
-        superior_id = superior[0].id
-        User.objects.create(name = name,real_name = real_name,password = password,gender = gender,phone_num = phone_num,
-                            pre_year_holiday = pre_year_holiday,remain_year_holiday = remain_year_holiday,
-                            position = position,role = role,department = department,superior = superior_id)
-
-        self.redirect('/register')
-
-
 @Route('/leave_detail')
 class Leavedetail(OaHandler):
     def get(self):

@@ -48,7 +48,7 @@ class exceptiondataajax():
             .filter(isnormal=0)
 
         else :
-            self.exceptiondatas = Attendance.objects.order_by("-daytime").filter(user__name__exact  = self.name)\
+            self.exceptiondatas = Attendance.objects.order_by("-daytime").filter(name__exact  = self.name)\
            .exclude(musttime=F('realtime')).filter(daytime__gte=deadline).exclude(daytime__gte=datetime.date.today())\
             .filter(isnormal=0)
 

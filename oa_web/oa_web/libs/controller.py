@@ -72,8 +72,7 @@ class upload():
                         values=[]
                         for col in range(1,s.ncols):
                             values.append(s.cell(row,col).value)
-                        users = User.objects.filter(name = values[0])
-                        user =users[0] if users else None
+                        name = values[0] if values[0] else None
                         # This code shoule be optimized
                         punchwork = str(values[2]).split(":")  if values[2] else None
                         punchworkoff = str(values[3]).split(":") if values[3] else None
@@ -95,9 +94,9 @@ class upload():
                         worktime = datetime.time(int(worktime[0]),int(worktime[1])) if values[11] else None
                         remark = values[12] if values[12] else None
 
-                        att = Attendance(user = user, daytime = daytime,punchwork=punchwork,punchworkoff=punchworkoff,
+                        att = Attendance(name = name, daytime = daytime,punchwork=punchwork,punchworkoff=punchworkoff,
                             musttime=musttime,realtime=realtime,latetime=latetime,earlytime=earlytime,isabsent=isabsent,
-                            overtime=overtime,apartment=apartment,worktime=worktime,remark=remark,name = values[0]
+                            overtime=overtime,apartment=apartment,worktime=worktime,remark=remark
                             )
                        # if user is None:
                         #   att.name = values[0]

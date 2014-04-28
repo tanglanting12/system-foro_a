@@ -23,7 +23,7 @@ function check(form)
  {
    var temp;
    temp=true;
-   if(window.confirm("确定删除选中的数据？"))
+   if(window.confirm("确定上传选中的数据？"))
    {
       temp=true;
       $("#btnAjaxForm").attr("disabled","disabled");

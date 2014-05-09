@@ -20,3 +20,9 @@ refer from:
    south document
    and google or baidu search
 
+
+create startserver.py script in order to develop enviroment start:
+----- sudo  env/bin/python startserver.py
+
+conf of nginx:
+----- nginx.conf

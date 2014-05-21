@@ -20,7 +20,7 @@ class LeaveAdmin(admin.ModelAdmin):
 
 class AttendanceAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'isabsent', 'realtime', ]
-
+    search_fields = ['name']
 admin.site.register(models.User, UserAdmin)
 admin.site.register(models.Department,DepartmentAdmin)
 admin.site.register(models.Position,PositionAdmin)

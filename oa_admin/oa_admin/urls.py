@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+import settings
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -15,4 +16,5 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     url(r'^', include(admin.site.urls)),
     (r'^grappelli/', include('grappelli.urls')), # grappelli URLS
+    (r'^uploads/(?P<path>.*)$', 'django.views.static.serve',{'document_root': settings.STATIC_PATH}),
 )

@@ -6,6 +6,8 @@ from oa_admin.comm_def import UserGender,Verfify,AskforleaveType,Isabsent,Delete
 class Department(models.Model):
     name = models.CharField('部门名称', max_length = 20, unique = True)
     detail = models.CharField('部门职责', max_length = 100)
+    picture = models.ImageField('部门logo',upload_to = 'photos/%Y/%m/%d',blank = True, null = True)
+    filesDepartment = models.FileField('提交文件',upload_to = 'files/%Y/%m/%d',blank = True, null = True)
     def __unicode__(self):
         return self.name
 

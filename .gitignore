@@ -15,4 +15,4 @@ local_settings.py
 *.xls
 migrations/
 test.html
-
+uploads/

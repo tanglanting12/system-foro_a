@@ -4,6 +4,7 @@ import os
 import os.path as osp
 from oa_admin.config import ConfigMysql, ConfigDBNames, ConfigCommon
 
+
 DEBUG = ConfigCommon.debug
 TEMPLATE_DEBUG = DEBUG
 

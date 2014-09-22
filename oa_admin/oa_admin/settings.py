@@ -174,6 +174,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 
 GRAPPELLI_INDEX_DASHBOARD = 'oa_admin.dashboard.CustomIndexDashboard'
-GRAPPELLI_ADMIN_TITLE = '深圳OA系统'
+GRAPPELLI_ADMIN_TITLE = 'Nubia表情管理系统'
 STATIC_PATH = osp.join(PROJECT_ROOT, 'uploads')
 

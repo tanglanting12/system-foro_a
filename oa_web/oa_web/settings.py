@@ -27,12 +27,16 @@ settings = {
     'xsrf_cookies': ConfigCommon.is_xsrf_cookies,
     'cookie_secret': ConfigCommon.cookie_secret,
     'login_url': '/login',
-    'ui_modules': {'AskForLeave': AskForLeave,'Askforout':Askforout,'Default_detail':Default_detail,\
+
+
+
+}
+
+'''
+ 'ui_modules': {'AskForLeave': AskForLeave,'Askforout':Askforout,'Default_detail':Default_detail,\
                    'Wait_for_confirm':Wait_for_confirm,'Confirm':Confirm,'Changepwd':Changepwd,\
                    'Perdetail':Perdetail,'Statistic':Statistic,'ComfirmForOther':ComfirmForOther,\
                    'UncomfirmForOther':UncomfirmForOther,'Attendanceexceptiondata':Attendanceexceptiondata,\
                    'Attendanceexceptionalldata':Attendanceexceptionalldata,'UploadAbsenceFile':UploadAbsenceFile},
-    
 
-}
-
+'''

@@ -5,7 +5,7 @@ use to Route for web location :how to solve in server(such as get post)
 '''
 from oa_web.module.oa_handler import OaHandler
 from oa_web.module.route import Route
-from oa_admin.oa.models import User, Role,Leave,Position,Department,Attendance
+from oa_admin.oa.models import ExpressionSoftwareV, ZipCategory ,ExpresionPackage
 from oa_web.libs.autodiscover import autodic
 from oa_web.libs.controller import Leavedetalajax,upload,exceptiondataajax
 from oa_web.upload import uploadDir
@@ -15,6 +15,25 @@ import tornado
 import datetime
 import time
 import os.path as osp
+from oa_web.libs.util import MyobjectEncoder,MyobjectDecoder
+import json
+
+@Route('/expressionPackage')
+class Leavedelete(OaHandler,Leavedetalajax):
+     def get(self):
+       # leave_id = int(self.get_argument("leave_id"))
+        self.expressionpackages = ExpresionPackage.objects.all()[:1].values('zipUrl','picUrl','zipName','zipInfo','zipSize','zipPrice','zipCategory')
+
+        #MyobjectEncoder(self.expressionpackages)
+       # Leave.objects.filter(id = leave_id).update(deleteleavetag=1)
+        print "%s expressionpackages! " %(json.dumps(list(self.expressionpackages)))
+        return self.render('test.html',myjson = json.dumps(list(self.expressionpackages)))
+       # self.leavedetailajax()
+        #return  self.render('leave_detailajax.html',leavedetails = self.leavedetails,name = self.name,comfirm = self.comfirm\
+         #           ,superiorStyle = self.superiorStyle,index = self.index)
+
+
+'''
 
 class BaseHandler(tornado.web.RequestHandler):
     def get_current_user(self):
@@ -193,4 +212,4 @@ class UploadHandler(OaHandler,upload):
     def post(self):
         self.uploadexcel()
 
-
+'''
